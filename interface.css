@@ -1,0 +1,23 @@
+#screen{
+  position: absolute;
+  height: 120%;
+  width: 100%;
+  left: -119%;
+  top: -15%;
+}
+
+#information{
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  left: 60%;
+  top: 5%;
+}
+
+#keyboard{
+  position: absolute;
+  height: 50%;
+  width: 90%;
+  left: 5%;
+  top: 55%;
+}
