@@ -2,7 +2,7 @@
 var zerorpc = require("zerorpc");
 
 var server = new zerorpc.Server({
-    test: function(reply) {
+    data: function(reply) {
       var times = [0]
       var timeStamp = Math.floor(Date.now());
       if (timeStamp != times[times.length - 1]) {

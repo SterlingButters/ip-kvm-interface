@@ -17,6 +17,8 @@ document.exitPointerLock = document.exitPointerLock ||
 
 var x;
 var y;
+var a;
+var b;
 
 var isLocked = function() {
   return requestedElement === document.pointerLockElement ||
@@ -48,8 +50,8 @@ var moveCallback = function(e) {
     e.webkitMovementY ||
     0;
 
-    var a = e.clientX
-    var b = e.clientY
+    a = e.clientX;
+    b = e.clientY;
 
   position.innerHTML = 'Position X: ' + x + '<br />Position Y: ' + y + '<br />Initial X Window Position : ' + a + '<br />Initial Y Window Position : ' + b;
 }
@@ -78,3 +80,19 @@ document.addEventListener('webkitpointerlockchange', changeCallback, false);
 function WhichButton(event) {
     document.getElementById("demo").innerHTML = "You pressed button: " + event.button;
 }
+
+// Send Data
+// http://www.zerorpc.io/
+// var zerorpc = require("zerorpc");
+// var server = new zerorpc.Server({
+//     data: function(reply) {
+//       var coordList = [];
+//       if ([x, y] != coordList[coordList.length - 1]) {
+//         coordList.push([x, y]])
+//         reply(null, "Coordinates: " + x + "," + y);
+//       }
+//     }
+//
+// });
+//
+// server.bind("tcp://0.0.0.0:4242");

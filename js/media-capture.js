@@ -1,11 +1,13 @@
 // Media Capture
-const constraints = {
-  video: true
-}; 
-const video = document.querySelector('video');
 
-navigator.mediaDevices.getUserMedia(constraints).
+const hdConstraints = {
+  video: {width: {min: 1280}, height: {min: 720}}
+};
+
+navigator.mediaDevices.getUserMedia(hdConstraints).
   then((stream) => {video.srcObject = stream});
+
+const video = document.querySelector('video');
 
 const videoElement = document.querySelector('video');
 const audioSelect = document.querySelector('select#audioSource');
@@ -14,8 +16,8 @@ const videoSelect = document.querySelector('select#videoSource');
 navigator.mediaDevices.enumerateDevices()
   .then(gotDevices).then(getStream).catch(handleError);
 
-// audioSelect.onchange = getStream;
-// videoSelect.onchange = getStream;
+audioSelect.onchange = getStream;
+videoSelect.onchange = getStream;
 
 function gotDevices(deviceInfos) {
   for (let i = 0; i !== deviceInfos.length; ++i) {
