@@ -1,9 +1,24 @@
 #screen{
   position: absolute;
-  height: 120%;
-  width: 100%;
-  left: -119%;
-  top: -15%;
+  top: 0%;
+  left: 20%;
+  height: 50%;
+  width: 50%;
+}
+
+#monitor{
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: -1
+}
+
+.box{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1500px;
+  width: 1000px
 }
 
 #information{
@@ -15,9 +30,9 @@
 }
 
 #keyboard{
+  display: inline-block;
   position: absolute;
-  height: 50%;
-  width: 90%;
-  left: 5%;
-  top: 55%;
+  left: 16.5%;
+  top: 90%;
+  padding-bottom: 100px
 }

@@ -6,7 +6,7 @@ var havePointerLock = 'pointerLockElement' in document ||
   'webkitPointerLockElement' in document;
 
 // element for pointerLock
-var requestedElement = document.getElementById('screen');
+var requestedElement = document.getElementById('video');
 
 // prefixes
 requestedElement.requestPointerLock = requestedElement.requestPointerLock || requestedElement.mozRequestPointerLock || requestedElement.webkitRequestPointerLock;

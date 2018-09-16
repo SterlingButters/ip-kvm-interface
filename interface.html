@@ -11,19 +11,28 @@
 
 <body>
 
-  <!-- <img class="power" src="/resources/power.png"> -->
+  <div id = "screen">
+    <img class="monitor" src="/resources/monitor.png">
 
-  <div onmousedown="WhichButton(event)"
-     id = "information">Click the video with one of your mouse buttons to<br>
-     return a number.
+    <!-- <div onclick="WOL(event)"
+         id = power>
+      <img class="power" src="/resources/power.png">
+      <script src="/js/power-on.js"></script>
+    </div> -->
 
-    <video autoplay
-         class = "box"
-         id = "screen">
-         <script src="/js/media-capture.js"></script>
-    </video>
+    <div onmousedown="WhichButton(event)"
+       id = "information">
+
+      <video autoplay
+           class = "rectangle"
+           id = "video">
+           <script src="/js/media-capture.js"></script>
+      </video>
+  </div>
 
     <p>
+    Click the video with one of your mouse buttons to<br>
+    return a number.<br>
     0 = The left mouse button<br>
     1 = The middle mouse button<br>
     2 = The right mouse button
