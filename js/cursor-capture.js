@@ -78,21 +78,16 @@ document.addEventListener('webkitpointerlockchange', changeCallback, false);
 
 // Click
 function WhichButton(event) {
-    document.getElementById("demo").innerHTML = "You pressed button: " + event.button;
+  document.getElementById("demo").innerHTML = "You pressed button: " + event.button;
 }
 
 // Send Data
 // http://www.zerorpc.io/
-// var zerorpc = require("zerorpc");
-// var server = new zerorpc.Server({
-//     data: function(reply) {
-//       var coordList = [];
-//       if ([x, y] != coordList[coordList.length - 1]) {
-//         coordList.push([x, y]])
-//         reply(null, "Coordinates: " + x + "," + y);
-//       }
-//     }
-//
-// });
-//
-// server.bind("tcp://0.0.0.0:4242");
+var zerorpc = require("zerorpc");
+var server = new zerorpc.Server({
+  data: function(y, x, reply) {
+    reply(null, "Coordinates: " + x + "," + y);
+  }
+});
+
+server.bind("tcp://0.0.0.0:4242");
