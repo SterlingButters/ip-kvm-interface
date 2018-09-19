@@ -1,31 +1,51 @@
 echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
-echo "dwc2" | sudo tee -a /etc/modules
-sudo echo "libcomposite" | sudo tee -a /etc/modules
+# echo "dwc2" | sudo tee -a /etc/modules
+# echo "g_ether" | sudo tee -a /etc/modules # Allows internet sharing
+# sudo echo "libcomposite" | sudo tee -a /etc/modules
 sudo touch /usr/bin/hid_usb
 sudo chmod +x /usr/bin/hid_usb
-sudo nano /etc/rc.local
+sudo cp /etc/rc.local /etc/rc.local.bak
 
-"...
+cat <<END> /etc/rc.local
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+	printf "My IP address is %s\n" "$_IP"
+fi
+
 /usr/bin/hid_usb # libcomposite configuration
 
 exit 0
-"
+END
 
-sudo nano /usr/bin/hid_usb
-
-"
+cat <<END> /usr/bin/hid_usb.sh
 #!/bin/bash
 if [ "$(lsusb)" == "Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub" ]; then
 	modprobe libcomposite
+	modprobe dwc2
+	sudo su
 	cd /sys/kernel/config/usb_gadget/
-	mkdir -p g1
-	cd g1
+	mkdir -p keyboard
+	cd keyboard
 	echo 0x1d6b > idVendor # Linux Foundation
 	echo 0x0104 > idProduct # Multifunction Composite Gadget
 	echo 0x0100 > bcdDevice # v1.0.0
 	echo 0x0200 > bcdUSB # USB2
 	mkdir -p strings/0x409
-	echo "deadbeef01234567890" > strings/0x409/serialnumber
+	echo "hid01234567890" > strings/0x409/serialnumber
 	echo "example.com" > strings/0x409/manufacturer
 	echo "Generic USB Keyboard" > strings/0x409/product
 	N="usb0"
@@ -40,6 +60,7 @@ if [ "$(lsusb)" == "Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root h
 	echo 250 > configs/c.$C/MaxPower
 	ln -s functions/hid.$N configs/c.$C/
 	ls /sys/class/udc > UDC
-	chmod -R 777 /dev/hidg0
+	chmod -R 777 /dev/serial0
+# chmod -R 777 /dev/hidg0
 fi
-"
+END

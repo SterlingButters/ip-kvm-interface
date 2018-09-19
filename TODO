@@ -7,3 +7,4 @@
 3) TODO: If it works: Figure out ZeroRPC server issue
 4) TODO: If not: handle HID in node
       - https://github.com/node-hid/node-hid#installation
+5) TODO: Check handling of script spawning in node.js
