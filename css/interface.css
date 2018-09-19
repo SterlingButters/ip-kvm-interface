@@ -6,8 +6,8 @@ transform: translate(-50%, -50%);
 }
 
 .monitor-border{
-  height: auto;
-  width: 1800px;
+  height: 1220px;
+  width: 1575px;
   z-index: -1;
 }
 
@@ -15,7 +15,7 @@ transform: translate(-50%, -50%);
 position: absolute;
 top: 38%;
 left: 50%;
-transform: translate(-50%, -50%);
+transform: translate(-50.2%, -50%);
 }
 
 #power{
@@ -27,7 +27,7 @@ transform: translate(-50%, -50%);
 
 #keyboard{
   position: absolute;
-  top: 95%;
+  top: 90%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
