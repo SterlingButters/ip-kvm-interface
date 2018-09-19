@@ -1,10 +1,16 @@
-1) TODO: Enable HID on RPi0:
-      - https://randomnerdtutorials.com/raspberry-pi-zero-usb-keyboard-hid/
+---
+layout: "post"
+title: "TODO"
+date: "2018-09-19 15:40"
+---
+
+1) Enable HID on RPi0:
+      - http://isticktoit.net/?p=1383
       - https://github.com/Fmstrat/diy-ipmi/blob/master/Pi0/enableHID.sh
-2) TODO: See if Circuit Python will work:
+2) See if Circuit Python will work:
       - https://learn.adafruit.com/circuitpython-essentials/circuitpython-hid-keyboard-and-mouse
       - https://circuitpython.readthedocs.io/projects/hid/en/latest/examples.html
-3) TODO: If it works: Figure out ZeroRPC server issue
-4) TODO: If not: handle HID in node
+3) If it works: Figure out ZeroRPC server issue
+
+4) ~~If not: handle HID in node (BROKEN)~~
       - https://github.com/node-hid/node-hid#installation
-5) TODO: Check handling of script spawning in node.js
