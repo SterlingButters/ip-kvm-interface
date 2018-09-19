@@ -77,6 +77,6 @@ document.addEventListener('mozpointerlockchange', changeCallback, false);
 document.addEventListener('webkitpointerlockchange', changeCallback, false);
 
 // Click
-function WhichButton(event) {
-  document.getElementById("demo").innerHTML = "You pressed button: " + event.button;
+function whichClick(event) {
+  document.getElementById("click").innerHTML = "You pressed button: " + event.button;
 }
