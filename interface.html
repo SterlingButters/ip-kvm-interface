@@ -13,11 +13,11 @@
   <div id = "screen">
     <img class="monitor" src="/assets/monitor.png">
 
-    <!-- <div onclick="WOL(event)"
+    <div onclick="WOL(event)"
          id = power>
       <img class="power" src="/assets/power.png">
       <script src="/js/power-on.js"></script>
-    </div> -->
+    </div>
 
     <div onmousedown="whichClick(event)"
        id = "information">
@@ -46,6 +46,12 @@
     <!-- Click -->
     <p id="click"></p>
     <!-- Click -->
+
+    <!-- Etherwake -->
+    <p id="etherwake-stdout"></p>
+    <p id="etherwake-stderr"></p>
+    <p id="etherwake-exit"></p>
+    <!-- Etherwake -->
 
   </div>
 
