@@ -78,5 +78,5 @@ document.addEventListener('webkitpointerlockchange', changeCallback, false);
 
 // Click
 function whichClick(event) {
-  document.getElementById("click").innerHTML = "You pressed button: " + event.button;
+  document.getElementById("click-button").innerHTML = "You pressed button: " + event.button;
 }

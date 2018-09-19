@@ -10,32 +10,56 @@
 
 <body>
 
-  <div id = "screen">
-    <img class="monitor" src="/assets/monitor.png">
+  <!-- Monitor -->
+  <div id = "monitor">
+    <img class="monitor-border" src="/assets/monitor.png">
 
+    <!-- Power -->
     <div onclick="WOL(event)"
-         id = power>
+         id = power
+         class="power-size">
       <img class="power" src="/assets/power.png">
       <script src="/js/power-on.js"></script>
     </div>
+    <!-- Power -->
 
-    <div onmousedown="whichClick(event)"
-       id = "information">
-
+    <!-- Video -->
+    <div onmousedown="whichClick(event)">
       <video autoplay
            class = "rectangle"
            id = "video">
            <script src="/js/media-capture.js"></script>
       </video>
+    </div>
+    <!-- Video -->
   </div>
+  <!-- Monitor -->
 
+  <!-- Keyboard -->
+  <div id="keyboard">
+    <input class="input"
+           size="125"
+           placeholder="Tap on the virtual keyboard or type to enter text"/>
+
+    <div class="simple-keyboard"></div>
+    <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
+    <script src="src/index.js"></script>
+    <script src="/js/keyboard-capture.js"></script>
+  </div>
+  <!-- Keyboard -->
+
+  <!-- Information -->
+  <div id="information">
+    <!-- Click -->
     <p>
-    Click the video with one of your mouse buttons to<br>
-    return a number.<br>
+    Click the video with one of your mouse<br>
+    buttons to return a number.<br>
     0 = The left mouse button<br>
     1 = The middle mouse button<br>
     2 = The right mouse button
     </p>
+    <p id="click-button"></p>
+    <!-- Click -->
 
     <!-- Position -->
     <div id="position">
@@ -43,30 +67,13 @@
     </div>
     <!-- Position -->
 
-    <!-- Click -->
-    <p id="click"></p>
-    <!-- Click -->
-
     <!-- Etherwake -->
     <p id="etherwake-stdout"></p>
     <p id="etherwake-stderr"></p>
     <p id="etherwake-exit"></p>
     <!-- Etherwake -->
-
   </div>
-
-<!-- Keyboard -->
-  <div id="keyboard">
-  <input class="input"
-         size="125"
-         placeholder="Tap on the virtual keyboard or type to enter text"/>
-
-  <div class="simple-keyboard"></div>
-  <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
-  <script src="src/index.js"></script>
-  <script src="/js/keyboard-capture.js"></script>
-  </div>
-<!-- Keyboard -->
+  <!-- Information -->
 
 </body>
 </html>
