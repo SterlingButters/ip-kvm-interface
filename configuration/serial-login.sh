@@ -1,17 +1,12 @@
 #!/bin/bash
-# TODO: Consider getty service: sudo systemctl enable serial-getty@ttyAMA0.service
-
-echo "Setting up Pi0..."
-echo "Logging into Pi0..."
-
 RESPONSE=
 COUNT=1
 
-# KEYBOARD=/dev/ttyUSB0
-# MOUSE=/dev/ttyUSB1
-
 # Case Right Now
 KEYBOARD=/dev/cu.SLAB_USBtoUART
+
+# KEYBOARD=/dev/ttyUSB0
+# MOUSE=/dev/ttyUSB1
 
 function processResponse(DEVICE) {
 	if [ "$RESPONSE" == "raspberrypi login: " ]; then
@@ -19,7 +14,7 @@ function processResponse(DEVICE) {
 		echo "pi" >> DEVICE
 		echo "raspberry" >> DEVICE
 		sleep 1
-		runCommand
+		runCommand(DEVICE)
 		if [ "$RESPONSE" == "pi@raspberrypi:~$ " ]; then
 			echo "Login successful"
 		else
@@ -31,7 +26,7 @@ function processResponse(DEVICE) {
 		echo "Error logging into Pi0 on try $COUNT.. Retrying in 10s"
 		let COUNT=COUNT+1
 		sleep 10;
-		runCommand;
+		runCommand(DEVICE);
 	else
 		echo "Maximum Attempts Reached; Please Debug the Problem"
 		exit 1
@@ -53,7 +48,7 @@ function runCommand(DEVICE) {
 runCommand(KEYBOARD);
 runCommand(MOUSE);
 
-function setup(DEVICE) {
+function login(DEVICE) {
 	LOGINSUCCESS=0
 	while [ $LOGINSUCCESS -eq 0 ]; do
 		if ! /opt/ip-kvn-interface/configuration/serial-login.sh; then
@@ -76,5 +71,8 @@ function setup(DEVICE) {
 	echo "Disabling network to speed Pi0 bootup"
 	echo "sudo systemctl disable networking" >> DEVICE
 	echo "sudo apt-get -y remove dhcpcd5 isc-dhcp-client isc-dhcp-common" >> DEVICE
-	echo " -=- Waiting for removal of network to complete (90s) -=-"
+	echo "Waiting for removal of network to complete (90s)"
 	sleep 90
+
+	login(KEYBOARD)
+	login(MOUSE)

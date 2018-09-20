@@ -1,66 +1,26 @@
-echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
-# echo "dwc2" | sudo tee -a /etc/modules
-# echo "g_ether" | sudo tee -a /etc/modules # Allows internet sharing
-# sudo echo "libcomposite" | sudo tee -a /etc/modules
-sudo touch /usr/bin/hid_usb
-sudo chmod +x /usr/bin/hid_usb
-sudo cp /etc/rc.local /etc/rc.local.bak
-
-cat <<END> /etc/rc.local
-#!/bin/sh -e
-#
-# rc.local
-#
-# This script is executed at the end of each multiuser runlevel.
-# Make sure that the script will "exit 0" on success or any other
-# value on error.
-#
-# In order to enable or disable this script just change the execution
-# bits.
-#
-# By default this script does nothing.
-
-# Print the IP address
-_IP=$(hostname -I) || true
-if [ "$_IP" ]; then
-	printf "My IP address is %s\n" "$_IP"
-fi
-
-/usr/bin/hid_usb # libcomposite configuration
-
-exit 0
-END
-
-cat <<END> /usr/bin/hid_usb.sh
 #!/bin/bash
-if [ "$(lsusb)" == "Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub" ]; then
-	modprobe libcomposite
-	modprobe dwc2
-	sudo su
-	cd /sys/kernel/config/usb_gadget/
-	mkdir -p keyboard
-	cd keyboard
-	echo 0x1d6b > idVendor # Linux Foundation
-	echo 0x0104 > idProduct # Multifunction Composite Gadget
-	echo 0x0100 > bcdDevice # v1.0.0
-	echo 0x0200 > bcdUSB # USB2
-	mkdir -p strings/0x409
-	echo "hid01234567890" > strings/0x409/serialnumber
-	echo "example.com" > strings/0x409/manufacturer
-	echo "Generic USB Keyboard" > strings/0x409/product
-	N="usb0"
-	mkdir -p functions/hid.$N
-	echo 1 > functions/hid.usb0/protocol
-	echo 1 > functions/hid.usb0/subclass
-	echo 8 > functions/hid.usb0/report_length
-	echo -ne \\x05\\x01\\x09\\x06\\xa1\\x01\\x05\\x07\\x19\\xe0\\x29\\xe7\\x15\\x00\\x25\\x01\\x75\\x01\\x95\\x08\\x81\\x02\\x95\\x01\\x75\\x08\\x81\\x03\\x95\\x05\\x75\\x01\\x05\\x08\\x19\\x01\\x29\\x05\\x91\\x02\\x95\\x01\\x75\\x03\\x91\\x03\\x95\\x06\\x75\\x08\\x15\\x00\\x25\\x65\\x05\\x07\\x19\\x00\\x29\\x65\\x81\\x00\\xc0 > functions/hid.usb0/report_desc
-	C=1
-	mkdir -p configs/c.$C/strings/0x409
-	echo "Config $C: ECM network" > configs/c.$C/strings/0x409/configuration
-	echo 250 > configs/c.$C/MaxPower
-	ln -s functions/hid.$N configs/c.$C/
-	ls /sys/class/udc > UDC
-	chmod -R 777 /dev/serial0
-# chmod -R 777 /dev/hidg0
-fi
-END
+function setup(DEVICE) {
+
+	echo "Enabling Correct Modules on Pi0"
+	echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt >> DEVICE
+	echo "dwc2" | sudo tee -a /etc/modules >> DEVICE
+	echo "libcomposite" | sudo tee -a /etc/modules >> DEVICE
+
+	echo "Transfering files to Pi0 for HID"
+	echo "rm -f /tmp/B64" >> DEVICE
+	for LINE in $(base64 /opt/ip-kvm-interface/configuration/enable-hid.sh);
+		do echo "echo $LINE >> /tmp/B64" >> DEVICE;
+		done
+	echo "base64 -d /tmp/B64 > /home/pi/enable-hid.sh" >> DEVICE
+	echo "chmod +x /home/pi/enable-hid.sh" >> DEVICE
+
+	echo "Enabling HID on Pi0 and adding boot options"
+	echo "sudo /home/pi/enable-hid.sh" >> DEVICE
+	echo "sudo cp /etc/rc.local /etc/rc.local.bak" >> DEVICE
+	echo "sudo sed -i 's/exit 0//g' /etc/rc.local" >> DEVICE
+	echo "echo /home/pi/enable-hid.sh | sudo tee --append /etc/rc.local" >> DEVICE
+	echo "echo exit 0 | sudo tee --append /etc/rc.local" >> DEVICE
+}
+
+setup(KEYBOARD)
+setup(MOUSE)
