@@ -4,6 +4,9 @@ title: "TODO"
 date: "2018-09-19 15:40"
 ---
 
+![alt text](https://github.com/SterlingButters/)
+
+
 1) Enable HID on RPi0:
       - http://isticktoit.net/?p=1383
       - https://github.com/Fmstrat/diy-ipmi/blob/master/Pi0/enableHID.sh
