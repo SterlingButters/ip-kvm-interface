@@ -116,7 +116,7 @@ setup(KEYBOARD)
 MOUSE=/dev/ttyUSB1
 
 # - LOGIN - #
-echo "Setting up the second at $MOUSE as keyboard..."
+echo "Setting up the second at $MOUSE as mouse..."
 echo "Logging into Pi0..."
 
 RESPONSE=

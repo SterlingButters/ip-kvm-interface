@@ -2,8 +2,8 @@
 // Cursor Capture
 // check pointerLock support
 var havePointerLock = 'pointerLockElement' in document ||
-  'mozPointerLockElement' in document ||
-  'webkitPointerLockElement' in document;
+                      'mozPointerLockElement' in document ||
+                      'webkitPointerLockElement' in document;
 
 // element for pointerLock
 var requestedElement = document.getElementById('video');
@@ -12,8 +12,8 @@ var requestedElement = document.getElementById('video');
 requestedElement.requestPointerLock = requestedElement.requestPointerLock || requestedElement.mozRequestPointerLock || requestedElement.webkitRequestPointerLock;
 
 document.exitPointerLock = document.exitPointerLock ||
-  document.mozExitPointerLock ||
-  document.webkitExitPointerLock;
+                           document.mozExitPointerLock ||
+                           document.webkitExitPointerLock;
 
 var x;
 var y;
@@ -22,8 +22,8 @@ var b;
 
 var isLocked = function() {
   return requestedElement === document.pointerLockElement ||
-    requestedElement === document.mozPointerLockElement ||
-    requestedElement === document.webkitPointerLockElement;
+         requestedElement === document.mozPointerLockElement ||
+         requestedElement === document.webkitPointerLockElement;
 }
 
 requestedElement.addEventListener('click', function() {
@@ -53,7 +53,10 @@ var moveCallback = function(e) {
     a = e.clientX;
     b = e.clientY;
 
-  position.innerHTML = 'Position X: ' + x + '<br />Position Y: ' + y + '<br />Initial X Window Position : ' + a + '<br />Initial Y Window Position : ' + b;
+  position.innerHTML = 'Position X: ' + x +
+                       '<br />Position Y: ' + y +
+                       '<br />Initial X Window Position : ' + a +
+                       '<br />Initial Y Window Position : ' + b;
 }
 
 var changeCallback = function() {
@@ -64,6 +67,27 @@ var changeCallback = function() {
   if (isLocked()) {
     document.addEventListener("mousemove", moveCallback, false);
     document.body.classList.add('locked');
+
+    var zerorpc = require("zerorpc");
+    var server = new zerorpc.Server({
+      data: function(reply) {
+        var xList = [];
+        var yList = [];
+
+        lastX = xList[xList.length - 1]
+        if (x != lastX) {
+          xList.push(x)
+          reply(null, "X: " + x);
+        }
+
+        lastY = yList[yList.length - 1]
+        if (y != lastY) {
+          yList.push(y)
+          reply(null, "Y: " + y);
+        }
+      }
+    });
+    server.bind("tcp://0.0.0.0:4242");
   }
 
   else {

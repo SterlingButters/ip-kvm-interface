@@ -3,7 +3,7 @@ var zerorpc = require("zerorpc");
 
 var server = new zerorpc.Server({
     data: function(reply) {
-      var times = [0]
+      var times = [];
       var timeStamp = Math.floor(Date.now());
       if (timeStamp != times[times.length - 1]) {
         times.push(timeStamp)
@@ -14,3 +14,4 @@ var server = new zerorpc.Server({
 });
 
 server.bind("tcp://0.0.0.0:4242");
+server.run();
