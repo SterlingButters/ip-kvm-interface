@@ -8,7 +8,6 @@ def write_report(report):
     with open('/dev/hidg0', 'rb+') as fd:
         fd.write(report.encode())
 
-
 ARRAY = np.arange(4, 29, 1)
 LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
            'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
@@ -19,24 +18,25 @@ MODIFIERS = ['Alt', 'Control', 'Meta', 'Shift', 'Esc']
 SPECIAL = ['Space', 'Caps', 'Enter', 'Delete', 'Backspace']
 
 
-def press_and_release(letter):
+def keypress(letter, hold=False, shift=False):
     id = ARRAY[(LETTERS.index(letter))]
-    write_report(NULL_CHAR * 2 + chr(id) + NULL_CHAR * 5)
-    write_report(NULL_CHAR * 8)
-    print(letter)
+    if not shift:
+        write_report(NULL_CHAR * 2 + chr(id) + NULL_CHAR * 5)
+        if not hold:
+            write_report(NULL_CHAR * 8)
+            print(letter)
+        print(letter + "...")
+
+    else:
+        write_report(chr(32) + chr(id) + NULL_CHAR * 5)
+        print(letter)
+
     return 0
 
 
-def press_and_hold(letter):
-    id = ARRAY[(LETTERS.index(letter))]
-    write_report(NULL_CHAR * 2 + chr(id) + NULL_CHAR * 5)
-    print(letter + "...")
-    return 0
-
-
-# while True:
-#     letter = input("enter letter:")
-#     press_and_release(letter)
+while True:
+    letter = input("enter letter:")
+    keypress(letter)
 
 
 # # Press SHIFT + a = A
