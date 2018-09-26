@@ -14,13 +14,15 @@ but things are moving quickly.
 
 ### TODO List
 1) Options for HID input:
+
   a) RPi0:
-    i) Enable HID
+
+  i) Enable HID:
       - http://isticktoit.net/?p=1383
       - https://github.com/Fmstrat/diy-ipmi/blob/master/Pi0/enableHID.sh
-   ii) Then this:
+ ii) Then this:
       - https://github.com/boochow/micropython-raspberrypi
-  iii) Then this:
+iii) Then this:
       - https://learn.adafruit.com/circuitpython-essentials/circuitpython-hid-keyboard-and-mouse
       - https://circuitpython.readthedocs.io/projects/hid/en/latest/examples.html
       - https://github.com/adafruit/Adafruit_CircuitPython_Bundle
