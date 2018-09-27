@@ -48,7 +48,7 @@ No serial login
 ```
 3) Figure out ZeroRPC server issue
 
-4) Add Pi3 terminal to interface & adjust debugging `div` element(s)
+4) Add Pi3 terminal to interface & adjust debugging `div` element(s) + Latency
 
 5) Add loading icon atop video once power-on initiated
 
