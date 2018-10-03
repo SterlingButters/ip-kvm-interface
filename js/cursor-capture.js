@@ -67,28 +67,6 @@ var changeCallback = function() {
   if (isLocked()) {
     document.addEventListener("mousemove", moveCallback, false);
     document.body.classList.add('locked');
-
-    // TODO: https://stackoverflow.com/questions/38439854/is-zeromq-for-node-js-compatible-with-electron
-    var zerorpc = require("zerorpc");
-    var server = new zerorpc.Server({
-      data: function(reply) {
-        var xList = [];
-        var yList = [];
-
-        lastX = xList[xList.length - 1]
-        if (x != lastX) {
-          xList.push(x)
-          reply(null, "X: " + x);
-        }
-
-        lastY = yList[yList.length - 1]
-        if (y != lastY) {
-          yList.push(y)
-          reply(null, "Y: " + y);
-        }
-      }
-    });
-    server.bind("tcp://0.0.0.0:4242");
   }
 
   else {
