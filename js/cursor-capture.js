@@ -15,10 +15,10 @@ document.exitPointerLock = document.exitPointerLock ||
                            document.mozExitPointerLock ||
                            document.webkitExitPointerLock;
 
-var x;
-var y;
-var a;
-var b;
+let x;
+let y;
+let a;
+let b;
 
 var isLocked = function() {
   return requestedElement === document.pointerLockElement ||
