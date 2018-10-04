@@ -1,7 +1,7 @@
 var SerialPort = require('serialport');
 var port = new SerialPort('/dev/cu.SLAB_USBtoUART', {
   baudRate: 9600,
-  autoOpen: false
+  autoOpen: false,
 });
 
 port.open(function (err) {
@@ -12,6 +12,7 @@ port.open(function (err) {
 
 // The open event is always emitted
 port.on('open', function() {
-  // port.write('H')
+  // Keyboard
+  // port.write(Buffer.from(buttonPressed));
   port.write(Buffer.from('A'));
 });

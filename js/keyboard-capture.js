@@ -44,10 +44,7 @@ function onChange(input) {
 
 function onKeyPress(button) {
   console.log("Button pressed", button);
-
-  /**
-   * If you want to handle the shift and caps lock buttons
-   */
+  // If you want to handle the shift and caps lock buttons
   if (button === "{shift}" || button === "{capslock}") handleShift();
 }
 
@@ -65,24 +62,20 @@ document.addEventListener("keydown", function(event) {
   let buttonPressed = event.key.toLowerCase();
   let currentInput = document.querySelector(".input");
 
-  // Run only if input is focused.
-  if (currentInput === document.activeElement) {
-    // Adding selected class
-    keyboard.setOptions({
-      buttonTheme: [
-        {
-          class: "selectedButton",
-          buttons: buttonPressed
-        }
-      ]
-    });
+  // Adding selected class
+  keyboard.setOptions({
+    buttonTheme: [
+      {
+        class: "selectedButton",
+        buttons: buttonPressed
+      }
+    ]
+  });
 
-    // Updating keyboard internal input
-    keyboard.setInput(currentInput.value);
-
-    // Logging keys, just for fun
-    console.log(event.key.toLowerCase());
-  }
+  // Updating keyboard internal input
+  keyboard.setInput(currentInput.value += buttonPressed);
+  // Logging keys, just for fun
+  console.log(event.key.toLowerCase());
 });
 
 // Removing button style on keyup
@@ -92,10 +85,5 @@ document.addEventListener("keyup", function(event) {
   keyboard.setOptions({
     buttonTheme: []
   });
-
-  // Run only if input is focused.
-  if (currentInput === document.activeElement) {
-    // Updating keyboard internal input
-    keyboard.setInput(currentInput.value);
-  }
+  keyboard.setInput(currentInput.value);
 });

@@ -10,41 +10,32 @@
   so only the following can be used for RX:
   8, 9, 10, 11, 14 (MISO), 15 (SCK), 16 (MOSI).
 */
+
 #include <SoftwareSerial.h>
 #include <Keyboard.h>
 
-SoftwareSerial mySerial(10, 11); // RX, TX
+SoftwareSerial rpiSerial(10, 11); // RX, TX
 
 void setup() {
-
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
+  // Set the data rate for the SoftwareSerial port
+  rpiSerial.begin(9600);
   // initialize control over the keyboard:
   Keyboard.begin();
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  delay(2000);
-  Serial.println("Goodnight moon!");
-
-  // set the data rate for the SoftwareSerial port
-  mySerial.begin(9600);
-  mySerial.println("Hello, world?");
+  Serial.println("Serial Connection Established");
 }
 
-void loop() { // run over and over
-  if (mySerial.available()) {
-    // Serial.write(mySerial.read());
+void loop() {
+  if (rpiSerial.available()) {
     // read incoming serial data:
-    char inChar = mySerial.read();
-    //     char inChar = 'a';
+    char inChar = rpiSerial.read();
     // Type the ASCII value received:
-    //    delay(1000);
     Keyboard.println(inChar);
+    Serial.println(inChar);
   }
-  //  if (Serial.available()) {
-  //    mySerial.write(Serial.read());
-  //  }
 }
-

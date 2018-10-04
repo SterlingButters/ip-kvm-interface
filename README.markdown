@@ -14,17 +14,30 @@ but things are moving quickly.
 
 ### TODO List
 
-1) Debug ATmega32U4 (Arduino Micro) Sketches:
+1) Debug ATmega32U4 (Arduino Micro) port opening/serial monitor:
 ```
 https://www.sparkfun.com/tutorials/337
 https://www.amazon.com/OSOYOO-ATmega32U4-arduino-Leonardo-ATmega328/dp/B012FOV17O (SUPER CHEAP)
-No serial login
 ```
 
-4) Add Pi3 terminal to interface & adjust debugging `div` element(s) + Latency
+2) Create `mouse-transmit.ino` file and debug
 
-5) Add loading icon atop video once power-on initiated
+3) Add Keyboard Modifier Keys
 
-6) Help user set up DDNS and port forwarding for remote access
+4) Add Pi3 terminal to interface:
+  - Butterfly: https://github.com/paradoxxxzero/butterfly
+  - Run within an iFrame
 
-7) Add multi-server support with relay board
+5) Create `install.sh` for user; include:
+  - WebServer
+  - Arduino Files
+  - Butterfly
+  - DDNS and port forwarding
+
+6) Add loading icon atop video once power-on initiated
+
+7) Add Full Screen Option
+
+8) Adjust debugging `div` element(s) + Latency
+
+10) Add multi-server support with relay board
