@@ -31,15 +31,49 @@ void setup() {
 }
 
 void loop() {
+  const int sensitivity = 250;  // Higher sensitivity value = slower mouse,
+                                // should be <=~ 500
+
   if (rpiSerial.available()) {
     // read incoming serial data:
-    var x = rpiSerial.read();
+    var cursorInfo = rpiSerial.read();
+
+    // parse cursor info
+    var horzValue = ;
+    var vertValue = ;
+    var clickValue = ;
+    var clickDown = ;
+
     if (horzValue != 0){
       Mouse.move(horzValue/sensitivity, 0, 0);  // move mouse on x axis;
     }
     if (vertValue != 0){
       Mouse.move(0, vertValue/sensitivity, 0);  // move mouse on y axis
     }
-    Serial.println(inChar);
+
+    // MOUSE_LEFT || MOUSE_RIGHT || MOUSE_MIDDLE || MOUSE_ALL
+
+    if (clickValue = 0 && clickDown = true){
+    Mouse.press(MOUSE_LEFT);  // click the left button down
+    }
+    if (clickValue = 0 && clickDown = false){
+    Mouse.release(MOUSE_LEFT);  // release the left button
+    }
+
+    if (clickValue = 1 && clickDown = true){
+    Mouse.press(MOUSE_RIGHT);
+    }
+    if (clickValue = 1 && clickDown = false){
+    Mouse.release(MOUSE_RIGHT);
+    }
+
+    if (clickValue = 2 && clickDown = true){
+    Mouse.press(MOUSE_MIDDLE);
+    }
+    if (clickValue = 2 && clickDown = false){
+    Mouse.release(MOUSE_MIDDLE); 
+    }
+
+    Serial.println(horzValue, vertValue, clickValue, clickDown);
   }
 }
