@@ -41,6 +41,13 @@ transform: translate(-50.2%, -50%);
 			color: white;
 		}
 
+#butterfly{
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
 #information{
   padding-left: 5px;
 }

@@ -58,6 +58,7 @@ function handleShift() {
 }
 
 // Normal Keyboard
+
 document.addEventListener("keydown", function(event) {
   let buttonPressed = event.key.toLowerCase();
   let currentInput = document.querySelector(".input");
@@ -74,8 +75,12 @@ document.addEventListener("keydown", function(event) {
 
   // Updating keyboard internal input
   keyboard.setInput(currentInput.value += buttonPressed);
-  // Logging keys, just for fun
-  console.log(event.key.toLowerCase());
+
+  port.on('open', function() {
+    // port.write(Buffer.from('A'));
+    console.log(buttonPressed.toString('utf8'))
+    port.write(data);
+  });
 });
 
 // Removing button style on keyup

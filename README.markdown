@@ -24,14 +24,13 @@ https://www.amazon.com/OSOYOO-ATmega32U4-arduino-Leonardo-ATmega328/dp/B012FOV17
 
 3) Add Keyboard Modifier Keys
 
-4) Add Pi3 terminal to interface:
+4) ~~Add Pi3 terminal to interface:~~
   - Butterfly: https://github.com/paradoxxxzero/butterfly
-  - Run within an iFrame
 
 5) Create `install.sh` for user; include:
   - WebServer
-  - Arduino Files
-  - Butterfly
+  - Arduino File upload
+  - Butterfly as Daemon
   - DDNS and port forwarding
 
 6) Add loading icon atop video once power-on initiated
