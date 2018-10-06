@@ -3,19 +3,19 @@ var util = require("util");
 var spawn = require("child_process").spawn;
 var process = spawn('butterfly.server.py',["--port=57575", "--unsecure"]);
 
-util.log('Reading')
+util.log('Starting Butterfly Server on port 57575');
 process.stdout.on('data',function(chunk){
     var textChunk = chunk.toString('utf8');
     util.log(textChunk);
 });
 
 // Start WebServer
-var express = require('express')
+var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var socketTx = require('socket.io')(http);
 
-app.use(express.static(__dirname + '/'))
+app.use(express.static(__dirname + '/'));
 
 http.listen(3000, function(){
   console.log('listening on http://127.0.0.1:3000');
@@ -27,7 +27,7 @@ io.connect('http://localhost:3000', {reconnect: true});
 // 4) Receive data from browser and log in node console
 socketTx.on('connection', function(socketRx) {
   socketRx.on('keyBoard', function(data){
-    console.log(data.toString('utf8'))
+    console.log(data.toString('utf8'));
 
     // Set up Serial connection
     // var SerialPort = require('serialport');
@@ -46,6 +46,10 @@ socketTx.on('connection', function(socketRx) {
     // port.on('open', function(data) {
     //   port.write(data);
     // });
+  });
+
+  socketRx.on('mouse', function(data){
+    console.log(data.x + ", " + data.y);
   });
 });
 

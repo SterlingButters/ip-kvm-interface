@@ -37,6 +37,8 @@ requestedElement.addEventListener('click', function() {
   // }
 }, false);
 
+var socketTx = io();
+
 var moveCallback = function(e) {
   var position = document.getElementById("position");
 
@@ -52,6 +54,9 @@ var moveCallback = function(e) {
 
     a = e.clientX;
     b = e.clientY;
+
+  var pos = {x: x, y: y};
+  socketTx.emit('mouse', pos);
 
   position.innerHTML = 'Position X: ' + x +
                        '<br />Position Y: ' + y +

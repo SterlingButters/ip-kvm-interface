@@ -87,5 +87,6 @@ document.addEventListener("keyup", function(event) {
   keyboard.setOptions({
     buttonTheme: []
   });
+
   keyboard.setInput(currentInput.value);
 });
