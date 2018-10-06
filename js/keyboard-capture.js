@@ -36,6 +36,7 @@ let keyboard = new Keyboard({
 });
 
 console.log(keyboard);
+var socketTx = io();
 
 function onChange(input) {
   document.querySelector(".input").value = input;
@@ -44,6 +45,7 @@ function onChange(input) {
 
 function onKeyPress(button) {
   console.log("Button pressed", button);
+  socketTx.emit('keyBoard', button);
   // If you want to handle the shift and caps lock buttons
   if (button === "{shift}" || button === "{capslock}") handleShift();
 }
@@ -58,8 +60,6 @@ function handleShift() {
 }
 
 // Normal Keyboard
-var socketTx = io();
-
 document.addEventListener("keydown", function(event) {
   let buttonPressed = event.key.toLowerCase();
   let currentInput = document.querySelector(".input");
