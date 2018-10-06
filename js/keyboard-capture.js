@@ -58,10 +58,13 @@ function handleShift() {
 }
 
 // Normal Keyboard
+var socketTx = io();
 
 document.addEventListener("keydown", function(event) {
   let buttonPressed = event.key.toLowerCase();
   let currentInput = document.querySelector(".input");
+
+  socketTx.emit('Browser', event.key.toLowerCase());
 
   // Adding selected class
   keyboard.setOptions({
@@ -75,12 +78,6 @@ document.addEventListener("keydown", function(event) {
 
   // Updating keyboard internal input
   keyboard.setInput(currentInput.value += buttonPressed);
-
-  port.on('open', function() {
-    // port.write(Buffer.from('A'));
-    console.log(buttonPressed.toString('utf8'))
-    port.write(data);
-  });
 });
 
 // Removing button style on keyup
