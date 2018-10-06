@@ -1,3 +1,15 @@
+// Start Butterfly for User
+var util = require("util");
+var spawn = require("child_process").spawn;
+var process = spawn('butterfly.server.py',["--port=57575", "--unsecure"]);
+
+util.log('Reading')
+process.stdout.on('data',function(chunk){
+    var textChunk = chunk.toString('utf8');
+    util.log(textChunk);
+});
+
+// Start WebServer
 var express = require('express')
 var app = express();
 var http = require('http').Server(app);
@@ -36,3 +48,23 @@ socketTx.on('connection', function(socketRx) {
     // });
   });
 });
+
+// Wake on LAN (Need socket-io)
+// var spawn = require('child_process').spawn;
+// var macAddress = '00:11:22:33:44:55'
+// var ipAddress = '10.0.0.0'
+//
+// function WOL(event) {
+//   var child = spawn('etherwake', ['-b', ipAddress, macAddress],
+//       { stdio: [ 'pipe', 'pipe', 2 ] });
+//
+//   child.stdout.on('data', function(data)
+//     {document.getElementById("etherwake-stdout").innerHTML = "Etherwake Magic Packet (stdout): " + data;
+//      console.log("stdout: " + data)});
+//   child.stderr.on('data', function(data)
+//     {document.getElementById("etherwake-stderr").innerHTML = "Etherwake Magic Packet (stderr): " + data;
+//      console.log("stderr: " + data)});
+//   child.on('close', function(code)
+//     {document.getElementById("etherwake-exit").innerHTML = "Child process exited with code: " + code;
+//     console.log("Child process exited with code: " + code)});
+//   }
