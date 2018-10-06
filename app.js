@@ -14,7 +14,7 @@ io.connect('http://localhost:3000', {reconnect: true});
 
 // 4) Receive data from browser and log in node console
 socketTx.on('connection', function(socketRx) {
-  socketRx.on('Browser', function(data){
+  socketRx.on('keyBoard', function(data){
     console.log(data.toString('utf8'))
 
     // Set up Serial connection

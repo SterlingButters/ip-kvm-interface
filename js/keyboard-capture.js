@@ -64,7 +64,7 @@ document.addEventListener("keydown", function(event) {
   let buttonPressed = event.key.toLowerCase();
   let currentInput = document.querySelector(".input");
 
-  socketTx.emit('Browser', event.key.toLowerCase());
+  socketTx.emit('keyBoard', buttonPressed);
 
   // Adding selected class
   keyboard.setOptions({
