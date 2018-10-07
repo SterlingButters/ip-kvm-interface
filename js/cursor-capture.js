@@ -87,4 +87,5 @@ document.addEventListener('webkitpointerlockchange', changeCallback, false);
 // Click
 function whichClick(event) {
   document.getElementById("click-button").innerHTML = "You pressed button: " + event.button;
+  // TODO: Send click data to socket (Press AND release) 
 }
