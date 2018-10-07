@@ -29,6 +29,7 @@ https://www.amazon.com/OSOYOO-ATmega32U4-arduino-Leonardo-ATmega328/dp/B012FOV17
 
 5) Create `install.sh` for user & create env; include:
   - WebServer
+  - Etherwake
   - Arduino File upload
   - DDNS and port forwarding
 
@@ -39,3 +40,5 @@ https://www.amazon.com/OSOYOO-ATmega32U4-arduino-Leonardo-ATmega328/dp/B012FOV17
 8) Adjust debugging `div` element(s) + Latency
 
 10) Add multi-server support with relay board
+
+11) Add password to WebInterface
