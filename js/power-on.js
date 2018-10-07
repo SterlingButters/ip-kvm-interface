@@ -2,6 +2,12 @@ var socketTx = io();
 
 document.getElementById('power').onclick = function(){
   socketTx.emit('poweron', "ON");
+  // TODO: Icon visible only once pressed and disappears when video is present
+  icon = document.getElementById('loading');
+  if (icon.style.visibility === 'hidden') {
+    icon.style.visibility = 'visible';
+  }
+  else {icon.style.visibility = 'hidden'};
 };
 
 // document.getElementById('power').onclick = function(){
