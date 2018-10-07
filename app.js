@@ -1,3 +1,8 @@
+// TODO: Figure out why tf I need this and revise for use on RPi3
+var spawn = require("child_process").spawn;
+var process = spawn('pio', ["device", "monitor", "--port", "/dev/cu.usbmodemHIDPC1"]);
+console.log('Starting miniterm');
+
 // Start Butterfly for User
 var util = require("util");
 var spawn = require("child_process").spawn;
@@ -18,7 +23,7 @@ var socketTx = require('socket.io')(http);
 app.use(express.static(__dirname + '/'));
 
 http.listen(3000, function(){
-  console.log('listening on http://127.0.0.1:3000');
+  console.log('Listening on http://127.0.0.1:3000');
 });
 
 // Set up Serial connection cu.usbmodemHIDPC1 cu.SLAB_USBtoUART
@@ -42,39 +47,39 @@ port.on('open', function() {
 var io = require('socket.io-client');
 io.connect('http://localhost:3000', {reconnect: true});
 
-// TODO: Figure out why tf I need this and revise for use on RPi3
-var spawn = require("child_process").spawn;
-var process = spawn('pio', ["device", "monitor", "--port", "/dev/cu.usbmodemHIDPC1"])
-
-// 4) Receive data from browser and log in node console
+// Make browser connection
 socketTx.on('connection', function(socketRx) {
+  // Receive keyboard data from browser and log in node console
   socketRx.on('keyBoard', function(data){
     console.log(data.toString('utf8'));
     // TODO: Enable when on RPi3
     // port.write(data);
     });
 
+  // Receive mouse data from browser and log in node console
   socketRx.on('mouse', function(data){
     console.log(data.x + ", " + data.y);
   });
+
+  // Receive wake on LAN request
+  socketRx.on('poweron', function(data){
+    console.log("Requesting Power-on");
+    if (data === "ON") {
+      var spawn = require('child_process').spawn;
+      var macAddress = '00:11:22:33:44:55';
+      var ipAddress = '10.0.0.0';
+
+      var child = spawn('etherwake', ['-b', ipAddress, macAddress]);
+
+      // TODO: Catch Unhandled Error Event
+      child.stdout.on('data', function(output){console.log("stdout: " + output)});
+      child.stderr.on('data', function(output){console.log("stderr: " + data)});
+      child.on('close', function(code){console.log("Exited with code: " + code)});
+    };
+  });
 });
 
-// Wake on LAN (Need socket-io)
-// var spawn = require('child_process').spawn;
-// var macAddress = '00:11:22:33:44:55'
-// var ipAddress = '10.0.0.0'
-//
-// function WOL(event) {
-//   var child = spawn('etherwake', ['-b', ipAddress, macAddress],
-//       { stdio: [ 'pipe', 'pipe', 2 ] });
-//
-//   child.stdout.on('data', function(data)
-//     {document.getElementById("etherwake-stdout").innerHTML = "Etherwake Magic Packet (stdout): " + data;
-//      console.log("stdout: " + data)});
-//   child.stderr.on('data', function(data)
-//     {document.getElementById("etherwake-stderr").innerHTML = "Etherwake Magic Packet (stderr): " + data;
-//      console.log("stderr: " + data)});
-//   child.on('close', function(code)
-//     {document.getElementById("etherwake-exit").innerHTML = "Child process exited with code: " + code;
-//     console.log("Child process exited with code: " + code)});
-//   }
+var openURL = require('opn');
+// opens the url in the default browser
+console.log("Opening Server URL")
+openURL('http://127.0.0.1:3000');

@@ -12,7 +12,14 @@
 
 </head>
 
-<body>
+<body onload="askPassword()">
+  <!-- <script>
+  function askPassword() {
+    var password = prompt("Please enter your password", "Password");
+    // TODO: Change password here && eventually convert to Modal popup
+    while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
+  }
+  </script> -->
 
   <!-- Monitor -->
   <div id = "monitor">
@@ -20,7 +27,7 @@
 
     <!-- Power -->
     <div onclick="WOL(event)"
-         id = power
+         id = "power"
          class="power-size">
       <img class="power" src="/assets/power.png">
       <script src="/js/power-on.js"></script>
