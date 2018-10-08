@@ -69,12 +69,15 @@ socketTx.on('connection', function(socketRx) {
       var macAddress = '00:11:22:33:44:55';
       var ipAddress = '10.0.0.0';
 
-      var child = spawn('etherwake', ['-b', ipAddress, macAddress]);
-
       // TODO: Catch Unhandled Error Event
-      child.stdout.on('data', function(output){console.log("stdout: " + output)});
-      child.stderr.on('data', function(output){console.log("stderr: " + data)});
-      child.on('close', function(code){console.log("Exited with code: " + code)});
+      process.on('uncaughtException', function (err) {
+        var child = spawn('etherwake', ['-b', ipAddress, macAddress]);
+        console.log('Caught exception: ', err);
+
+        child.stdout.on('data', function(output){console.log("stdout: " + output)});
+        child.stderr.on('data', function(output){console.log("stderr: " + data)});
+        child.on('close', function(code){console.log("Exited with code: " + code)});
+      });
     };
   });
 });
