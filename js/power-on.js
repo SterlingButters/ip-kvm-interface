@@ -2,12 +2,9 @@ var socketTx = io();
 
 document.getElementById('power').onclick = function(){
   socketTx.emit('poweron', "ON");
-  // TODO: Icon visible only once pressed and disappears when video is present
+  // TODO: Make icon disappear on video prompt
   icon = document.getElementById('loading');
-  if (icon.style.visibility === 'hidden') {
-    icon.style.visibility = 'visible';
-  }
-  else {icon.style.visibility = 'hidden'};
+  icon.style.visibility = 'visible';
 };
 
 // document.getElementById('power').onclick = function(){

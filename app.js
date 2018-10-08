@@ -59,6 +59,7 @@ socketTx.on('connection', function(socketRx) {
   // Receive mouse data from browser and log in node console
   socketRx.on('mouse', function(data){
     console.log(data.x + ", " + data.y);
+    // TODO: Send mouse data to arduino
   });
 
   // Receive wake on LAN request
@@ -67,7 +68,7 @@ socketTx.on('connection', function(socketRx) {
     if (data === "ON") {
       var spawn = require('child_process').spawn;
       var macAddress = '00:11:22:33:44:55';
-      var ipAddress = '10.0.0.0';
+      var ipAddress = '10.0.0.255';
 
       // TODO: Catch Unhandled Error Event
       process.on('uncaughtException', function (err) {

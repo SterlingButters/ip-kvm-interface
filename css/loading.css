@@ -10,6 +10,7 @@
   margin-top:-80px;
   margin-left:-80px;
   animation:loading 2.0s linear infinite;
+  visibility: hidden;
   -webkit-animation:loading 2.0s linear infinite;
 }
 @keyframes loading{

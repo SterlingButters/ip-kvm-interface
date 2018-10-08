@@ -29,13 +29,14 @@ https://www.amazon.com/OSOYOO-ATmega32U4-arduino-Leonardo-ATmega328/dp/B012FOV17
 
 5) Create `install.sh` for user & create env; include:
   - WebServer
-  - Etherwake
+  - Etherwake & npm via "require" search
   - Arduino File upload
   - DDNS and port forwarding
 
 6) Add loading icon atop video once power-on initiated
 
-7) Add Full Screen Option
+7) Add Full Screen Option:
+  - https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
 
 8) Adjust debugging `div` element(s) + Latency
 
