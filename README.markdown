@@ -22,7 +22,7 @@ https://www.amazon.com/OSOYOO-ATmega32U4-arduino-Leonardo-ATmega328/dp/B012FOV17
 
 2) Create `mouse-transmit.ino` file and debug
 
-3) Add Keyboard Modifier Keys
+3) ~~Add Keyboard Modifier Keys~~ Make Keyboard wider
 
 4) ~~Add Pi3 terminal to interface:~~
   - Butterfly: https://github.com/paradoxxxzero/butterfly
@@ -33,13 +33,13 @@ https://www.amazon.com/OSOYOO-ATmega32U4-arduino-Leonardo-ATmega328/dp/B012FOV17
   - Arduino File upload
   - DDNS and port forwarding
 
-6) Add loading icon atop video once power-on initiated
+6) Make loading icon atop video go away once media selection is made
 
 7) Add Full Screen Option:
   - https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
 
-8) Adjust debugging `div` element(s) + Latency
+8) Adjust debugging element(s) + Latency
 
-10) Add multi-server support with relay board
+10) Supply mouse/keyboard input to multiple consoles
 
 11) Add password to WebInterface
