@@ -11,4 +11,4 @@ npm install # {node tools}
 # Ask user for desired Butterfly port
 # Ask user for desired Interface port
 # Maybe ask user for serial ports?
-node app.js
+node app.js # To rc.local

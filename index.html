@@ -13,7 +13,8 @@
 
 </head>
 
-<body onload="askPassword()">
+<body onload="askPassword()"
+      oncontextmenu="return false;">
   <!-- <script>
   function askPassword() {
     var password = prompt("Please enter your password", "Password");
@@ -36,13 +37,11 @@
     <!-- Power -->
 
     <!-- Video -->
-    <div onmousedown="whichClick(event)">
       <video autoplay
            class = "rectangle"
            id = "video">
            <script src="/js/media-capture.js"></script>
       </video>
-    </div>
     <!-- Video -->
 
     <!-- TODO Loading -->

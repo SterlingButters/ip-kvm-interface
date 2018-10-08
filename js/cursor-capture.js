@@ -85,8 +85,21 @@ document.addEventListener('mozpointerlockchange', changeCallback, false);
 document.addEventListener('webkitpointerlockchange', changeCallback, false);
 
 // Click
-function whichClick(event) {
+document.getElementById('video').addEventListener('mousedown', clickHandler, false);
+document.getElementById('video').addEventListener('mouseup', clickHandler, false);
+
+function clickHandler(event) {
   document.getElementById("click-button").innerHTML = "You pressed button: " + event.button;
   // TODO: Send click data to socket (Press AND release)
-  socketTx.emit('mouseClick', String(event.button));
+  if (event.type == "mousedown") {
+  if (event.button === 0) {socketTx.emit('mouseClick', "leftDown")};
+  if (event.button === 1) {socketTx.emit('mouseClick', "middleDown")};
+  if (event.button === 2) {socketTx.emit('mouseClick', "rightDown")};
+  };
+
+  if (event.type == "mouseup") {
+  if (event.button === 0) {socketTx.emit('mouseClick', "leftUp")};
+  if (event.button === 1) {socketTx.emit('mouseClick', "middleUp")};
+  if (event.button === 2) {socketTx.emit('mouseClick', "rightUp")};
+  };
 }

@@ -1,4 +1,4 @@
-// TODO: Figure out why tf I need this and revise for use on RPi3
+// TODO: Figure out why tf I need this and revise for use on RPi3,
 var spawn = require("child_process").spawn;
 var process = spawn('pio', ["device", "monitor", "--port", "/dev/cu.usbmodemHIDPC1"]);
 console.log('Starting miniterm');
@@ -58,7 +58,7 @@ socketTx.on('connection', function(socketRx) {
 
   // Receive mouse data from browser and log in node console
   socketRx.on('mouseMove', function(data){
-    console.log(data.x + ", " + data.y);
+    console.log("x: " + data.x + ", y: " + data.y);
     // TODO: Send mouse data to arduino
   });
 
