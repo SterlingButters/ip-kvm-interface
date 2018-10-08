@@ -78,15 +78,23 @@ let keyboardArrows = new Keyboard(".simple-keyboard-arrows", {
  * Whenever the input is changed with the keyboard, updating SimpleKeyboard's internal input
  */
 document.addEventListener("keydown", event => {
-  buttonPhysical = event.key
+  buttonPhysical = event.key;
   // Disabling keyboard input, as some keys (like F5) make the browser lose focus.
   // If you're like to re-enable it, comment the next line and uncomment the following ones
   // event.preventDefault();
   if (event.key === "Alt") event.preventDefault();
   if (event.key === "F5") event.preventDefault();
+
+  if (event.key === "ArrowUp") event.preventDefault();
+  if (event.key === "ArrowDown") event.preventDefault();
+  if (event.key === "ArrowLeft") event.preventDefault();
+  if (event.key === "ArrowRight") event.preventDefault();
+  if (event.key === " ") event.preventDefault();
+
   if (event.key === "Shift") handleShift();
   if (event.key === "CapsLock") handleShift();
 
+  // TODO: Handle SpaceBar
   socketTx.emit('keyBoard', buttonPhysical);
 });
 
@@ -94,17 +102,15 @@ document.addEventListener("keyup", event => {
   let input = document.querySelector(".input").value;
   keyboard.setInput(input);
   if (event.key === "Shift") handleShift();
+  if (event.key === "CapsLock") handleShift();
 });
 
 function onChange(input) {
   document.querySelector(".input").value = input;
   keyboard.setInput(input);
-
-  console.log("Input changed", input);
 }
 
 function onKeyPress(button) {
-  console.log("Button pressed", button);
   socketTx.emit('keyBoard', button);
 
   // If you want to handle the shift and caps lock buttons

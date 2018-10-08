@@ -57,8 +57,13 @@ socketTx.on('connection', function(socketRx) {
     });
 
   // Receive mouse data from browser and log in node console
-  socketRx.on('mouse', function(data){
+  socketRx.on('mouseMove', function(data){
     console.log(data.x + ", " + data.y);
+    // TODO: Send mouse data to arduino
+  });
+
+  socketRx.on('mouseClick', function(data){
+    console.log(data.toString('utf8'));
     // TODO: Send mouse data to arduino
   });
 

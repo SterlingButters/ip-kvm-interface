@@ -56,7 +56,7 @@ var moveCallback = function(e) {
     b = e.clientY;
 
   var pos = {x: x, y: y};
-  socketTx.emit('mouse', pos);
+  socketTx.emit('mouseMove', pos);
 
   position.innerHTML = 'Position X: ' + x +
                        '<br />Position Y: ' + y +
@@ -87,5 +87,6 @@ document.addEventListener('webkitpointerlockchange', changeCallback, false);
 // Click
 function whichClick(event) {
   document.getElementById("click-button").innerHTML = "You pressed button: " + event.button;
-  // TODO: Send click data to socket (Press AND release) 
+  // TODO: Send click data to socket (Press AND release)
+  socketTx.emit('mouseClick', String(event.button));
 }
