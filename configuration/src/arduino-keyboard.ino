@@ -27,7 +27,7 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  Serial.println("Serial Connection Established");
+  Serial.println("Keyboard Serial Connection Established");
 }
 
 void loop() {

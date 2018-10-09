@@ -27,7 +27,7 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  Serial.println("Serial Connection Established");
+  Serial.println("Mouse Serial Connection Established");
 }
 
 void loop() {
@@ -50,9 +50,9 @@ void loop() {
     if (cursorInfo == 'rightDown') {Mouse.press(MOUSE_LEFT)};
     if (cursorInfo == 'rightUp') {Mouse.release(MOUSE_LEFT)};
     else {
-      // Get x value from info string; delimiter?
-      var xValue = cursorInfo.x;
-      var yValue = cursorInfo.y;
+      // Get x/y values from info string; strtok() function
+      var xValue = cursorInfo;
+      var yValue = cursorInfo;
 
       // Cursor Movement
       if (xValue != 0){
