@@ -2,4 +2,3 @@
 .piolibdeps
 .clang_complete
 .gcc-flags.json
-configuration/.DS_Store
