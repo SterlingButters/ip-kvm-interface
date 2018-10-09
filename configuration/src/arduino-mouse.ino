@@ -38,42 +38,29 @@ void loop() {
     // read incoming serial data:
     var cursorInfo = rpiSerial.read();
 
-    // parse cursor info
-    var horzValue = ;
-    var vertValue = ;
-    var clickValue = ;
-    var clickDown = ;
-
-    if (horzValue != 0){
-      Mouse.move(horzValue/sensitivity, 0, 0);  // move mouse on x axis;
-    }
-    if (vertValue != 0){
-      Mouse.move(0, vertValue/sensitivity, 0);  // move mouse on y axis
-    }
+    // Parse cursor info
+    Serial.println(cursorInfo);
 
     // MOUSE_LEFT || MOUSE_RIGHT || MOUSE_MIDDLE || MOUSE_ALL
 
-    if (clickValue = 0 && clickDown = true){
-    Mouse.press(MOUSE_LEFT);  // click the left button down
-    }
-    if (clickValue = 0 && clickDown = false){
-    Mouse.release(MOUSE_LEFT);  // release the left button
-    }
+    if (cursorInfo == 'leftDown') {Mouse.press(MOUSE_LEFT)};
+    if (cursorInfo == 'leftUp') {Mouse.release(MOUSE_LEFT)};
+    if (cursorInfo == 'middleDown') {Mouse.press(MOUSE_LEFT)};
+    if (cursorInfo == 'middleUp') {Mouse.release(MOUSE_LEFT)};
+    if (cursorInfo == 'rightDown') {Mouse.press(MOUSE_LEFT)};
+    if (cursorInfo == 'rightUp') {Mouse.release(MOUSE_LEFT)};
+    else {
+      // Get x value from info string; delimiter?
+      var xValue = cursorInfo.x;
+      var yValue = cursorInfo.y;
 
-    if (clickValue = 1 && clickDown = true){
-    Mouse.press(MOUSE_RIGHT);
+      // Cursor Movement
+      if (xValue != 0){
+        Mouse.move(xValue/sensitivity, 0, 0);  // move mouse on x axis;
+      };
+      if (yValue != 0){
+        Mouse.move(0, yValue/sensitivity, 0);  // move mouse on y axis
+      }
     }
-    if (clickValue = 1 && clickDown = false){
-    Mouse.release(MOUSE_RIGHT);
-    }
-
-    if (clickValue = 2 && clickDown = true){
-    Mouse.press(MOUSE_MIDDLE);
-    }
-    if (clickValue = 2 && clickDown = false){
-    Mouse.release(MOUSE_MIDDLE); 
-    }
-
-    Serial.println(horzValue, vertValue, clickValue, clickDown);
   }
 }

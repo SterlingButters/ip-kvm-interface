@@ -1,108 +1,109 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css"></link>
-  <link rel="stylesheet" href="/css/interface.css"></link>
-  <link rel="stylesheet" href="/css/loading.css"></link>
-  <link rel="stylesheet" href="/css/keyboard.css"></link>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css"></link>
+    <link rel="stylesheet" href="/css/interface.css"></link>
+    <link rel="stylesheet" href="/css/loading.css"></link>
+    <link rel="stylesheet" href="/css/keyboard.css"></link>
 
-  <script src="/socket.io/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
-</head>
+  </head>
 
-<body onload="askPassword()"
-      oncontextmenu="return false;">
-  <!-- <script>
-  function askPassword() {
-    var password = prompt("Please enter your password", "Password");
-    // TODO: Change password here && eventually convert to Modal popup
-    while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
-  }
-  </script> -->
+  <body onload="askPassword()"
+        oncontextmenu="return false;">
+    <!-- <script>
+    function askPassword() {
+      var password = prompt("Please enter your password", "Password");
+      // TODO: Change password here && eventually convert to Modal popup
+      while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
+    }
+    </script> -->
 
-  <!-- Monitor -->
-  <div id = "monitor">
-    <img class="monitor-border" src="/assets/monitor.png">
+    <!-- Monitor -->
+    <div id = "monitor">
+      <img class="monitor-border" src="/assets/monitor.png">
 
-    <!-- Power -->
-    <div onclick="WOL(event)"
-         id = "power"
-         class="power-size">
-      <img class="power" src="/assets/power.png">
-      <script src="/js/power-on.js"></script>
-    </div>
-    <!-- Power -->
-
-    <!-- Video -->
-      <video autoplay
-           class = "rectangle"
-           id = "video">
-           <script src="/js/media-capture.js"></script>
-      </video>
-    <!-- Video -->
-
-    <!-- TODO Loading -->
-    <div id="loading"></div>
-    <!-- TODO Loading -->
-  </div>
-  <!-- Monitor -->
-
-  <!-- Keyboard -->
-  <div id="keyboard">
-    <input class="input"
-           size="125"
-           placeholder="Tap on the virtual keyboard or type to enter text"/>
-
-    <div class="keyboardContainer">
-		  <div class="simple-keyboard-main"></div>
-		  <div class="controlArrows">
-			  <div class="simple-keyboard-control">
+      <!-- Power -->
+      <div onclick="WOL(event)"
+           id = "power"
+           class="power-size">
+        <img class="power" src="/assets/power.png">
+        <script src="/js/power-on.js"></script>
       </div>
-			<div class="simple-keyboard-arrows"></div>
-		</div>
+      <!-- Power -->
 
- 	</div>
-    <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
-    <script src="src/index.js"></script>
-    <script src="/js/keyboard-capture.js"></script>
+      <!-- Video -->
+        <video autoplay
+             class = "rectangle"
+             id = "video">
+             <script src="/js/media-capture.js"></script>
+        </video>
+      <!-- Video -->
+
+      <!-- TODO Loading -->
+      <div id="loading"></div>
+      <!-- TODO Loading -->
     </div>
-  </div>
-  <!-- Keyboard -->
+    <!-- Monitor -->
 
-  <!-- Butterfly Terminal -->
-  <iframe id='butterfly'
-          src="http://localhost:57575/" height="1000" width="1500"></iframe>
-  <!-- Butterfly Terminal -->
+    <!-- Keyboard -->
+    <div id="keyboard">
+      <input class="input"
+             size="125"
+             placeholder="Tap on the virtual keyboard or type to enter text"/>
 
-  <!-- Information -->
-  <div id="information">
-    <!-- Click -->
-    <p>
-    Click the video with one of your mouse<br>
-    buttons to return a number.<br>
-    0 = The left mouse button<br>
-    1 = The middle mouse button<br>
-    2 = The right mouse button
-    </p>
-    <p id="click-button"></p>
-    <!-- Click -->
+      <div class="keyboardContainer">
+  		  <div class="simple-keyboard-main"></div>
+  		  <div class="controlArrows">
+  			  <div class="simple-keyboard-control">
+        </div>
+  			<div class="simple-keyboard-arrows"></div>
+  		</div>
 
-    <!-- Position -->
-    <div id="position">
-      <script src="/js/cursor-capture.js"></script>
+   	</div>
+      <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
+      <script src="src/index.js"></script>
+      <script src="/js/keyboard-capture.js"></script>
+      </div>
     </div>
-    <!-- Position -->
+    <!-- Keyboard -->
 
-    <!-- Etherwake -->
-    <p id="etherwake-stdout"></p>
-    <p id="etherwake-stderr"></p>
-    <p id="etherwake-exit"></p>
-    <!-- Etherwake -->
-  </div>
-  <!-- Information -->
+    <!-- Butterfly Terminal -->
+    <iframe id='butterfly'
+            src="http://localhost:57575/" height="1000" width="1500"></iframe>
+    <!-- Butterfly Terminal -->
 
-</body>
+    <!-- Information -->
+    <div id="information">
+      <!-- Click -->
+      <p>
+      Click the video with one of your mouse<br>
+      buttons to return a number.<br>
+      0 = The left mouse button<br>
+      1 = The middle mouse button<br>
+      2 = The right mouse button
+      </p>
+      <p id="click-button"></p>
+      <!-- Click -->
+
+      <!-- Position -->
+      <div id="position">
+        <script src="/js/cursor-capture.js"></script>
+      </div>
+      <!-- Position -->
+
+      <!-- Etherwake -->
+      <p id="etherwake-stdout"></p>
+      <p id="etherwake-stderr"></p>
+      <p id="etherwake-exit"></p>
+      <!-- Etherwake -->
+    </div>
+    <!-- Information -->
+
+  </body>
+
 </html>
