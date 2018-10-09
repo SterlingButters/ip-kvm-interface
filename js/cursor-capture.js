@@ -17,8 +17,7 @@ document.exitPointerLock = document.exitPointerLock ||
 
 let x;
 let y;
-let a;
-let b;
+var moveTrack = [];
 
 var isLocked = function() {
   return requestedElement === document.pointerLockElement ||
@@ -39,24 +38,31 @@ requestedElement.addEventListener('click', function() {
 
 var socketTx = io();
 
-var moveCallback = function(e) {
+var moveCallback = function(event) {
   var position = document.getElementById("position");
 
-    x += e.movementX ||
-    e.mozMovementX ||
-    e.webkitMovementX ||
+    x += event.movementX ||
+    event.mozMovementX ||
+    event.webkitMovementX ||
     0;
 
-    y -= e.movementY ||
-    e.mozMovementY ||
-    e.webkitMovementY ||
+    y -= event.movementY ||
+    event.mozMovementY ||
+    event.webkitMovementY ||
     0;
 
-    a = e.clientX;
-    b = e.clientY;
+    let a = event.clientX;
+    let b = event.clientY;
 
+  // TODO: Verify Accuracy
   var pos = {x: x, y: y};
-  socketTx.emit('mouseMove', pos);
+  moveTrack.push(pos);
+  xChange = moveTrack[moveTrack.length - 1].x - moveTrack[moveTrack.length - 2].x;
+  yChange = moveTrack[moveTrack.length - 1].y - moveTrack[moveTrack.length - 2].y;
+  var mov = {x: xChange, y: yChange};
+  if (moveTrack.length > 2) {moveTrack = moveTrack.slice(-2)};
+
+  socketTx.emit('mouseMove', mov);
 
   position.innerHTML = 'Position X: ' + x +
                        '<br />Position Y: ' + y +
