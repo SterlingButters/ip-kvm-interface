@@ -12,6 +12,10 @@ first and foremost, provide mouse support but also create the same interface (or
 code structure via modularization and organization. There is much left to do on the project
 but things are moving quickly.
 
+## Collaboration
+Join me on Discord:
+https://discord.gg/uSTr7DZ
+
 ### TODO List
 
 1) ~~Debug ATmega32U4 (Arduino Micro) port opening/serial monitor:~~

@@ -36,23 +36,23 @@ void loop() {
 
   if (rpiSerial.available()) {
     // read incoming serial data:
-    var cursorInfo = rpiSerial.read();
+    String cursorInfo = String(rpiSerial.read());
 
     // Parse cursor info
     Serial.println(cursorInfo);
 
     // MOUSE_LEFT || MOUSE_RIGHT || MOUSE_MIDDLE || MOUSE_ALL
 
-    if (cursorInfo == 'leftDown') {Mouse.press(MOUSE_LEFT)};
-    if (cursorInfo == 'leftUp') {Mouse.release(MOUSE_LEFT)};
-    if (cursorInfo == 'middleDown') {Mouse.press(MOUSE_LEFT)};
-    if (cursorInfo == 'middleUp') {Mouse.release(MOUSE_LEFT)};
-    if (cursorInfo == 'rightDown') {Mouse.press(MOUSE_LEFT)};
-    if (cursorInfo == 'rightUp') {Mouse.release(MOUSE_LEFT)};
+    if (cursorInfo = 'leftDown') {Mouse.press(MOUSE_LEFT);};
+    if (cursorInfo = 'leftUp') {Mouse.release(MOUSE_LEFT);};
+    if (cursorInfo = 'middleDown') {Mouse.press(MOUSE_LEFT);};
+    if (cursorInfo = 'middleUp') {Mouse.release(MOUSE_LEFT);};
+    if (cursorInfo = 'rightDown') {Mouse.press(MOUSE_LEFT);};
+    if (cursorInfo = 'rightUp') {Mouse.release(MOUSE_LEFT);};
     else {
       // Get x/y values from info string; strtok() function
-      var xValue = cursorInfo;
-      var yValue = cursorInfo;
+      int xValue = getValue(cursorInfo, ',', 0).toInt();
+      int yValue = getValue(cursorInfo, ',', 1).toInt();
 
       // Cursor Movement
       if (xValue != 0){
@@ -60,7 +60,7 @@ void loop() {
       };
       if (yValue != 0){
         Mouse.move(0, yValue/sensitivity, 0);  // move mouse on y axis
-      }
-    }
-  }
-}
+      };
+    };
+  };
+};

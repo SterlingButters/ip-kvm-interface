@@ -4,14 +4,13 @@ var process = spawn('pio', ["device", "monitor", "--port", "/dev/cu.usbmodemHIDP
 console.log('Starting miniterm');
 
 // Start Butterfly for User
-var util = require("util");
 var spawn = require("child_process").spawn;
 var process = spawn('butterfly.server.py',["--port=57575", "--unsecure"]);
 
-util.log('Starting Butterfly Server on port 57575...');
-process.stdout.on('data',function(chunk){
+console.log('Starting Butterfly Server on port 57575...');
+process.stdout.on('data', function(chunk){
     var textChunk = chunk.toString('utf8');
-    util.log(textChunk);
+    console.log(textChunk);
 });
 
 // Start WebServer
@@ -26,7 +25,7 @@ http.listen(3000, function(){
   console.log('Listening on http://127.0.0.1:3000');
 });
 
-// Set up Serial connection cu.usbmodemHIDPC1 cu.SLAB_USBtoUART
+// Set up Serial connection cu.SLAB_USBtoUART
 var serialPort = require('serialport');
 var port = new serialPort('/dev/cu.SLAB_USBtoUART', {
   baudRate: 9600,
@@ -58,7 +57,7 @@ socketTx.on('connection', function(socketRx) {
 
   // Receive mouse data from browser and log in node console
   socketRx.on('mouseMove', function(data){
-    console.log("x: " + data.x + ", y: " + data.y);
+    console.log(data.x + "," + data.y);
     // TODO: Send mouse data to arduino
   });
 

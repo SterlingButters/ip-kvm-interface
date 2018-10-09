@@ -78,7 +78,8 @@ let keyboardArrows = new Keyboard(".simple-keyboard-arrows", {
  * Whenever the input is changed with the keyboard, updating SimpleKeyboard's internal input
  */
 document.addEventListener("keydown", event => {
-  buttonPhysical = event.key;
+  buttonPhysical = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
+  // buttonPhysical = String(event.keyCode)
   // Disabling keyboard input, as some keys (like F5) make the browser lose focus.
   // If you're like to re-enable it, comment the next line and uncomment the following ones
   // event.preventDefault();
@@ -111,7 +112,9 @@ function onChange(input) {
 }
 
 function onKeyPress(button) {
-  socketTx.emit('keyBoard', button);
+  var buttonOnScreen = String(button);
+  buttonOnScreen = buttonOnScreen.replace('{','').replace('}','');
+  socketTx.emit('keyBoard', buttonOnScreen);
 
   // If you want to handle the shift and caps lock buttons
   if (
