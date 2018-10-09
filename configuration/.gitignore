@@ -2,3 +2,6 @@
 .piolibdeps
 .clang_complete
 .gcc-flags.json
+.yml
+.ini
+/configuration/lib
