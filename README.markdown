@@ -49,7 +49,7 @@ Donate with PayPal:
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/sterlingbutters)
 
 Join me on Discord:
-https://discord.gg/uSTr7DZ
+[![Discord](https://img.shields.io/discord/102860784329052160.svg)](https://discord.gg/uSTr7DZ)
 
 ### TODO List (Essential)
 1) Arduino:
