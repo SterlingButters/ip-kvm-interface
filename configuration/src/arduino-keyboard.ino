@@ -25,55 +25,22 @@ void setup() {
   Keyboard.begin();
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
-  };
+  }
 
-  Serial.println("Keyboard Serial Connection Established");
-};
+  Serial.println("Serial Connection Established");
+}
 
 void loop() {
   if (rpiSerial.available()) {
-    // read incoming serial data:
-    String inKey = String(rpiSerial.read());
     // Type the ASCII value received:
-    // https://www.arduino.cc/en/Reference/KeyboardModifiers
-    // TODO: Create Press/Release functionality; Add insert, delete, etc later
-    // https://www.arduino.cc/en/Reference/KeyboardPress
-    if (inKey = "space") {Keyboard.println(" ");};
-    if (inKey = "enter") {Keyboard.write(176);};
+    // char inChar = rpiSerial.read();
+    // Keyboard.println(inChar);
+    // Serial.println(inChar);
 
-    if (inKey = "backspace") {Keyboard.write(178);};
-    if (inKey = "shiftleft") {Keyboard.write(129);};
-    if (inKey = "shiftright") {Keyboard.write(133);};
-    if (inKey = "capslock") {Keyboard.write(193);};
-
-    if (inKey = "altleft") {Keyboard.write(130);};
-    if (inKey = "altright") {Keyboard.write(134);};
-    if (inKey = "metaleft") {Keyboard.write(131);};
-    if (inKey = "metaright") {Keyboard.write(135);};
-    if (inKey = "controlleft") {Keyboard.write(128);};
-    if (inKey = "controlright") {Keyboard.write(132);};
-    if (inKey = "escape") {Keyboard.write(177);};
-
-    if (inKey = "arrowleft") {Keyboard.write(216);};
-    if (inKey = "arrowright") {Keyboard.write(215);};
-    if (inKey = "arrowup") {Keyboard.write(218);};
-    if (inKey = "arrowdown") {Keyboard.write(217);};
-
-    if (inKey = "f1") {Keyboard.write(194);};
-    if (inKey = "f2") {Keyboard.write(195);};
-    if (inKey = "f3") {Keyboard.write(196);};
-    if (inKey = "f4") {Keyboard.write(197);};
-    if (inKey = "f5") {Keyboard.write(198);};
-    if (inKey = "f6") {Keyboard.write(199);};
-    if (inKey = "f7") {Keyboard.write(200);};
-    if (inKey = "f8") {Keyboard.write(201);};
-    if (inKey = "f9") {Keyboard.write(202);};
-    if (inKey = "f10") {Keyboard.write(203);};
-    if (inKey = "f11") {Keyboard.write(204);};
-    if (inKey = "f12") {Keyboard.write(205);};
-
-    else {Keyboard.println(inKey);};
-
-    Serial.println(inKey);
-  };
-};
+    // "Type" via keyCodes (recommended for modifiers)
+    // https://www.arduino.cc/en/Reference/KeyboardWrite not behaving as expected
+    int inKey = rpiSerial.read();
+    Keyboard.write(inKey);
+    Serial.write(inKey);
+  }
+}

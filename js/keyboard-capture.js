@@ -73,13 +73,139 @@ let keyboardArrows = new Keyboard(".simple-keyboard-arrows", {
   }
 });
 
+function getKeyCode(layoutKey) {
+  let layoutKeyProcessed = layoutKey.replace("{", "").replace("}", "");
+  let code = getKeyCodeList(layoutKeyProcessed);
+
+  return code;
+}
+
+function getKeyCodeList(key) {
+  let obj = {
+    backspace: 8,
+    tab: 9,
+    enter: 13,
+    shiftleft: 16,
+    shiftright: 16,
+    controlleft: 17,
+    controlright: 17,
+    altleft: 18,
+    altright: 18,
+    pause: 19,
+    capslock: 20,
+    escape: 27,
+    space: 32,
+    pageup: 33,
+    pagedown: 34,
+    end: 35,
+    home: 36,
+    arrowleft: 37,
+    arrowup: 38,
+    arrowright: 39,
+    arrowdown: 40,
+    insert: 45,
+    delete: 46,
+    0: 48,
+    1: 49,
+    2: 50,
+    3: 51,
+    4: 52,
+    5: 53,
+    6: 54,
+    7: 55,
+    8: 56,
+    9: 57,
+    a: 65,
+    b: 66,
+    c: 67,
+    d: 68,
+    e: 69,
+    f: 70,
+    g: 71,
+    h: 72,
+    i: 73,
+    j: 74,
+    k: 75,
+    l: 76,
+    m: 77,
+    n: 78,
+    o: 79,
+    p: 80,
+    q: 81,
+    r: 82,
+    s: 83,
+    t: 84,
+    u: 85,
+    v: 86,
+    w: 87,
+    x: 88,
+    y: 89,
+    z: 90,
+    metaleft: 91,
+    metaright: 92,
+    select: 93,
+    f1: 112,
+    f2: 113,
+    f3: 114,
+    f4: 115,
+    f5: 116,
+    f6: 117,
+    f7: 118,
+    f8: 119,
+    f9: 120,
+    f10: 121,
+    f11: 122,
+    f12: 123,
+    numlock: 144,
+    scrolllock: 145,
+    ';': 186,
+    '=': 187,
+    ',': 188,
+    '-': 189,
+    '.': 190,
+    '/': 191,
+    "'": 192,
+    '{': 219,
+    '\\': 220,
+    '}': 221,
+    '"': 222
+  };
+
+  return obj[key];
+}
+
+function onChange(input) {
+  document.querySelector(".input").value = input;
+  keyboard.setInput(input);
+}
+
+function onKeyPress(button) {
+  var buttonOnScreen = String(button);
+  buttonOnScreen = buttonOnScreen.replace('{','').replace('}','');
+  // Use line below for keyCode
+  // var buttonOnScreen = String(getKeyCode(button));
+  socketTx.emit('keyBoard', buttonOnScreen);
+
+  // If you want to handle the shift and caps lock buttons
+  if (
+    button === "{shift}" ||
+    button === "{shiftleft}" ||
+    button === "{shiftright}" ||
+    button === "{capslock}"
+  ) {
+    handleShift();
+  }
+}
+
 /**
  * Physical Keyboard support
  * Whenever the input is changed with the keyboard, updating SimpleKeyboard's internal input
  */
 document.addEventListener("keydown", event => {
-  buttonPhysical = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
-  // buttonPhysical = String(event.keyCode)
+  // buttonPhysical = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
+  // Use line below for keyCode
+  buttonPhysical = String(event.keyCode)
+
   // Disabling keyboard input, as some keys (like F5) make the browser lose focus.
   // If you're like to re-enable it, comment the next line and uncomment the following ones
   // event.preventDefault();
@@ -95,7 +221,6 @@ document.addEventListener("keydown", event => {
   if (event.key === "Shift") handleShift();
   if (event.key === "CapsLock") handleShift();
 
-  // TODO: Handle SpaceBar
   socketTx.emit('keyBoard', buttonPhysical);
 });
 
@@ -106,27 +231,7 @@ document.addEventListener("keyup", event => {
   if (event.key === "CapsLock") handleShift();
 });
 
-function onChange(input) {
-  document.querySelector(".input").value = input;
-  keyboard.setInput(input);
-}
-
-function onKeyPress(button) {
-  var buttonOnScreen = String(button);
-  buttonOnScreen = buttonOnScreen.replace('{','').replace('}','');
-  socketTx.emit('keyBoard', buttonOnScreen);
-
-  // If you want to handle the shift and caps lock buttons
-  if (
-    button === "{shift}" ||
-    button === "{shiftleft}" ||
-    button === "{shiftright}" ||
-    button === "{capslock}"
-  ) {
-    handleShift();
-  }
-}
-
+// TODO: Shift styling from sandbox
 function handleShift() {
   let currentLayout = keyboard.options.layoutName;
   let shiftToggle = currentLayout === "default" ? "shift" : "default";

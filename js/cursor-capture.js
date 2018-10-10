@@ -76,7 +76,7 @@ var changeCallback = function() {
     return;
   }
   if (isLocked()) {
-    document.addEventListener("mousemove", moveCallback, false);
+    document.addEventListener('mousemove', moveCallback, false);
     document.body.classList.add('locked');
   }
 

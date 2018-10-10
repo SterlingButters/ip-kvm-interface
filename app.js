@@ -50,9 +50,11 @@ io.connect('http://localhost:3000', {reconnect: true});
 socketTx.on('connection', function(socketRx) {
   // Receive keyboard data from browser and log in node console
   socketRx.on('keyBoard', function(data){
-    console.log(data.toString('utf8'));
+    // console.log(data.toString('utf8'));
+    // Use line below if using keyCodes
+    console.log(parseInt(data.toString('utf8'), 10));
     // TODO: Enable when on RPi3
-    // port.write(data);
+    port.write(data);
     });
 
   // Receive mouse data from browser and log in node console

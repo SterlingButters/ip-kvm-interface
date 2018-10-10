@@ -12,10 +12,17 @@ transform: translate(-50%, -50%);
 }
 
 #video{
-position: absolute;
-top: 38%;
-left: 50%;
-transform: translate(-50.2%, -50%);
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50.2%, -50%);
+}
+
+#fullscreen{
+  position: absolute;
+  top: 6%;
+  left: 88%;
+  transform: translate(0%, 0%);
 }
 
 #power{
