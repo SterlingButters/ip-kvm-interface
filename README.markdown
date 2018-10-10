@@ -50,12 +50,12 @@ https://www.arduino.cc/en/Reference/KeyboardPress
 ```
   - Compile and upload `mouse-transmit.ino`
 
-3) Keyboard:
+2) Keyboard:
   - Styling
   - KeyCode Map
   - Press/Release Functionality
 
-5) Configuration:
+3) Configuration:
   - `install.sh`; include:
     - WebServer & File Transfer
     - Start as service:
@@ -65,10 +65,10 @@ https://www.arduino.cc/en/Reference/KeyboardPress
      `http://forum.arduino.cc/index.php?topic=37534.0`
     - DDNS and port forwarding
 
-7) Full Screen Option:
+4) Full Screen Option:
   - `https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API`
 
-8) Remove loading icon atop video once media selection made
+5) Remove loading icon atop video once media selection made
 
 ## Future Bonus Features
 
