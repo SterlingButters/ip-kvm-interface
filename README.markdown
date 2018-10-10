@@ -5,12 +5,11 @@
 # About
 This project is a "fork" of https://github.com/Fmstrat/diy-ipmi. The project creates a
 web-accessable IPMI / IP KVM system utilizing an RPi3 server/manager and 2 Arduino Micro's that provide
-full keyboard control, monitor view, and and the ability to reboot computers with standard motherboards
-remotely as if you were sitting in front of them with a keyboard and monitor. This projects intends to,
-first and foremost, provide mouse support but also create the same interface (or better) with more human-readable
-code structure via modularity and organization. What's more, is that with the current method of
-implementation, it will eventually be possible to extend capabilities to the Xbox One as well.
-Whats left on the project is listed someplace below.
+full keyboard control, monitor view, and the ability to reboot computers with standard motherboards
+remotely. This projects intends to, first and foremost, provide mouse support but also create the same
+interface (or better) with more human-readable code structure via modularity and organization. What's more,
+is that with the current method of implementation, it will eventually be possible to extend capabilities
+to the Xbox One as well. Whats left on the project is listed someplace below.
 
 ## Configuration
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/configuration/Setup.png)
@@ -51,7 +50,7 @@ Donate with PayPal:
 Join me on Discord:
 [![Discord](https://img.shields.io/discord/102860784329052160.svg)](https://discord.gg/uSTr7DZ)
 
-### TODO List (Essential)
+## TODO List (Essential)
 1) Arduino:
   - Explore options for opening serial monitor
 ```
@@ -75,10 +74,9 @@ https://www.arduino.cc/en/Reference/KeyboardPress
      `http://forum.arduino.cc/index.php?topic=37534.0`
     - DDNS and port forwarding
 
-4) Full Screen Option:
-  - `https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API`
+4) Implement Full Screen Option
 
-5) Remove loading icon atop video once media selection made
+5) Remove loading icon atop video once media selection made (if select != null)
 
 ## Future Bonus Features
 
