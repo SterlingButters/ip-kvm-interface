@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Example.png)
 
-## About
+# About
 This project is a "fork" of https://github.com/Fmstrat/diy-ipmi. The project creates a
 web-accessable IPMI / IP KVM system utilizing an RPi3 server/manager and 2 Arduino Micro's that provide
 full keyboard control, monitor view, and and the ability to reboot computers with standard motherboards
@@ -14,10 +14,7 @@ Whats left on the project is listed someplace below.
 
 ## Configuration
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/configuration/Setup.png)
-# Shopping List
-  - ATmega32U4 (Arduino Micro) x2:
-
-  https://www.amazon.com/OSOYOO-ATmega32U4-arduino-Leonardo-ATmega328/dp/B012FOV17O
+## Shopping List:
   - Raspberry Pi3 B+ (Starter Kit):
 
   https://www.amazon.com/CanaKit-Raspberry-Starter-Premium-Black/dp/B07BCC8PK7/ref=sr_1_1_sspa?s=pc&ie=UTF8&qid=1539175242&sr=1-1-spons&keywords=raspberry+pi+3+b%2B&psc=1
@@ -28,16 +25,29 @@ Whats left on the project is listed someplace below.
     - PenGo [4K] (experimental):
 
     https://www.amazon.com/gp/product/B07BGXVGLS/ref=ox_sc_act_title_1?smid=A39P3WP927BTL5&psc=1
+    - ATmega32U4 (Arduino Micro) x2:
+
+    https://www.amazon.com/OSOYOO-ATmega32U4-arduino-Leonardo-ATmega328/dp/B012FOV17O
+  - TTL to USB Adapter x2:
+
+    https://www.amazon.com/gp/product/B072K3Z3TL/ref=oh_aui_detailpage_o06_s00?ie=UTF8&psc=1
   - Cables:
     - Male USB to Male microUSB x2
     - HDMI x2
     - Male USB to Male USB
 
+## Troubleshooting
+- Ensure all cables are data-transfer capable
+- If port is not opening on TTL to USB adapter, check serial monitor
+
 ## Cost-Cutting
   - It may be possible to use a single Arduino Micro for mouse & keyboard function
   - Direct serial connection from the RPi3 to the Arduino(s) [requires code revision]
 
-## Collaboration
+## Collaboration & Support
+Donate with PayPal:
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](paypal.me/sterlingbutters)
+
 Join me on Discord:
 https://discord.gg/uSTr7DZ
 
