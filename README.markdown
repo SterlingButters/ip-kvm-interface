@@ -46,7 +46,7 @@ Whats left on the project is listed someplace below.
 
 ## Collaboration & Support
 Donate with PayPal:
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](paypal.me/sterlingbutters)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/paypalme/my/profile)
 
 Join me on Discord:
 https://discord.gg/uSTr7DZ
