@@ -1,8 +1,6 @@
 # IP-KVM-InterFace
 
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Example.png)
-![alt text]()
-
 
 ## About
 This project is a "fork" of https://github.com/Fmstrat/diy-ipmi. The project creates a
@@ -12,6 +10,9 @@ remotely as if you were sitting in front of them with a keyboard and monitor. Th
 first and foremost, provide mouse support but also create the same interface (or better) with more human-readable
 code structure via modularization and organization. There is much left to do on the project
 but things are moving quickly.
+
+## Configuration
+![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/configuration/Setup.png)
 
 ## Collaboration
 Join me on Discord:
