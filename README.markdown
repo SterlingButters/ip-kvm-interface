@@ -15,7 +15,7 @@ to the Xbox One as well. Whats left on the project is listed someplace below.
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/configuration/Setup.png)
 ## Shopping List:
   - Raspberry Pi3 B+ (Starter Kit)[$79.99]:
-  [![Amazon](https://img.shields.io/badge/Amazon-buy-blue.svg)](https://www.amazon.com/CanaKit-Raspberry-Starter-Premium-Black/dp/B07BCC8PK7/ref=sr_1_1_sspa?s=pc&ie=UTF8&qid=1539175242&sr=1-1-spons&keywords=raspberry+pi+3+b%2B&psc=1)
+  [![](https://img.shields.io/badge/Amazon-buy-blue.svg)](https://www.amazon.com/CanaKit-Raspberry-Starter-Premium-Black/dp/B07BCC8PK7/ref=sr_1_1_sspa?s=pc&ie=UTF8&qid=1539175242&sr=1-1-spons&keywords=raspberry+pi+3+b%2B&psc=1)
 
 
   - Capture Card Options:
