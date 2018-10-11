@@ -56,35 +56,32 @@ Join me on Discord:
 
 ## ToDo List (Essential)
 1) Arduino:
-  - Explore options for opening serial monitor
-```
-https://www.cyberciti.biz/hardware/5-linux-unix-commands-for-connecting-to-the-serial-console/
-https://www.arduino.cc/en/Reference/KeyboardPress
-```
   - Compile and upload `mouse-transmit.ino`
   - Figure out `Keyboard.write(keyCode)` doesn't work
+  - Explore options for opening serial monitor:
+  ```
+  https://www.cyberciti.biz/hardware/5-linux-unix-commands-for-connecting-to-the-serial-console/
+  https://www.arduino.cc/en/Reference/KeyboardPress
+  ```
 
-2) Keyboard:
-  - Styling
-  - KeyCode Map
-  - Press/Release Functionality
+2) CSS:
+  - Keyboard:
+    - Styling
+    - KeyCode Map
+    - Press/Release Functionality
+  - Change default scroll position
+  - Enable "untoggling" of fullscreen
+  - Remove loading icon atop video once media selection made
 
 3) Configuration:
-  - `install.sh`; include:
-    - WebServer & File Transfer
+  - `install.sh`:
+    - `git clone` and unpack
+    - Arduino File upload:
+     `http://forum.arduino.cc/index.php?topic=37534.0`
     - Start as service:
       `https://www.raspberrypi.org/documentation/linux/usage/rc-local.md`
     - Etherwake & npm via "require" search
-    - Arduino File upload:
-     `http://forum.arduino.cc/index.php?topic=37534.0`
     - DDNS and port forwarding
-
-4) Change default scroll position
-
-5) Debug Full Screen Option:
-    - Enable "untoggling"
-
-6) Remove loading icon atop video once media selection made
 
 ## Future Bonus Features
 
