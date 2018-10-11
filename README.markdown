@@ -24,7 +24,7 @@ to the Xbox One as well. Whats left on the project is listed someplace below.
     - PenGo [4K] (experimental)[$149.99]:
 
     https://www.amazon.com/gp/product/B07BGXVGLS/ref=ox_sc_act_title_1?smid=A39P3WP927BTL5&psc=1
-    - ATmega32U4 (Arduino Micro) x2 [$8.99 each]:
+  - ATmega32U4 (Arduino Micro) x2 [$8.99 each]:
 
     https://www.amazon.com/OSOYOO-ATmega32U4-arduino-Leonardo-ATmega328/dp/B012FOV17O
   - TTL to USB Adapter x2 [$7.99 each]:
@@ -35,18 +35,18 @@ to the Xbox One as well. Whats left on the project is listed someplace below.
     - HDMI x2 [~$5.99]
     - Male USB to Male USB [~$5.99]
     - Ribbon Cables [~$7.50]:
-    -
+
     https://www.amazon.com/Kuman-Breadboard-Arduino-Raspberry-Multicolored/dp/B01BV3Z342/ref=sr_1_8_sspa?s=electronics&ie=UTF8&qid=1539227097&sr=1-8-spons&keywords=rpi+ribbon+cable+variety+pack&psc=1
 
 ## Troubleshooting
 - Ensure all cables are data-transfer capable
 - If port is not opening on TTL to USB adapter, check serial monitor
-- Cheaper capture cards exist; the ones chosen allow for throughput of video
-- The complete RPi3 starter kit might be a bit overkill but easy one-stop-shop for beginner
 
 ## Cost-Cutting
   - It may be possible to use a single Arduino Micro for mouse & keyboard function
   - Direct serial connection from the RPi3 to the Arduino(s) [requires code revision]
+  - Cheaper capture cards exist; the ones chosen allow for throughput of video
+  - The complete RPi3 starter kit might be a bit overkill but easy one-stop-shop for beginner
 
 ## Collaboration & Support
 Donate with PayPal:
