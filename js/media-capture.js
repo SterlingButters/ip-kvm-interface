@@ -7,23 +7,15 @@ document.getElementById('fullscreen').onclick = function toggleFullScreen() {
 
 // TODO: Figure out why untoggle doesnt work
 function untoggleFullScreen() {
-  if (document.getElementById('activestyle').href = "/css/fullscreen.css") {
-    document.addEventListener('onkeydown', function (event) {
+  activeStyle = document.getElementById('activestyle').href
+  if (activeStyle = "/css/fullscreen.css") {
+    document.addEventListener('keydown', function (event) {
       if (event.keyCode = 27) {
-        document.getElementById('activestyle').setAttribute("href", "/css/interface.css");
+        activeStyle = "/css/interface.css";
       };
     });
   };
 };
-
-const hdConstraints = {
-  video: {width: {min: 1280}, height: {min: 720}}
-};
-
-navigator.mediaDevices.getUserMedia(hdConstraints).
-  then((stream) => {video.srcObject = stream});
-
-const video = document.querySelector('video');
 
 const videoElement = document.querySelector('video');
 const audioSelect = document.querySelector('select#audioSource');
@@ -66,7 +58,9 @@ function getStream() {
       deviceId: {exact: audioSelect.value}
     },
     video: {
-      deviceId: {exact: videoSelect.value}
+      deviceId: {exact: videoSelect.value},
+      width: {min: 1280},
+      height: {min: 720}
     }
   };
 

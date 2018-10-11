@@ -6,7 +6,7 @@ document.getElementById('power').onclick = function(){
   icon = document.getElementById('loading');
 
   // TODO: Make icon disappear on video prompt
-  // if (document.getElementById("videoSource").options.length > 0) {
+  // while (document.getElementById("videoSource").options.length = 0) {
     icon.style.visibility = 'visible';
   // };
   // else {icon.style.visibility = 'hidden';}

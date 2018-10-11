@@ -1,9 +1,3 @@
-/**
- * Warning! This is an R&D sandbox to develop and test new use-cases
- * It's not meant as a base example or a getting started demo
- * It may change competely without prior notice
- * Please check out the other demos for simpler examples
- */
 
 let Keyboard = window.SimpleKeyboard.default;
 
@@ -175,7 +169,6 @@ function getKeyCodeList(key) {
     '}': 221,
     '"': 222
   };
-
   return obj[key];
 }
 
@@ -186,7 +179,7 @@ function onChange(input) {
 
 function onKeyPress(button) {
   console.log("Button pressed", button);
-  buttonOnScreen = buttonOnScreen.replace('{','').replace('}','');
+  buttonOnScreen = button.replace('{','').replace('}','');
   // Use line below for keyCode
   // var buttonOnScreen = String(getKeyCode(button));
   socketTx.emit('keyBoard', buttonOnScreen);
@@ -241,9 +234,8 @@ document.addEventListener("keyup", event => {
 
 function toggleShiftMode(event) {
   let currentLayout = keyboard.options.layoutName;
-  /**
-   * If currentLayout is default, set to shift, and vice versa
-   */
+
+  // If currentLayout is default, set to shift, and vice versa
   let shiftToggle = currentLayout === "default" ? "shift" : "default";
 
   keyboard.setOptions({
@@ -259,7 +251,6 @@ function enableShiftMode(event) {
   keyboard.setOptions({
     layoutName: "shift"
   });
-
   highlightButton(event);
 }
 
@@ -267,41 +258,30 @@ function disableShiftMode(event) {
   keyboard.setOptions({
     layoutName: "default"
   });
-
   unhighlightButton(event);
 }
 
 function highlightButton(event) {
-  let layoutKeyName = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(
-    event
-  );
+  let layoutKeyName = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
 
   let buttonElement =
     keyboard.getButtonElement(layoutKeyName) ||
     keyboard.getButtonElement(`{${layoutKeyName}}`);
 
-  /**
-   * Highlighting that key manually...
-   */
+  // Highlighting that key manually...
   buttonElement.style.background = "#9ab4d0";
   buttonElement.style.color = "white";
-
   console.log(buttonElement);
 }
 
 function unhighlightButton(event) {
-  let layoutKeyName = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(
-    event
-  );
+  let layoutKeyName = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
 
   let buttonElement =
     keyboard.getButtonElement(layoutKeyName) ||
     keyboard.getButtonElement(`{${layoutKeyName}}`);
 
-  /**
-   * Highlighting that key manually...
-   */
+  // Unhighlighting that key manually...
   buttonElement.removeAttribute("style");
-
   console.log(buttonElement);
 }
