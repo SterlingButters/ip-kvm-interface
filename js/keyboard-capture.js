@@ -204,7 +204,7 @@ function onKeyPress(button) {
 document.addEventListener("keydown", event => {
   // buttonPhysical = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
   // Use line below for keyCode
-  buttonPhysical = String(event.keyCode)
+  buttonPhysical = String("d "+event.keyCode);
 
   // Disabling keyboard input, as some keys (like F5) make the browser lose focus.
   // If you're like to re-enable it, comment the next line and uncomment the following ones
@@ -225,10 +225,14 @@ document.addEventListener("keydown", event => {
 });
 
 document.addEventListener("keyup", event => {
+  buttonPhysical = String("u "+event.keyCode);
+
   let input = document.querySelector(".input").value;
   keyboard.setInput(input);
   if (event.key === "Shift") handleShift();
   if (event.key === "CapsLock") handleShift();
+
+  socketTx.emit('keyBoard', buttonPhysical);
 });
 
 // TODO: Shift styling from sandbox

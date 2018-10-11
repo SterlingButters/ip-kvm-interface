@@ -58,6 +58,7 @@ https://www.cyberciti.biz/hardware/5-linux-unix-commands-for-connecting-to-the-s
 https://www.arduino.cc/en/Reference/KeyboardPress
 ```
   - Compile and upload `mouse-transmit.ino`
+  - Figure out `Keyboard.write(keyCode)` doesn't work
 
 2) Keyboard:
   - Styling
@@ -74,9 +75,12 @@ https://www.arduino.cc/en/Reference/KeyboardPress
      `http://forum.arduino.cc/index.php?topic=37534.0`
     - DDNS and port forwarding
 
-4) Implement Full Screen Option
+4) Change default scroll position
 
-5) Remove loading icon atop video once media selection made (if select != null)
+5) Debug Full Screen Option:
+    - Enable "untoggling"
+
+6) Remove loading icon atop video once media selection made (if select != null)
 
 ## Future Bonus Features
 

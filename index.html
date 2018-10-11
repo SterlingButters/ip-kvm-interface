@@ -5,12 +5,9 @@
     <meta charset="utf-8">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css"></link>
-    <link rel="stylesheet" href="/css/interface.css"></link>
-    <link rel="stylesheet" href="/css/loading.css"></link>
-    <link rel="stylesheet" href="/css/keyboard.css"></link>
+    <link id="activestyle" rel="stylesheet" type="text/css" href="/css/interface.css">
 
     <script src="/socket.io/socket.io.js"></script>
-
   </head>
 
   <body onload="askPassword()"
@@ -20,7 +17,7 @@
     //   var password = prompt("Please enter your password", "Password");
     //   // TODO: Change password here && eventually convert to Modal popup
     //   while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
-    // }
+    }
     </script>
 
     <!-- Monitor -->
@@ -28,33 +25,28 @@
       <img class="monitor-border" src="/assets/monitor.png">
 
       <!-- Power -->
-      <div onclick="WOL(event)"
-           id = "power"
+      <div id = 'power'
            class="power-size">
         <img class="power" src="/assets/power.png">
         <script src="/js/power-on.js"></script>
       </div>
       <!-- Power -->
 
-      <!-- Video -->
-      <video autoplay
-           class = "rectangle"
-           id = 'video'>
-           <script src="/js/media-capture.js"></script>
-      </video>
-      <!-- Video -->
-
-      <!-- TODO Fullscreen -->
+      <!-- Fullscreen -->
       <div id='fullscreen'>
           <img src="/assets/arrows.png">
-          <!-- <script>
-            document.getElementById('fullscreen').addEventListener('onclick', fullScreen, false);
-            function fullScreen(){
-              video.webkitEnterFullScreen();
-            }
-          </script> -->
       </div>
-      <!-- TODO Fullscreen -->
+      <!-- Fullscreen -->
+
+      <!-- Video -->
+      <!-- <select id="audioSource"></select> -->
+      <select id="videoSource"></select>
+      <video id = 'video'
+             autoplay
+             muted>
+        <script src="/js/media-capture.js"></script>
+      </video>
+      <!-- Video -->
 
       <!-- TODO Loading -->
       <div id='loading'></div>
@@ -66,7 +58,7 @@
     <!-- Keyboard -->
     <div id="keyboard">
       <input class="input"
-             size="125"
+             size="120"
              placeholder="Tap on the virtual keyboard or type to enter text"/>
 
       <div class="keyboardContainer">

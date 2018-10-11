@@ -1,4 +1,20 @@
 // Media Capture
+document.getElementById('fullscreen').onclick = function toggleFullScreen() {
+  if (document.getElementById('activestyle').href = "/css/interface.css") {
+    document.getElementById('activestyle').setAttribute("href", "/css/fullscreen.css");
+  }
+};
+
+// TODO: Figure out why untoggle doesnt work
+function untoggleFullScreen() {
+  if (document.getElementById('activestyle').href = "/css/fullscreen.css") {
+    document.addEventListener('onkeydown', function (event) {
+      if (event.keyCode = 27) {
+        document.getElementById('activestyle').setAttribute("href", "/css/interface.css");
+      };
+    });
+  };
+};
 
 const hdConstraints = {
   video: {width: {min: 1280}, height: {min: 720}}
