@@ -2,9 +2,14 @@ var socketTx = io();
 
 document.getElementById('power').onclick = function(){
   socketTx.emit('poweron', "ON");
-  // TODO: Make icon disappear on video prompt
+
   icon = document.getElementById('loading');
-  icon.style.visibility = 'visible';
+
+  // TODO: Make icon disappear on video prompt
+  // if (document.getElementById("videoSource").options.length > 0) {
+    icon.style.visibility = 'visible';
+  // };
+  // else {icon.style.visibility = 'hidden';}
 };
 
 // document.getElementById('power').onclick = function(){

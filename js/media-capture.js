@@ -75,7 +75,7 @@ function getStream() {
 }
 
 function gotStream(stream) {
-  window.stream = stream; // make stream available to console
+  window.stream = stream;
   videoElement.srcObject = stream;
 }
 

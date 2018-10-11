@@ -1,4 +1,4 @@
-// TODO: Figure out why tf I need this and revise for use on RPi3,
+// TODO: Figure out why I need this and revise for use on RPi3,
 var spawn = require("child_process").spawn;
 var process = spawn('pio', ["device", "monitor", "--port", "/dev/cu.usbmodemHIDPC1"]);
 console.log('Starting miniterm');
@@ -76,7 +76,6 @@ socketTx.on('connection', function(socketRx) {
       var macAddress = '00:11:22:33:44:55';
       var ipAddress = '10.0.0.255';
 
-      // TODO: Catch Unhandled Error Event
       process.on('uncaughtException', function (err) {
         var child = spawn('etherwake', ['-b', ipAddress, macAddress]);
         console.log('Caught exception: ', err);

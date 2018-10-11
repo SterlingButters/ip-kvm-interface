@@ -13,12 +13,35 @@
   <body onload="askPassword()"
         oncontextmenu="return false;">
     <script>
-    // function askPassword() {
-    //   var password = prompt("Please enter your password", "Password");
-    //   // TODO: Change password here && eventually convert to Modal popup
-    //   while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
+    function askPassword() {
+      var password = prompt("Please enter your password", "Password");
+      // TODO: Change password here 
+      while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
     }
     </script>
+
+    <!-- Information -->
+    <div id="information">
+
+      <!-- <select id="audioSource" class='source'></select> -->
+      <select id="videoSource" class='source'></select>
+
+      <!-- Click -->
+      <p>
+      Click the video with one of your mouse<br>
+      buttons to return a number.<br>
+      </p>
+      <p id="click-button"></p>
+      <!-- Click -->
+
+      <!-- Position -->
+      <div id="position">
+        <script src="/js/cursor-capture.js"></script>
+      </div>
+      <!-- Position -->
+
+    </div>
+    <!-- Information -->
 
     <!-- Monitor -->
     <div id = "monitor">
@@ -39,8 +62,7 @@
       <!-- Fullscreen -->
 
       <!-- Video -->
-      <!-- <select id="audioSource"></select> -->
-      <select id="videoSource"></select>
+
       <video id = 'video'
              autoplay
              muted>
@@ -48,9 +70,9 @@
       </video>
       <!-- Video -->
 
-      <!-- TODO Loading -->
+      <!-- Loading -->
       <div id='loading'></div>
-      <!-- TODO Loading -->
+      <!-- Loading -->
 
     </div>
     <!-- Monitor -->
@@ -81,30 +103,6 @@
     <iframe id='butterfly'
             src="http://localhost:57575/" height="1000" width="1500"></iframe>
     <!-- Butterfly Terminal -->
-
-    <!-- Information -->
-    <div id="information">
-      <!-- Click -->
-      <p>
-      Click the video with one of your mouse<br>
-      buttons to return a number.<br>
-      </p>
-      <p id="click-button"></p>
-      <!-- Click -->
-
-      <!-- Position -->
-      <div id="position">
-        <script src="/js/cursor-capture.js"></script>
-      </div>
-      <!-- Position -->
-
-      <!-- Etherwake -->
-      <p id="etherwake-stdout"></p>
-      <p id="etherwake-stderr"></p>
-      <p id="etherwake-exit"></p>
-      <!-- Etherwake -->
-    </div>
-    <!-- Information -->
 
   </body>
 

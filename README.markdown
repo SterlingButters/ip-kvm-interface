@@ -14,30 +14,35 @@ to the Xbox One as well. Whats left on the project is listed someplace below.
 ## Configuration
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/configuration/Setup.png)
 ## Shopping List:
-  - Raspberry Pi3 B+ (Starter Kit):
+  - Raspberry Pi3 B+ (Starter Kit)[$79.99]:
 
   https://www.amazon.com/CanaKit-Raspberry-Starter-Premium-Black/dp/B07BCC8PK7/ref=sr_1_1_sspa?s=pc&ie=UTF8&qid=1539175242&sr=1-1-spons&keywords=raspberry+pi+3+b%2B&psc=1
   - Capture Card Options:
-    - LinkStable (verified):
+    - LinkStable (verified)[$99.99]:
 
     https://www.amazon.com/LinkStable-Streaming-Recorder-Gameplayer-Compatible/dp/B073PXDKFR/ref=sr_1_3?s=electronics&ie=UTF8&qid=1539175400&sr=1-3&keywords=linkstable+capture+card
-    - PenGo [4K] (experimental):
+    - PenGo [4K] (experimental)[$149.99]:
 
     https://www.amazon.com/gp/product/B07BGXVGLS/ref=ox_sc_act_title_1?smid=A39P3WP927BTL5&psc=1
-    - ATmega32U4 (Arduino Micro) x2:
+    - ATmega32U4 (Arduino Micro) x2 [$8.99 each]:
 
     https://www.amazon.com/OSOYOO-ATmega32U4-arduino-Leonardo-ATmega328/dp/B012FOV17O
-  - TTL to USB Adapter x2:
+  - TTL to USB Adapter x2 [$7.99 each]:
 
     https://www.amazon.com/gp/product/B072K3Z3TL/ref=oh_aui_detailpage_o06_s00?ie=UTF8&psc=1
   - Cables:
-    - Male USB to Male microUSB x2
-    - HDMI x2
-    - Male USB to Male USB
+    - Male USB to Male microUSB x2 [~$4.99 each]
+    - HDMI x2 [~$5.99]
+    - Male USB to Male USB [~$5.99]
+    - Ribbon Cables [~$7.50]:
+    -
+    https://www.amazon.com/Kuman-Breadboard-Arduino-Raspberry-Multicolored/dp/B01BV3Z342/ref=sr_1_8_sspa?s=electronics&ie=UTF8&qid=1539227097&sr=1-8-spons&keywords=rpi+ribbon+cable+variety+pack&psc=1
 
 ## Troubleshooting
 - Ensure all cables are data-transfer capable
 - If port is not opening on TTL to USB adapter, check serial monitor
+- Cheaper capture cards exist; the ones chosen allow for throughput of video
+- The complete RPi3 starter kit might be a bit overkill but easy one-stop-shop for beginner
 
 ## Cost-Cutting
   - It may be possible to use a single Arduino Micro for mouse & keyboard function
@@ -50,7 +55,7 @@ Donate with PayPal:
 Join me on Discord:
 [![Discord](https://img.shields.io/discord/102860784329052160.svg)](https://discord.gg/uSTr7DZ)
 
-## TODO List (Essential)
+## ToDo List (Essential)
 1) Arduino:
   - Explore options for opening serial monitor
 ```
@@ -80,7 +85,7 @@ https://www.arduino.cc/en/Reference/KeyboardPress
 5) Debug Full Screen Option:
     - Enable "untoggling"
 
-6) Remove loading icon atop video once media selection made (if select != null)
+6) Remove loading icon atop video once media selection made
 
 ## Future Bonus Features
 

@@ -96,7 +96,7 @@ document.getElementById('video').addEventListener('mouseup', clickHandler, false
 
 function clickHandler(event) {
   document.getElementById("click-button").innerHTML = "You pressed button: " + event.button;
-  // TODO: Send click data to socket (Press AND release)
+  // Send click data to socket (Press AND release)
   if (event.type == "mousedown") {
   if (event.button === 0) {socketTx.emit('mouseClick', "leftDown")};
   if (event.button === 1) {socketTx.emit('mouseClick', "middleDown")};
