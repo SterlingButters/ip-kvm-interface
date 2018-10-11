@@ -15,8 +15,9 @@ to the Xbox One as well. Whats left on the project is listed someplace below.
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/configuration/Setup.png)
 ## Shopping List:
   - Raspberry Pi3 B+ (Starter Kit)[$79.99]:
+  [![Amazon](https://img.shields.io/badge/Amazon-buy-blue.svg)](https://www.amazon.com/CanaKit-Raspberry-Starter-Premium-Black/dp/B07BCC8PK7/ref=sr_1_1_sspa?s=pc&ie=UTF8&qid=1539175242&sr=1-1-spons&keywords=raspberry+pi+3+b%2B&psc=1)
 
-  https://www.amazon.com/CanaKit-Raspberry-Starter-Premium-Black/dp/B07BCC8PK7/ref=sr_1_1_sspa?s=pc&ie=UTF8&qid=1539175242&sr=1-1-spons&keywords=raspberry+pi+3+b%2B&psc=1
+
   - Capture Card Options:
     - LinkStable (verified)[$99.99]:
 
@@ -93,7 +94,9 @@ https://www.arduino.cc/en/Reference/KeyboardPress
 mass storage, etc]:
   - `http://isticktoit.net/?p=1383`
 
-2) Supply mouse/keyboard input to multiple consoles
+2) Supply mouse/keyboard input to multiple consoles:
+  - https://www.newegg.com/Product/Product.aspx?Item=N82E16812119896&ignorebbr=1&nm_mc=KNC-GoogleAdwords-PC&cm_mmc=KNC-GoogleAdwords-PC-_-pla-_-USB+Converters-_-N82E16812119896&gclid=Cj0KCQjwxvbdBRC0ARIsAKmec9YWANflFHZ5qjMTb48rHDq_Y0OstuPRQpPX8xWt4Quvn8GgXR1875YaAoK8EALw_wcB&gclsrc=aw.ds
+  - https://github.com/thegecko/webusb
 
 3) Modal login
 
