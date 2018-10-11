@@ -1,5 +1,10 @@
-// OnScreen Keyboard
-// https://github.com/hodgef/simple-keyboard
+/**
+ * Warning! This is an R&D sandbox to develop and test new use-cases
+ * It's not meant as a base example or a getting started demo
+ * It may change competely without prior notice
+ * Please check out the other demos for simpler examples
+ */
+
 let Keyboard = window.SimpleKeyboard.default;
 
 let commonKeyboardOptions = {
@@ -180,7 +185,7 @@ function onChange(input) {
 }
 
 function onKeyPress(button) {
-  var buttonOnScreen = String(button);
+  console.log("Button pressed", button);
   buttonOnScreen = buttonOnScreen.replace('{','').replace('}','');
   // Use line below for keyCode
   // var buttonOnScreen = String(getKeyCode(button));
@@ -193,7 +198,7 @@ function onKeyPress(button) {
     button === "{shiftright}" ||
     button === "{capslock}"
   ) {
-    handleShift();
+    toggleShiftMode();
   }
 }
 
@@ -218,8 +223,8 @@ document.addEventListener("keydown", event => {
   if (event.key === "ArrowRight") event.preventDefault();
   if (event.key === " ") event.preventDefault();
 
-  if (event.key === "Shift") handleShift();
-  if (event.key === "CapsLock") handleShift();
+  if (event.key === "Shift") enableShiftMode(event);
+  if (event.key === "CapsLock") enableShiftMode(event);
 
   socketTx.emit('keyBoard', buttonPhysical);
 });
@@ -229,18 +234,74 @@ document.addEventListener("keyup", event => {
 
   let input = document.querySelector(".input").value;
   keyboard.setInput(input);
-  if (event.key === "Shift") handleShift();
-  if (event.key === "CapsLock") handleShift();
 
-  socketTx.emit('keyBoard', buttonPhysical);
+  if (event.key === "Shift") disableShiftMode(event);
+  if (event.key === "CapsLock") disableShiftMode(event);
 });
 
-// TODO: Shift styling from sandbox
-function handleShift() {
+function toggleShiftMode(event) {
   let currentLayout = keyboard.options.layoutName;
+  /**
+   * If currentLayout is default, set to shift, and vice versa
+   */
   let shiftToggle = currentLayout === "default" ? "shift" : "default";
 
   keyboard.setOptions({
     layoutName: shiftToggle
   });
+
+  if (event) {
+    highlightButton(event);
+  }
+}
+
+function enableShiftMode(event) {
+  keyboard.setOptions({
+    layoutName: "shift"
+  });
+
+  highlightButton(event);
+}
+
+function disableShiftMode(event) {
+  keyboard.setOptions({
+    layoutName: "default"
+  });
+
+  unhighlightButton(event);
+}
+
+function highlightButton(event) {
+  let layoutKeyName = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(
+    event
+  );
+
+  let buttonElement =
+    keyboard.getButtonElement(layoutKeyName) ||
+    keyboard.getButtonElement(`{${layoutKeyName}}`);
+
+  /**
+   * Highlighting that key manually...
+   */
+  buttonElement.style.background = "#9ab4d0";
+  buttonElement.style.color = "white";
+
+  console.log(buttonElement);
+}
+
+function unhighlightButton(event) {
+  let layoutKeyName = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(
+    event
+  );
+
+  let buttonElement =
+    keyboard.getButtonElement(layoutKeyName) ||
+    keyboard.getButtonElement(`{${layoutKeyName}}`);
+
+  /**
+   * Highlighting that key manually...
+   */
+  buttonElement.removeAttribute("style");
+
+  console.log(buttonElement);
 }

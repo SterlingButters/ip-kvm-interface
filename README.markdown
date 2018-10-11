@@ -12,7 +12,22 @@ is that with the current method of implementation, it will eventually be possibl
 to the Xbox One as well. Whats left on the project is listed someplace below.
 
 ## Configuration
+#### Setup
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/configuration/Setup.png)
+
+#### DDNS and Port Forwarding:
+1) Log into router
+
+2) Set up up port forwarding to <RPi3-ipAddress>:port that is chosen for the Interface during install
+  [3000 recommended]
+
+3) Sign up for DDNS: [![](https://img.shields.io/badge/No--IP-signup-ff69b4.svg)](https://www.noip.com)
+
+4) Create a hostname (no-ip client will be set up in install)
+
+#### Install
+5) Run `sudo install.sh`
+
 ## Shopping List:
   - Raspberry Pi3 B+ (Starter Kit)[$79.99]:
   [![](https://img.shields.io/badge/amazon-buy-blue.svg)](https://www.amazon.com/CanaKit-Raspberry-Starter-Premium-Black/dp/B07BCC8PK7/ref=sr_1_1_sspa?s=pc&ie=UTF8&qid=1539175242&sr=1-1-spons&keywords=raspberry+pi+3+b%2B&psc=1)
@@ -75,12 +90,12 @@ Join me on Discord:
 
 3) Configuration:
   - `install.sh`:
+    - `sudo apt-get update` && install {packages}
     - `git clone` and unpack
     - Arduino File upload:
      `http://forum.arduino.cc/index.php?topic=37534.0`
     - Start as service:
       `https://www.raspberrypi.org/documentation/linux/usage/rc-local.md`
-    - Etherwake & npm via "require" search
     - DDNS and port forwarding
 
 ## Future Bonus Features
@@ -96,3 +111,5 @@ mass storage, etc]:
 3) Modal login
 
 4) Debugging element(s) + Latency
+
+5) Bundle Dependencies: https://webpack.js.org/concepts/

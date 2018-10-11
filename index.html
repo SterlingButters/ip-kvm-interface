@@ -13,11 +13,11 @@
   <body onload="askPassword()"
         oncontextmenu="return false;">
     <script>
-    function askPassword() {
-      var password = prompt("Please enter your password", "Password");
-      // TODO: Change password here 
-      while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
-    }
+    // function askPassword() {
+    //   var password = prompt("Please enter your password", "Password");
+    //   // TODO: Change password here
+    //   while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
+    // }
     </script>
 
     <!-- Information -->
@@ -35,9 +35,7 @@
       <!-- Click -->
 
       <!-- Position -->
-      <div id="position">
-        <script src="/js/cursor-capture.js"></script>
-      </div>
+      <div id="position"></div>
       <!-- Position -->
 
     </div>
@@ -62,11 +60,11 @@
       <!-- Fullscreen -->
 
       <!-- Video -->
-
       <video id = 'video'
              autoplay
              muted>
         <script src="/js/media-capture.js"></script>
+        <script src="/js/cursor-capture.js"></script>
       </video>
       <!-- Video -->
 
