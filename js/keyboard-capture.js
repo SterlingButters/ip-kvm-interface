@@ -200,9 +200,10 @@ function onKeyPress(button) {
  * Whenever the input is changed with the keyboard, updating SimpleKeyboard's internal input
  */
 document.addEventListener("keydown", event => {
+  // TODO: Keypress down string here
   // buttonPhysical = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
   // Use line below for keyCode
-  buttonPhysical = String("d "+event.keyCode);
+  buttonPhysical = String(""+event.keyCode);
 
   // Disabling keyboard input, as some keys (like F5) make the browser lose focus.
   // If you're like to re-enable it, comment the next line and uncomment the following ones
@@ -223,7 +224,8 @@ document.addEventListener("keydown", event => {
 });
 
 document.addEventListener("keyup", event => {
-  buttonPhysical = String("u "+event.keyCode);
+  // TODO: Keyboard up string here
+  buttonPhysical = String(""+event.keyCode);
 
   let input = document.querySelector(".input").value;
   keyboard.setInput(input);

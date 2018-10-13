@@ -98,14 +98,14 @@ function clickHandler(event) {
   document.getElementById("click-button").innerHTML = "You pressed button: " + event.button;
   // Send click data to socket (Press AND release)
   if (event.type == "mousedown") {
-  if (event.button === 0) {socketTx.emit('mouseClick', "leftDown")};
-  if (event.button === 1) {socketTx.emit('mouseClick', "middleDown")};
-  if (event.button === 2) {socketTx.emit('mouseClick', "rightDown")};
+    if (event.button === 0) {socketTx.emit('mouseClick', "leftDown")};
+    if (event.button === 1) {socketTx.emit('mouseClick', "middleDown")};
+    if (event.button === 2) {socketTx.emit('mouseClick', "rightDown")};
   };
 
   if (event.type == "mouseup") {
-  if (event.button === 0) {socketTx.emit('mouseClick', "leftUp")};
-  if (event.button === 1) {socketTx.emit('mouseClick', "middleUp")};
-  if (event.button === 2) {socketTx.emit('mouseClick', "rightUp")};
+    if (event.button === 0) {socketTx.emit('mouseClick', "leftUp")};
+    if (event.button === 1) {socketTx.emit('mouseClick', "middleUp")};
+    if (event.button === 2) {socketTx.emit('mouseClick', "rightUp")};
   };
 }

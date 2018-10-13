@@ -104,12 +104,19 @@ Join me on Discord:
 mass storage, etc]:
   - `http://isticktoit.net/?p=1383`
 
-2) Supply mouse/keyboard input to multiple consoles:
+2) Banana Pi BPI W2 RTD1296 Design to Replace RPi3 and Capture Card
+
+3) Supply mouse/keyboard input to multiple consoles:
   - https://www.newegg.com/Product/Product.aspx?Item=N82E16812119896&ignorebbr=1&nm_mc=KNC-GoogleAdwords-PC&cm_mmc=KNC-GoogleAdwords-PC-_-pla-_-USB+Converters-_-N82E16812119896&gclid=Cj0KCQjwxvbdBRC0ARIsAKmec9YWANflFHZ5qjMTb48rHDq_Y0OstuPRQpPX8xWt4Quvn8GgXR1875YaAoK8EALw_wcB&gclsrc=aw.ds
   - https://github.com/thegecko/webusb
 
-3) Modal login
+4) Modal login
 
-4) Debugging element(s) + Latency
+5) Latency [On RPi3]:
+  - Get connected public ip: `netstat -tn 2>/dev/null | grep :80 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head`
+  - Ping that ip: `ping -c 10 -i .5 -W 3 <ipPublic>`
+  - Ping ip of PC on local network `ping -c 10 -i .5 -W 3 <ipLocal>`
+  - Add times together and plot RTT vs time using plotly:
+    - https://plot.ly/javascript/time-series/
 
-5) Bundle Dependencies: https://webpack.js.org/concepts/
+6) Bundle Dependencies: https://webpack.js.org/concepts/

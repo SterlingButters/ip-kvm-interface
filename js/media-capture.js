@@ -1,20 +1,39 @@
 // Media Capture
-document.getElementById('fullscreen').onclick = function toggleFullScreen() {
-  if (document.getElementById('activestyle').href = "/css/interface.css") {
-    document.getElementById('activestyle').setAttribute("href", "/css/fullscreen.css");
-  }
-};
 
-// TODO: Figure out why untoggle doesnt work
-function untoggleFullScreen() {
-  activeStyle = document.getElementById('activestyle').href
-  if (activeStyle = "/css/fullscreen.css") {
-    document.addEventListener('keydown', function (event) {
+video = document.getElementById('video')
+button = document.getElementById('fullscreen')
+activeStyle = document.getElementById('activestyle')
+
+// TODO: Prevent crazy looking stylesheet reload when pressing escape
+// Detect click in body
+// document.addEventListener('click', function(e) {
+//   if(event.target = document.body) {
+//     console.log("Clicked outside");
+//   }
+// })
+var observer = new MutationObserver(function untoggleFullScreen(event) {
+  console.log(event);
+  if (activeStyle.href != event.oldValue) {
+    document.addEventListener('keydown', function(event) {
       if (event.keyCode = 27) {
-        activeStyle = "/css/interface.css";
-      };
-    });
-  };
+        activeStyle.href = "/css/interface.css";
+      }
+    })
+  }
+})
+
+observer.observe(activeStyle, {
+  attributes: true,
+  attributeFilter: ['href'],
+  attributeOldValue: true,
+  childList: false,
+  characterData: false
+})
+
+button.onclick = function toggleFullScreen() {
+  if (activeStyle.href = "/css/interface.css") {
+    activeStyle.href = "/css/fullscreen.css";
+  }
 };
 
 const videoElement = document.querySelector('video');
