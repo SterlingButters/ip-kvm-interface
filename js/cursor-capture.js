@@ -54,7 +54,7 @@ var moveCallback = function(event) {
     let a = event.clientX;
     let b = event.clientY;
 
-  // TODO: Verify Accuracy
+  // TODO: Other: Verify Accuracy
   var pos = {x: x, y: y};
   moveTrack.push(pos);
   xChange = moveTrack[moveTrack.length - 1].x - moveTrack[moveTrack.length - 2].x;

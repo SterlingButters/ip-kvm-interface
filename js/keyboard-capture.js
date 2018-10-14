@@ -200,7 +200,7 @@ function onKeyPress(button) {
  * Whenever the input is changed with the keyboard, updating SimpleKeyboard's internal input
  */
 document.addEventListener("keydown", event => {
-  // TODO: Keypress down string here
+  // TODO: Arduino: Keypress down string here
   // buttonPhysical = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
   // Use line below for keyCode
   buttonPhysical = String(""+event.keyCode);
@@ -224,7 +224,7 @@ document.addEventListener("keydown", event => {
 });
 
 document.addEventListener("keyup", event => {
-  // TODO: Keyboard up string here
+  // TODO: Arduino: Keyboard up string here
   buttonPhysical = String(""+event.keyCode);
 
   let input = document.querySelector(".input").value;

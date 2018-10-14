@@ -1,40 +1,42 @@
 // Media Capture
 
-video = document.getElementById('video')
-button = document.getElementById('fullscreen')
-activeStyle = document.getElementById('activestyle')
+info = document.getElementById('information');
+monitor = document.getElementById('monitor');
+keyboard = document.getElementById('keyboard');
+button = document.getElementById('fullscreen');
+video = document.getElementById('video');
+butterfly = document.getElementById('butterfly');
 
-// TODO: Prevent crazy looking stylesheet reload when pressing escape
-// Detect click in body
-// document.addEventListener('click', function(e) {
-//   if(event.target = document.body) {
-//     console.log("Clicked outside");
-//   }
-// })
-var observer = new MutationObserver(function untoggleFullScreen(event) {
-  console.log(event);
-  if (activeStyle.href != event.oldValue) {
+button.onclick = function toggleFullScreen() {
+  document.body.className = 'dark-background';
+  video.className = 'full-video';
+  info.className += ' hide';
+  monitor.className += ' hide';
+  keyboard.className += ' hide';
+  butterfly.className += ' hide';
+}
+
+var observer = new MutationObserver(function (event) {
+  if (document.body.className == "dark-background") {
     document.addEventListener('keydown', function(event) {
       if (event.keyCode = 27) {
-        activeStyle.href = "/css/interface.css";
+        document.body.className = 'light-background';
+        video.className = 'regular-video';
+        info.className -= ' hide';
+        monitor.className -= ' hide';
+        keyboard.className -= ' hide';
+        butterfly.className -= ' hide';
       }
     })
   }
 })
 
-observer.observe(activeStyle, {
+observer.observe(video, {
   attributes: true,
-  attributeFilter: ['href'],
-  attributeOldValue: true,
+  attributeFilter: ['class'],
   childList: false,
   characterData: false
 })
-
-button.onclick = function toggleFullScreen() {
-  if (activeStyle.href = "/css/interface.css") {
-    activeStyle.href = "/css/fullscreen.css";
-  }
-};
 
 const videoElement = document.querySelector('video');
 const audioSelect = document.querySelector('select#audioSource');

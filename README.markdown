@@ -84,8 +84,8 @@ Join me on Discord:
     - Styling
     - KeyCode Map
     - Press/Release Functionality
-  - Change default scroll position
-  - Enable "untoggling" of fullscreen
+  - Change default scroll position & statics
+  - Fix stylesheet handling for fullscreen when pressing key
   - Remove loading icon atop video once media selection made
 
 3) Configuration:

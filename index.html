@@ -5,18 +5,19 @@
     <meta charset="utf-8">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css"></link>
-    <link id="activestyle" rel="stylesheet" type="text/css" href="/css/interface.css">
+    <link rel="stylesheet" type="text/css" href="/css/interface.css">
 
     <script src="/socket.io/socket.io.js"></script>
   </head>
 
-  <!-- TODO: Load page to scroll position -->
-  <body onload="askPassword()"
+  <!-- TODO: CSS: Load page to scroll position -->
+  <body class='light-background'
+        onload="askPassword()"
         oncontextmenu="return false;">
     <script>
     // function askPassword() {
     //   var password = prompt("Please enter your password", "Password");
-    //   // TODO: Change password here
+    //   // TODO: EZ Link: Change password here
     //   while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
     // }
     </script>
@@ -60,15 +61,6 @@
       </div>
       <!-- Fullscreen -->
 
-      <!-- Video -->
-      <video id = 'video'
-             autoplay
-             muted>
-        <script src="/js/media-capture.js"></script>
-        <script src="/js/cursor-capture.js"></script>
-      </video>
-      <!-- Video -->
-
       <!-- Loading -->
       <div id='loading'></div>
       <!-- Loading -->
@@ -77,31 +69,40 @@
     <!-- Monitor -->
 
     <!-- Keyboard -->
-    <div id="keyboard">
+    <div id='keyboard'
+      <input>
       <input class="input"
              size="120"
-             placeholder="Tap on the virtual keyboard or type to enter text"/>
+             placeholder="Tap on the virtual keyboard or type to enter text"></input>
 
       <div class="keyboardContainer">
   		  <div class="simple-keyboard-main"></div>
   		  <div class="controlArrows">
-  			  <div class="simple-keyboard-control">
-        </div>
-  			<div class="simple-keyboard-arrows"></div>
-  		</div>
-
-   	</div>
-      <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
-      <script src="src/index.js"></script>
-      <script src="/js/keyboard-capture.js"></script>
-      </div>
+  			  <div class="simple-keyboard-control"></div>
+  			  <div class="simple-keyboard-arrows"></div>
+  		  </div>
+   	  </div>
+        <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
+        <script src="src/index.js"></script>
+        <script src="/js/keyboard-capture.js"></script>
     </div>
     <!-- Keyboard -->
 
     <!-- Butterfly Terminal -->
     <iframe id='butterfly'
-            src="http://localhost:57575/" height="1000" width="1500"></iframe>
+            src="http://localhost:57575/" height="1000" width="1500">
+    </iframe>
     <!-- Butterfly Terminal -->
+
+    <!-- Video -->
+    <video id='video'
+           class='regular-video'
+           autoplay
+           muted>
+      <script src="/js/media-capture.js"></script>
+      <script src="/js/cursor-capture.js"></script>
+    </video>
+    <!-- Video -->
 
   </body>
 

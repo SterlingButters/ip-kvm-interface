@@ -1,4 +1,16 @@
-select {
+.hide {
+  display: none;
+}
+
+.light-background {
+  background-color: white;
+}
+
+.dark-background {
+  background-color: black;
+}
+
+.source {
   /* General styling */
   height: 30px;
   width: 150px;
@@ -27,11 +39,19 @@ transform: translate(-50%, -50%);
   z-index: -1;
 }
 
-#video{
+.regular-video {
   position: absolute;
-  top: 38%;
+  top: 32%;
   left: 50%;
   transform: translate(-50.2%, -50%);
+}
+
+.full-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
 }
 
 #fullscreen{
@@ -181,13 +201,13 @@ input {
 }
 /************ KEYBOARD ************/
 
-#butterfly{
+#butterfly {
   position: absolute;
   top: 100%;
   left: 50%;
   transform: translate(-50%, 0%);
 }
 
-#information{
+#information {
   padding-left: 5px;
 }

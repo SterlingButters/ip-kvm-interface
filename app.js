@@ -1,4 +1,4 @@
-// TODO: Figure out why I need this and revise for use on RPi3,
+// TODO: Other: Figure out why I need this and revise for use on RPi3,
 var spawn = require("child_process").spawn;
 var process = spawn('pio', ["device", "monitor", "--port", "/dev/cu.usbmodemHIDPC1"]);
 console.log('Starting miniterm');
@@ -53,19 +53,19 @@ socketTx.on('connection', function(socketRx) {
     console.log(data.toString('utf8'));
     // Use line below if using keyCodes
     // console.log(parseInt(data.toString('utf8'), 10));
-    // TODO: Enable when on RPi3
+    // TODO: Arduino: Enable when on RPi3
     port.write(data);
     });
 
   // Receive mouse data from browser and log in node console
   socketRx.on('mouseMove', function(data){
     console.log(data.x + "," + data.y);
-    // TODO: Send mouse data to arduino
+    // TODO: Arduino: Send mouse data to arduino
   });
 
   socketRx.on('mouseClick', function(data){
     console.log(data.toString('utf8'));
-    // TODO: Send mouse data to arduino
+    // TODO: Arduino: Send mouse data to arduino
   });
 
   // Receive wake on LAN request
