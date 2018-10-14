@@ -82,11 +82,12 @@ transform: translate(-50%, -50%);
   border-top-color:rgba(0,0,0,0.3);
   box-sizing:border-box;
   position:absolute;
-  top:40%;left:49%;
+  top:33%; left:49%;
   margin-top:-80px;
   margin-left:-80px;
   animation:loading 1.5s linear infinite;
   visibility: hidden;
+  z-index: 1;
   -webkit-animation:loading 1.5s linear infinite;
 }
 @keyframes loading{
@@ -97,7 +98,6 @@ transform: translate(-50%, -50%);
   0%{-webkit-transform:rotate(0deg)}
   100%{-webkit-transform:rotate(360deg)}
 }
-
 /************ LOADING ************/
 
 /************ KEYBOARD ************/
