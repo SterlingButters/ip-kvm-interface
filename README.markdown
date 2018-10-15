@@ -72,7 +72,6 @@ Join me on Discord:
 ## ToDo List (Essential)
 1) Arduino:
   - Compile and upload `mouse-transmit.ino`
-  - Figure out `Keyboard.write(keyCode)` doesn't work
   - Explore options for opening serial monitor:
   ```
   https://www.cyberciti.biz/hardware/5-linux-unix-commands-for-connecting-to-the-serial-console/
@@ -83,9 +82,7 @@ Join me on Discord:
   - Keyboard:
     - Styling
     - KeyCode Map
-    - Press/Release Functionality
   - Change default scroll position & statics
-  - Fix stylesheet handling for fullscreen when pressing key
   - Remove loading icon atop video once media selection made
 
 3) Configuration:

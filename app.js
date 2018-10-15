@@ -25,7 +25,8 @@ http.listen(3000, function(){
   console.log('Listening on http://127.0.0.1:3000');
 });
 
-// Set up Serial connection cu.SLAB_USBtoUART
+// TODO: Arduino: set up serial connection to mouse & keyboard <path>
+// Set up serial connection to device <cu.SLAB_USBtoUART>
 var serialPort = require('serialport');
 var port = new serialPort('/dev/cu.SLAB_USBtoUART', {
   baudRate: 115200,
