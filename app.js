@@ -28,7 +28,7 @@ http.listen(3000, function(){
 // Set up Serial connection cu.SLAB_USBtoUART
 var serialPort = require('serialport');
 var port = new serialPort('/dev/cu.SLAB_USBtoUART', {
-  baudRate: 9600,
+  baudRate: 115200,
   autoOpen: false,
   flowControl: true
 });
@@ -54,18 +54,22 @@ socketTx.on('connection', function(socketRx) {
     // Use line below if using keyCodes
     // console.log(parseInt(data.toString('utf8'), 10));
     // TODO: Arduino: Enable when on RPi3
-    port.write(data);
+    port.write(data+"\n");
     });
 
   // Receive mouse data from browser and log in node console
   socketRx.on('mouseMove', function(data){
-    console.log(data.x + "," + data.y);
+    console.log("x"+data.x);
+    console.log("y"+data.y);
     // TODO: Arduino: Send mouse data to arduino
+    // port.write(String("x"+data.x));
+    // port.write(String("y"+data.y));
   });
 
   socketRx.on('mouseClick', function(data){
     console.log(data.toString('utf8'));
     // TODO: Arduino: Send mouse data to arduino
+    // port.write(String(data))
   });
 
   // Receive wake on LAN request

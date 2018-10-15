@@ -203,7 +203,7 @@ document.addEventListener("keydown", event => {
   // TODO: Arduino: Keypress down string here
   // buttonPhysical = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
   // Use line below for keyCode
-  buttonPhysical = String(""+event.keyCode);
+  buttonPhysical = "d"+event.keyCode;
 
   // Disabling keyboard input, as some keys (like F5) make the browser lose focus.
   // If you're like to re-enable it, comment the next line and uncomment the following ones
@@ -225,13 +225,16 @@ document.addEventListener("keydown", event => {
 
 document.addEventListener("keyup", event => {
   // TODO: Arduino: Keyboard up string here
-  buttonPhysical = String(""+event.keyCode);
+  buttonPhysical = "u"+event.keyCode;
 
   let input = document.querySelector(".input").value;
-  keyboard.setInput(input);
+  // Need This?
+  // keyboard.setInput(input);
 
   if (event.key === "Shift") disableShiftMode(event);
   if (event.key === "CapsLock") disableShiftMode(event);
+
+  socketTx.emit('keyBoard', buttonPhysical);
 });
 
 function toggleShiftMode(event) {
