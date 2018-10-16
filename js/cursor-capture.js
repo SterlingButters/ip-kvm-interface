@@ -51,9 +51,6 @@ var moveCallback = function(event) {
     event.webkitMovementY ||
     0;
 
-    let a = event.clientX;
-    let b = event.clientY;
-
   // TODO: Other: Verify Accuracy
   var pos = {x: x, y: y};
   moveTrack.push(pos);
@@ -65,9 +62,7 @@ var moveCallback = function(event) {
   socketTx.emit('mouseMove', mov);
 
   position.innerHTML = 'Position X: ' + x +
-                       '<br />Position Y: ' + y +
-                       '<br />Initial X Window Position : ' + a +
-                       '<br />Initial Y Window Position : ' + b;
+                       '<br />Position Y: ' + y
 }
 
 var changeCallback = function() {

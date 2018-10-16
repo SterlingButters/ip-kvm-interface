@@ -55,7 +55,7 @@ socketTx.on('connection', function(socketRx) {
     // Use line below if using keyCodes
     // console.log(parseInt(data.toString('utf8'), 10));
     // TODO: Arduino: Enable when on RPi3
-    port.write(data+"\n");
+    // port.write(data+"\n");
     });
 
   // Receive mouse data from browser and log in node console
@@ -63,8 +63,8 @@ socketTx.on('connection', function(socketRx) {
     console.log("x"+data.x);
     console.log("y"+data.y);
     // TODO: Arduino: Send mouse data to arduino
-    // port.write(String("x"+data.x));
-    // port.write(String("y"+data.y));
+    // port.write("x"+data.x+"\n");
+    // port.write("y"+data.y+"\n");
   });
 
   socketRx.on('mouseClick', function(data){

@@ -1,24 +1,14 @@
 var socketTx = io();
 
-document.getElementById('power').onclick = function(){
-  socketTx.emit('poweron', "ON");
+powerButton = document.getElementById('power');
+videoSources = document.getElementById('videoSource');
+icon = document.getElementById('loading');
 
-  icon = document.getElementById('loading');
-
-  // TODO: CSS: Make icon disappear on video prompt
-  // while (document.getElementById('videoSource').options.length = 0) {
-  icon.style.visibility = 'visible';
-  // };
-  // else {icon.style.visibility = 'hidden';}
-};
-
-// document.getElementById('power').onclick = function(){
-//   var macAddress = '00:11:22:33:44:55';
-//   var ipAddress = '10.0.0.0';
-//   var ifrm = document.getElementById('butterfly');
-//   ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
-//
-//   ifrm.document.open();
-//   ifrm.document.write('etherwake -b' + ipAddress + ' ' + macAddress);
-//   ifrm.document.close();
-// };
+// TODO: Use Mutation observer to check for option.length change?
+if (videoSources.options.length == 0) {
+  powerButton.onclick = function() {
+    socketTx.emit('poweron', "ON");
+    icon.style.visibility = 'visible';
+  }
+}
+else {icon.style.visibility = 'hidden';}
