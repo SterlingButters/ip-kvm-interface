@@ -2,7 +2,7 @@
 
 info = document.getElementById('information');
 monitor = document.getElementById('monitor');
-keyboard = document.getElementById('keyboard');
+keyBoard = document.getElementById('keyboard');
 button = document.getElementById('fullscreen');
 video = document.getElementById('video');
 butterfly = document.getElementById('butterfly');
@@ -12,7 +12,7 @@ button.onclick = function toggleFullScreen() {
   video.className = 'full-video';
   info.className += ' hide';
   monitor.className += ' hide';
-  keyboard.className += ' hide';
+  keyBoard.className += ' hide';
   butterfly.className += ' hide';
 }
 
@@ -24,7 +24,7 @@ var observer = new MutationObserver(function (event) {
         video.className = 'regular-video';
         info.className -= ' hide';
         monitor.className -= ' hide';
-        keyboard.className -= ' hide';
+        keyBoard.className -= ' hide';
         butterfly.className -= ' hide';
       }
     })
