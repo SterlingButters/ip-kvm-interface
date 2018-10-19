@@ -5,7 +5,6 @@
     <meta charset="utf-8">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css"></link>
-    <link rel="stylesheet" href="src/index.css"/>
     <link rel="stylesheet" type="text/css" href="/css/interface.css">
 
     <script src="/socket.io/socket.io.js"></script>
@@ -16,18 +15,23 @@
         onload="askPassword()"
         oncontextmenu="return false;">
     <script>
-    // function askPassword() {
+    function askPassword() {
     //   var password = prompt("Please enter your password", "Password");
     //   // TODO: EZ Link: Change password here
     //   while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
-    // }
+    }
     </script>
 
     <!-- Information -->
     <div id="information">
 
-      <select id="audioSource" class='source'></select>
-      <select id="videoSource" class='source'></select>
+      <select id="audioSource" class='source'>
+        <option value="no-input" id="noAudio"> No Input </option>
+      </select>
+
+      <select id="videoSource" class='source'>
+        <option value="no-input" id="noVideo"> No Input </option>
+      </select>
 
       <!-- Click -->
       <p>
@@ -44,19 +48,18 @@
     </div>
     <!-- Information -->
 
+    <!-- Loading -->
+    <div id='loading'></div>
+    <!-- Loading -->
+
     <!-- Monitor -->
     <div id = "monitor">
       <img class="monitor-border" src="/assets/monitor.png">
-
-      <!-- Loading -->
-      <div id='loading'></div>
-      <!-- Loading -->
 
       <!-- Power -->
       <div id='power'
            class="power-size">
         <img class="power" src="/assets/power.png">
-        <script src="/js/power-on.js"></script>
       </div>
       <!-- Power -->
 
@@ -81,7 +84,6 @@
   		  </div>
    	  </div>
         <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
-        <script src="src/index.js"></script>
         <script src="/js/keyboard-capture.js"></script>
     </div>
     <!-- Keyboard -->

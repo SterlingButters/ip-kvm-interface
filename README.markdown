@@ -2,6 +2,9 @@
 
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Example.gif)
 
+### NEW! (Latency Monitor)
+![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Latency.gif)
+
 # About
 This project is a "fork" of https://github.com/Fmstrat/diy-ipmi. The project creates a
 web-accessable IPMI / IP KVM system utilizing an RPi3 server/manager and 2 Arduino Micro's that provide

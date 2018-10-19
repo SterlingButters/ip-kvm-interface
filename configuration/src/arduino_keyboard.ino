@@ -34,14 +34,14 @@ String keyCode = "";
 char state;
 
 void loop() {
-  while (rpiSerial.available() > 0) {   
+  while (rpiSerial.available() > 0) {
     // "Type" via keyCodes (recommended for modifiers)
     // https://www.arduino.cc/en/Reference/KeyboardWrite not behaving as expected
-    
-    int data = rpiSerial.read(); 
+
+    int data = rpiSerial.read();
     if (isDigit(data)) {
-      keyCode += (char)data; 
-    }   
+      keyCode += (char)data;
+    }
 
     if (isAlpha(data)) {
       state = (char)data;
@@ -50,7 +50,7 @@ void loop() {
     if (data == '\n') {
       Serial.print(state);
       Serial.println(keyCode.toInt());
-      
+
       if (state == 'd') {
         Keyboard.press(keyCode.toInt());
       }

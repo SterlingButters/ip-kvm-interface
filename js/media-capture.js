@@ -1,5 +1,4 @@
-// Media Capture
-
+// Setting Fullscreen
 info = document.getElementById('information');
 monitor = document.getElementById('monitor');
 keyBoard = document.getElementById('keyboard');
@@ -38,9 +37,15 @@ observer.observe(video, {
   characterData: false
 })
 
+// Capturing Media
 const videoElement = document.querySelector('video');
 const audioSelect = document.querySelector('select#audioSource');
 const videoSelect = document.querySelector('select#videoSource');
+
+var socketTx = io();
+
+powerButton = document.getElementById('power');
+icon = document.getElementById('loading');
 
 navigator.mediaDevices.enumerateDevices()
   .then(gotDevices).then(getStream).catch(handleError);
@@ -53,21 +58,37 @@ function gotDevices(deviceInfos) {
     const deviceInfo = deviceInfos[i];
     const option = document.createElement('option');
     option.value = deviceInfo.deviceId;
+
     if (deviceInfo.kind === 'audioinput') {
-      option.text = deviceInfo.label ||
-        'microphone ' + (audioSelect.length + 1);
+      option.text = deviceInfo.label || 'microphone ' +
+        (audioSelect.length);
       audioSelect.appendChild(option);
-    } else if (deviceInfo.kind === 'videoinput') {
+    }
+
+    else if (deviceInfo.kind === 'videoinput') {
       option.text = deviceInfo.label || 'camera ' +
-        (videoSelect.length + 1);
+        (videoSelect.length);
       videoSelect.appendChild(option);
-    } else {
+    }
+
+    else {
       console.log('Found another kind of device: ', deviceInfo);
     }
   }
 }
 
 function getStream() {
+  // Power-on loading icon; TODO: accept power-on from multiple servers (currently overconstrained)
+  if (videoSelect.value == 'no-input') {
+    powerButton.onclick = function() {
+      if (icon.style.visibility != 'hidden') {
+        socketTx.emit('poweron', "ON");
+        icon.style.visibility = 'visible';
+      }
+    }
+  }
+  else {icon.style.visibility = 'hidden';}
+
   if (window.stream) {
     window.stream.getTracks().forEach(function(track) {
       track.stop();

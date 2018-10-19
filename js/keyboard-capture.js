@@ -226,8 +226,7 @@ document.addEventListener("keyup", event => {
   buttonPhysical = "u"+event.keyCode;
 
   let input = document.querySelector(".input").value;
-  // TODO: Fix error here
-  // keyboard.setInput(input);
+  keyboard.setInput(input);
 
   if (event.key === "Shift") disableShiftMode(event);
   if (event.key === "CapsLock") disableShiftMode(event);
@@ -251,7 +250,6 @@ function toggleShiftMode(event) {
 }
 
 function enableShiftMode(event) {
-  // TODO: Fix error here
   keyboard.setOptions({
     layoutName: "shift"
   });

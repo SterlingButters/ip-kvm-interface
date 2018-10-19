@@ -25,7 +25,6 @@ http.listen(3000, function(){
   console.log('Listening on http://127.0.0.1:3000');
 });
 
-// TODO: Arduino: set up serial connection to mouse & keyboard <path>
 // Set up serial connection to device <cu.SLAB_USBtoUART>
 var serialPort = require('serialport');
 var port = new serialPort('/dev/cu.SLAB_USBtoUART', {
@@ -44,8 +43,22 @@ port.on('open', function() {
   console.log("Serial connection made")
 });
 
-var io = require('socket.io-client');
-io.connect('http://localhost:3000', {reconnect: true});
+// TODO: Arduino: set up serial connection to mouse & keyboard <path>
+// var portKeyboard = new serialPort('/dev/cu.SLAB_USBtoUART', {
+//   baudRate: 115200,
+//   autoOpen: false,
+//   flowControl: true
+// });
+//
+// // Report error if Serial connection cannot be made
+// portKeyboard.open(function (err) {
+//   if (err) {
+//     return console.log("Error opening port: ", err.message);
+//   }
+// });
+// portKeyboard.on('open', function() {
+//   console.log("Serial connection made")
+// });
 
 // Make browser connection
 socketTx.on('connection', function(socketRx) {

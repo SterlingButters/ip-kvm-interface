@@ -16,12 +16,15 @@
 
 SoftwareSerial rpiSerial(10, 11); // RX, TX
 
+
+String inString = "";
+
 void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   // Set the data rate for the SoftwareSerial port
   rpiSerial.begin(9600);
-  // initialize control over the keyboard:
+  // initialize control over the Mouse:
   Mouse.begin();
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
@@ -30,37 +33,46 @@ void setup() {
   Serial.println("Mouse Serial Connection Established");
 }
 
+String value = "";
+String state = "";
+
 void loop() {
   const int sensitivity = 250;  // Higher sensitivity value = slower mouse,
                                 // should be <=~ 500
 
-  if (rpiSerial.available()) {
+  while (rpiSerial.available() > 0) {
     // read incoming serial data:
-    String cursorInfo = String(rpiSerial.read());
+    int data = rpiSerial.read();
+    if (isDigit(data)) {
+      value += (char)data;
+    }
 
-    // Parse cursor info
-    Serial.println(cursorInfo);
+    if (isAlpha(data)) {
+      state += (char)data;
+    }
 
-    // MOUSE_LEFT || MOUSE_RIGHT || MOUSE_MIDDLE || MOUSE_ALL
-
-    if (cursorInfo = 'leftDown') {Mouse.press(MOUSE_LEFT);};
-    if (cursorInfo = 'leftUp') {Mouse.release(MOUSE_LEFT);};
-    if (cursorInfo = 'middleDown') {Mouse.press(MOUSE_LEFT);};
-    if (cursorInfo = 'middleUp') {Mouse.release(MOUSE_LEFT);};
-    if (cursorInfo = 'rightDown') {Mouse.press(MOUSE_LEFT);};
-    if (cursorInfo = 'rightUp') {Mouse.release(MOUSE_LEFT);};
-    else {
-      // Get x/y values from info string; strtok() function
-      int xValue = getValue(cursorInfo, ',', 0).toInt();
-      int yValue = getValue(cursorInfo, ',', 1).toInt();
+    if (data == '\n') {
+      Serial.print(state);
+      Serial.println(value.toInt());
 
       // Cursor Movement
-      if (xValue != 0){
-        Mouse.move(xValue/sensitivity, 0, 0);  // move mouse on x axis;
-      };
-      if (yValue != 0){
-        Mouse.move(0, yValue/sensitivity, 0);  // move mouse on y axis
-      };
-    };
-  };
-};
+      // Should check if value == 0 ?
+      if (state == 'x') {
+        Mouse.move(value.toInt()/sensitivity, 0, 0);
+      }
+
+      if (state == 'y') {
+        Mouse.move(0, value.toInt()/sensitivity, 0);
+      }
+
+      // MOUSE_LEFT || MOUSE_RIGHT || MOUSE_MIDDLE || MOUSE_ALL
+      if (state = "leftDown") {Mouse.press(MOUSE_LEFT);};
+      if (state = "leftUp") {Mouse.release(MOUSE_LEFT);};
+      if (state = "middleDown") {Mouse.press(MOUSE_LEFT);};
+      if (state = "middleUp") {Mouse.release(MOUSE_LEFT);};
+      if (state = "rightDown") {Mouse.press(MOUSE_LEFT);};
+      if (state = "rightUp") {Mouse.release(MOUSE_LEFT);};
+
+    }
+  }
+}  
