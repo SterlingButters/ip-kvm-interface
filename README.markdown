@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Example.gif)
 
-### NEW! (Latency Monitor)
+#### NEW! (Latency Monitor)
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Latency.gif)
 
 # About
@@ -112,11 +112,4 @@ mass storage, etc]:
 
 4) Modal login
 
-5) Latency [On RPi3]:
-  - Get connected public ip: `netstat -tn 2>/dev/null | grep :80 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head`
-  - Ping that ip: `ping -c 10 -i .5 -W 3 <ipPublic>`
-  - Ping ip of PC on local network `ping -c 10 -i .5 -W 3 <ipLocal>`
-  - Add times together and plot RTT vs time using plotly:
-    - https://plot.ly/javascript/time-series/
-
-6) Bundle Dependencies: https://webpack.js.org/concepts/
+5) Bundle Dependencies: https://webpack.js.org/concepts/
