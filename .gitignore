@@ -3,3 +3,4 @@
 .clang_complete
 .gcc-flags.json
 js/.DS_Store
+backups
