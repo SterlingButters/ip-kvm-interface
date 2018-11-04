@@ -73,22 +73,25 @@ Join me on Discord:
 [![Discord](https://img.shields.io/discord/102860784329052160.svg)](https://discord.gg/uSTr7DZ)
 
 ## ToDo List (Essential)
-1) Arduino:
-  - Compile and upload `mouse-transmit.ino`
+1) Use `Motion` linux package to host video on port for HTML access on interface
+
+2) Arduino:
+  - Test mouse Arduino
+  - Test keyboard Arduino
   - Explore options for opening serial monitor:
   ```
   https://www.cyberciti.biz/hardware/5-linux-unix-commands-for-connecting-to-the-serial-console/
   https://www.arduino.cc/en/Reference/KeyboardPress
   ```
 
-2) CSS:
+3) CSS:
   - Keyboard:
     - Styling
     - KeyCode Map
   - Change default scroll position & statics
   - Remove loading icon atop video once media selection made
 
-3) Configuration:
+4) Configuration:
   - `install.sh`:
     - `sudo apt-get update` && install {packages}
     - `git clone` and unpack
