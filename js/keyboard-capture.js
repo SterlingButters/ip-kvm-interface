@@ -74,13 +74,8 @@ let keyboardArrows = new Keyboard(".simple-keyboard-arrows", {
 
 function getKeyCode(layoutKey) {
   let layoutKeyProcessed = layoutKey.replace("{", "").replace("}", "");
-  let code = getKeyCodeList(layoutKeyProcessed);
 
-  return code;
-}
-
-function getKeyCodeList(key) {
-  let obj = {
+  let codeList = {
     backspace: 8,
     tab: 9,
     enter: 13,
@@ -141,8 +136,8 @@ function getKeyCodeList(key) {
     y: 89,
     z: 90,
     metaleft: 91,
-    metaright: 92,
-    select: 93,
+    metaright: 93,
+    // select: 93,
     f1: 112,
     f2: 113,
     f3: 114,
@@ -169,7 +164,9 @@ function getKeyCodeList(key) {
     '}': 221,
     '"': 222
   };
-  return obj[key];
+
+  let code = codeList[layoutKeyProcessed];
+  return code;
 }
 
 function onChange(input) {
@@ -179,9 +176,9 @@ function onChange(input) {
 
 function onKeyPress(button) {
   console.log("Button pressed", button);
-  buttonOnScreen = button.replace('{','').replace('}','');
+  button = button.replace('{','').replace('}','');
   // Use line below for keyCode
-  // var buttonOnScreen = String(getKeyCode(button));
+  var buttonOnScreen = String(getKeyCode(button));
   socketTx.emit('keyBoard', buttonOnScreen);
 
   // If you want to handle the shift and caps lock buttons
@@ -199,14 +196,134 @@ function onKeyPress(button) {
  * Physical Keyboard support
  * Whenever the input is changed with the keyboard, updating SimpleKeyboard's internal input
  */
+
+ // Function to change array of js keycodes to decimal input reports
+function jsToDecimal(keyCode) {
+
+  let decimalList = {
+    '8': 42, // backspace
+    '9': 43, // tab
+    '13': 40, // enter
+    '16': 2, // shiftleft
+    '16': 32, // shiftright
+    '17': 1, // controlleft
+    '17': 16, // controlright
+    '18': 4, // altleft
+    '18': 64, // altright
+    '91': 8, // metaleft
+    '92': 128, // metaright
+    '19': 72, // pause
+    '20': 57, // capslock
+    '27': 41, // escape
+    '32': 44, // space
+    '33': 75, // pageup
+    '34': 78, // pagedown
+    '35': 77, // end
+    '36': 74, // home
+    '37': 80, // arrowleft
+    '38': 82, // arrowup
+    '39': 79, // arrowright
+    '40': 81, // arrowdown
+    '45': 73, // insert
+    '46': 76, // delete
+    '48': 39, // 0
+    '49': 30, // 1
+    '50': 31, // 2
+    '51': 32, // 3
+    '52': 33, // 4
+    '53': 34, // 5
+    '54': 35, // 6
+    '55': 36, // 7
+    '56': 37, // 8
+    '57': 38, // 9
+    '65': 4, // a
+    '66': 5, // b
+    '67': 6, // c
+    '68': 7, // d
+    '69': 8, // e
+    '70': 9, // f
+    '71': 10, // g
+    '72': 11, // h
+    '73': 12, // i
+    '74': 13, // j
+    '75': 14, // k
+    '76': 15, // l
+    '77': 16, // m
+    '78': 17, // n
+    '79': 18, // o
+    '80': 19, // p
+    '81': 20, // q
+    '82': 21, // r
+    '83': 22, // s
+    '84': 23, // t
+    '85': 24, // u
+    '86': 25, // v
+    '87': 26, // w
+    '88': 27, // x
+    '89': 28, // y
+    '90': 29, // z
+    '93': 119, // select
+    '112': 58, // f1
+    '113': 59, // f2
+    '114': 60, // f3
+    '115': 61, // f4
+    '116': 62, // f5
+    '117': 63, // f6
+    '118': 64, // f7
+    '119': 65, // f8
+    '120': 66, // f9
+    '121': 67, // f10
+    '122': 68, // f11
+    '123': 69, // f12
+    '144': 83, //numlock
+    '145': 71, //scrolllock
+    '186': 51, // ;
+    '187': 46, // =
+    '188': 54, // ,
+    '189': 45, // -
+    '190': 55, // .
+    '191': 56, // /
+    '192': 53, // `
+    '219': 47, // [
+    '220': 49, // \
+    '221': 48, // ]
+    '222': 52, // '
+  };
+
+  let decimal = decimalList[keyCode];
+  return decimal;
+}
+
+var keyTracker = [];
+var modifierTracker = [];
+
 document.addEventListener("keydown", event => {
-  // buttonPhysical = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
-  // Use line below for keyCode
-  buttonPhysical = "d"+event.keyCode;
+  // Insert key into tracker - ignore duplicates, ignore modifiers
+  if (!(event.key === "Shift" || event.key === "Meta" || event.key === "Control" || event.key === "Alt")) {
+    if (! keyTracker.includes(jsToDecimal(event.keyCode))) {
+        keyTracker.push(jsToDecimal(event.keyCode));
+    }
+  }
+
+  // Insert modifier into tracker - ignore duplicates, ignore keys
+  if (event.key === "Shift" || event.key === "Meta" || event.key === "Control" || event.key === "Alt") {
+    if (! modifierTracker.includes(jsToDecimal(event.keyCode))) {
+        modifierTracker.push(jsToDecimal(event.keyCode));
+    }
+  }
+
+  var inputReport = new Uint8Array(8);
+  inputReport[0] = modifierTracker.reduce((a,b) => a + b, 0);
+  inputReport[1] = 0;
+  // TODO: Check Logic
+  for (var i = 0; i < keyTracker.length; i++) {
+      inputReport[i+2] = keyTracker[-(i+1)];
+    }
+  for (var i = keyTracker.length; i < inputReport.length; i++) {
+      inputReport[i] = 0;
+  }
 
   // Disabling keyboard input, as some keys (like F5) make the browser lose focus.
-  // If you're like to re-enable it, comment the next line and uncomment the following ones
-  // event.preventDefault();
   if (event.key === "Alt") event.preventDefault();
   if (event.key === "F5") event.preventDefault();
 
@@ -216,14 +333,32 @@ document.addEventListener("keydown", event => {
   if (event.key === "ArrowRight") event.preventDefault();
   if (event.key === " ") event.preventDefault();
 
+  // TODO: Enabling shift mode prevents registering as modifier on keydown
   if (event.key === "Shift") enableShiftMode(event);
   if (event.key === "CapsLock") enableShiftMode(event);
 
-  socketTx.emit('keyBoard', buttonPhysical);
+  socketTx.emit('keyBoard', inputReport);
 });
 
 document.addEventListener("keyup", event => {
-  buttonPhysical = "u"+event.keyCode;
+
+  var keyTrackerUp = [];
+  var modifierTrackerUp = [];
+
+  if (keyTracker.includes(jsToDecimal(event.keyCode))) {
+      keyTrackerUp = keyTracker.filter(function(key){
+       return key !== jsToDecimal(event.keyCode);
+   });
+  }
+
+  if (modifierTracker.includes(jsToDecimal(event.keyCode))) {
+      modifierTrackerUp = modifierTracker.filter(function(key){
+       return key !== jsToDecimal(event.keyCode);
+   });
+  }
+
+  keyTracker = keyTrackerUp;
+  modifierTracker = modifierTrackerUp;
 
   let input = document.querySelector(".input").value;
   keyboard.setInput(input);
@@ -231,7 +366,7 @@ document.addEventListener("keyup", event => {
   if (event.key === "Shift") disableShiftMode(event);
   if (event.key === "CapsLock") disableShiftMode(event);
 
-  socketTx.emit('keyBoard', buttonPhysical);
+  socketTx.emit('keyBoard', keyTrackerUp);
 });
 
 function toggleShiftMode(event) {
