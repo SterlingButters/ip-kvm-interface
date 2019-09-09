@@ -312,16 +312,16 @@ document.addEventListener("keydown", event => {
     }
   }
 
-  var inputReport = new Uint8Array(8);
+  var recentKeys = keyTracker.reverse();
+  var inputReport = new Array(8).fill(0);
   inputReport[0] = modifierTracker.reduce((a,b) => a + b, 0);
-  inputReport[1] = 0;
-  // TODO: Check Logic
-  for (var i = 0; i < keyTracker.length; i++) {
-      inputReport[i+2] = keyTracker[-(i+1)];
-    }
-  for (var i = keyTracker.length; i < inputReport.length; i++) {
-      inputReport[i] = 0;
-  }
+  // inputReport[1] = <always 0>
+  inputReport[2] = recentKeys[0];
+  inputReport[3] = recentKeys[1];
+  inputReport[4] = recentKeys[2];
+  inputReport[5] = recentKeys[3];
+  inputReport[6] = recentKeys[4];
+  inputReport[7] = recentKeys[5];
 
   // Disabling keyboard input, as some keys (like F5) make the browser lose focus.
   if (event.key === "Alt") event.preventDefault();
@@ -337,7 +337,7 @@ document.addEventListener("keydown", event => {
   if (event.key === "Shift") enableShiftMode(event);
   if (event.key === "CapsLock") enableShiftMode(event);
 
-  socketTx.emit('keyBoard', inputReport);
+  socketTx.emit('keyBoard', recentKeys);
 });
 
 document.addEventListener("keyup", event => {
