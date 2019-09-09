@@ -360,13 +360,24 @@ document.addEventListener("keyup", event => {
   keyTracker = keyTrackerUp;
   modifierTracker = modifierTrackerUp;
 
+  var recentKeys = keyTrackerUp.reverse();
+  var inputReport = new Array(8).fill(0);
+  inputReport[0] = modifierTrackerUp.reduce((a,b) => a + b, 0);
+  // inputReport[1] = <always 0>
+  inputReport[2] = recentKeys[0] || 0;
+  inputReport[3] = recentKeys[1] || 0;
+  inputReport[4] = recentKeys[2] || 0;
+  inputReport[5] = recentKeys[3] || 0;
+  inputReport[6] = recentKeys[4] || 0;
+  inputReport[7] = recentKeys[5] || 0;
+
   let input = document.querySelector(".input").value;
   keyboard.setInput(input);
 
   if (event.key === "Shift") disableShiftMode(event);
   if (event.key === "CapsLock") disableShiftMode(event);
 
-  socketTx.emit('keyBoard', keyTrackerUp);
+  socketTx.emit('keyBoard', inputReport);
 });
 
 function toggleShiftMode(event) {
