@@ -35,7 +35,7 @@ function writeReport(device, data) {
 socketTx.on('connection', function(socketRx) {
   // Receive keyboard data from browser and log in node console
   socketRx.on('keyBoard', function(data){
-    console.log(data.toString('utf8'));
+    console.log(data);
     writeReport(keyboard, data);
     });
 
