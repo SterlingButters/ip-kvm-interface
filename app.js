@@ -36,7 +36,7 @@ socketTx.on('connection', function(socketRx) {
   // Receive keyboard data from browser and log in node console
   socketRx.on('keyBoard', function(data){
     console.log(data);
-    writeReport(keyboard, data);
+    //writeReport(keyboard, data);
     });
 
   // Receive mouse data from browser and log in node console
