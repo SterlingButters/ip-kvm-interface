@@ -34,19 +34,15 @@ function writeReport(device, data) {
 // Make browser connection
 socketTx.on('connection', function(socketRx) {
   // Receive keyboard data from browser and log in node console
-  socketRx.on('keyBoard', function(data){
+  socketRx.on('keyboardChannel', function(data){
     console.log(data);
-    //writeReport(keyboard, data);
+    writeReport(keyboard, Buffer.from(data));
     });
 
   // Receive mouse data from browser and log in node console
-  socketRx.on('mouseMove', function(data){
-    console.log("x"+data.x);
-    console.log("y"+data.y);
-  });
-
-  socketRx.on('mouseClick', function(data){
-    console.log(data.toString('utf8'));
+  socketRx.on('mouseChannel', function(data){
+    console.log(data);
+    writeReport(mouse, Buffer.from(data));
   });
 
   // Receive wake on LAN request
@@ -69,7 +65,7 @@ socketTx.on('connection', function(socketRx) {
   });
 });
 
-const openURL = require('opn');
+//const openURL = require('opn');
 // opens the url in the default browser
 console.log("Opening Server URL")
-openURL('http://127.0.0.1:3000');
+//openURL('http://127.0.0.1:3000');

@@ -179,7 +179,7 @@ function onKeyPress(button) {
   button = button.replace('{','').replace('}','');
   // Use line below for keyCode
   var buttonOnScreen = String(getKeyCode(button));
-  socketTx.emit('keyBoard', buttonOnScreen);
+  socketTx.emit('keyboardChannel', buttonOnScreen);
 
   // If you want to handle the shift and caps lock buttons
   if (
@@ -337,7 +337,7 @@ document.addEventListener("keydown", event => {
   if (event.key === "Shift") enableShiftMode(event);
   if (event.key === "CapsLock") enableShiftMode(event);
 
-  socketTx.emit('keyBoard', inputReport);
+  socketTx.emit('keyboardChannel', inputReport);
 });
 
 document.addEventListener("keyup", event => {
@@ -377,7 +377,7 @@ document.addEventListener("keyup", event => {
   if (event.key === "Shift") disableShiftMode(event);
   if (event.key === "CapsLock") disableShiftMode(event);
 
-  socketTx.emit('keyBoard', inputReport);
+  socketTx.emit('keyboardChannel', inputReport);
 });
 
 function toggleShiftMode(event) {

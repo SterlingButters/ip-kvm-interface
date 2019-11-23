@@ -13,11 +13,11 @@
   "dependencies": {
     "child_process": "1.0.2",
     "express": "4.16.4",
-    "http": "0.0.0",
-    "socket.io": "2.1.1",
     "fs": "0.0.1-security",
-    "socket.io-client": "2.1.1",
-    "opn": "5.4.0"
+    "http": "0.0.0",
+    "opn": "5.4.0",
+    "socket.io": "2.1.1",
+    "socket.io-client": "2.1.1"
   },
   "keywords": [],
   "author": "sterlingbutters",

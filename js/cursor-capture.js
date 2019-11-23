@@ -1,5 +1,6 @@
 // Position: https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#Examples
 // Cursor Capture
+
 // check pointerLock support
 var havePointerLock = 'pointerLockElement' in document ||
                       'mozPointerLockElement' in document ||
@@ -15,20 +16,22 @@ document.exitPointerLock = document.exitPointerLock ||
                            document.mozExitPointerLock ||
                            document.webkitExitPointerLock;
 
-let x;
-let y;
-var moveTrack = [];
-
 var isLocked = function() {
   return requestedElement === document.pointerLockElement ||
          requestedElement === document.mozPointerLockElement ||
          requestedElement === document.webkitPointerLockElement;
 }
 
+var x;
+var y;
+var click;
+var moveTrack = [];
+
 requestedElement.addEventListener('click', function() {
   if (!isLocked()) {
     x = 0;
     y = 0;
+    click = 0;
     requestedElement.requestPointerLock();
   }
   // else {
@@ -38,9 +41,16 @@ requestedElement.addEventListener('click', function() {
 
 var socketTx = io();
 
-var moveCallback = function(event) {
-  var position = document.getElementById("position");
-
+var cursorHandler = function(event) {
+  console.log(event.type);
+  
+  //Movement Handling
+  //document.getElementById("position").innerHTML = 'Position X: ' + x +
+                       '<br />Position Y: ' + y
+  
+  var xChange = 0;
+  var yChange = 0; 
+  if (event.type == "mousemove") {
     x += event.movementX ||
     event.mozMovementX ||
     event.webkitMovementX ||
@@ -51,18 +61,29 @@ var moveCallback = function(event) {
     event.webkitMovementY ||
     0;
 
-  // TODO: Other: Verify Accuracy
-  var pos = {x: x, y: y};
-  moveTrack.push(pos);
-  xChange = moveTrack[moveTrack.length - 1].x - moveTrack[moveTrack.length - 2].x;
-  yChange = moveTrack[moveTrack.length - 1].y - moveTrack[moveTrack.length - 2].y;
-  var mov = {x: xChange, y: yChange};
-  if (moveTrack.length > 2) {moveTrack = moveTrack.slice(-2)};
+    var pos = {x: x, y: y};
+    moveTrack.push(pos);
+    xChange = moveTrack[moveTrack.length - 1].x - moveTrack[moveTrack.length - 2].x;
+    yChange = moveTrack[moveTrack.length - 1].y - moveTrack[moveTrack.length - 2].y;
+    if (moveTrack.length > 2) {moveTrack = moveTrack.slice(-2)};
+  }  
 
-  socketTx.emit('mouseMove', mov);
+  //Click Handling
+  // document.getElementById("click-button").innerHTML = "You pressed button: " + event.button;
+  
+  if (event.type == "mousedown") {
+    if (event.button === 0) {click += 1}; //left-click
+    if (event.button === 1) {click += 3}; //middle-click
+    if (event.button === 2) {click += 2}; //right-click
+  };
 
-  position.innerHTML = 'Position X: ' + x +
-                       '<br />Position Y: ' + y
+  if (event.type == "mouseup") {
+    if (event.button === 0) {click -= 1}; //left-click
+    if (event.button === 1) {click -= 3}; //middle-click
+    if (event.button === 2) {click -= 2}; //right-click
+  };
+
+    socketTx.emit('mouseChannel', [click, xChange, -yChange]); //edits here
 }
 
 var changeCallback = function() {
@@ -71,12 +92,18 @@ var changeCallback = function() {
     return;
   }
   if (isLocked()) {
-    document.addEventListener('mousemove', moveCallback, false);
+    document.addEventListener('mousemove', cursorHandler);
+    document.getElementById('video').addEventListener('mousedown', cursorHandler);
+    document.getElementById('video').addEventListener('mouseup', cursorHandler);
+
     document.body.classList.add('locked');
   }
 
   else {
-    document.removeEventListener("mousemove", moveCallback, false);
+    document.removeEventListener("mousemove", cursorHandler, false);    
+    document.getElementById('video').removeEventListener('mousedown', cursorHandler);
+    document.getElementById('video').removeEventListener('mouseup', cursorHandler);
+    
     document.body.classList.remove('locked');
   }
 }
@@ -85,22 +112,3 @@ document.addEventListener('pointerlockchange', changeCallback, false);
 document.addEventListener('mozpointerlockchange', changeCallback, false);
 document.addEventListener('webkitpointerlockchange', changeCallback, false);
 
-// Click
-document.getElementById('video').addEventListener('mousedown', clickHandler, false);
-document.getElementById('video').addEventListener('mouseup', clickHandler, false);
-
-function clickHandler(event) {
-  document.getElementById("click-button").innerHTML = "You pressed button: " + event.button;
-  // Send click data to socket (Press AND release)
-  if (event.type == "mousedown") {
-    if (event.button === 0) {socketTx.emit('mouseClick', "leftDown")};
-    if (event.button === 1) {socketTx.emit('mouseClick', "middleDown")};
-    if (event.button === 2) {socketTx.emit('mouseClick', "rightDown")};
-  };
-
-  if (event.type == "mouseup") {
-    if (event.button === 0) {socketTx.emit('mouseClick', "leftUp")};
-    if (event.button === 1) {socketTx.emit('mouseClick', "middleUp")};
-    if (event.button === 2) {socketTx.emit('mouseClick', "rightUp")};
-  };
-}
