@@ -1,6 +1,6 @@
 # IP-KVM-InterFace ![](https://img.shields.io/badge/version-1.0.0-yellow.svg)
 
-![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Example.gif)
+![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Examples/Example.gif)
 
 # About
 This project is a "fork" of https://github.com/Fmstrat/diy-ipmi. The project creates a
