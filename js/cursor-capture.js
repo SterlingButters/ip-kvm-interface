@@ -43,13 +43,13 @@ var socketTx = io();
 
 var cursorHandler = function(event) {
   console.log(event.type);
-  
+
   //Movement Handling
   //document.getElementById("position").innerHTML = 'Position X: ' + x +
                        '<br />Position Y: ' + y
-  
+
   var xChange = 0;
-  var yChange = 0; 
+  var yChange = 0;
   if (event.type == "mousemove") {
     x += event.movementX ||
     event.mozMovementX ||
@@ -66,11 +66,11 @@ var cursorHandler = function(event) {
     xChange = moveTrack[moveTrack.length - 1].x - moveTrack[moveTrack.length - 2].x;
     yChange = moveTrack[moveTrack.length - 1].y - moveTrack[moveTrack.length - 2].y;
     if (moveTrack.length > 2) {moveTrack = moveTrack.slice(-2)};
-  }  
+  }
 
   //Click Handling
   // document.getElementById("click-button").innerHTML = "You pressed button: " + event.button;
-  
+
   if (event.type == "mousedown") {
     if (event.button === 0) {click += 1}; //left-click
     if (event.button === 1) {click += 3}; //middle-click
@@ -100,10 +100,10 @@ var changeCallback = function() {
   }
 
   else {
-    document.removeEventListener("mousemove", cursorHandler, false);    
+    document.removeEventListener("mousemove", cursorHandler, false);
     document.getElementById('video').removeEventListener('mousedown', cursorHandler);
     document.getElementById('video').removeEventListener('mouseup', cursorHandler);
-    
+
     document.body.classList.remove('locked');
   }
 }
@@ -111,4 +111,3 @@ var changeCallback = function() {
 document.addEventListener('pointerlockchange', changeCallback, false);
 document.addEventListener('mozpointerlockchange', changeCallback, false);
 document.addEventListener('webkitpointerlockchange', changeCallback, false);
-

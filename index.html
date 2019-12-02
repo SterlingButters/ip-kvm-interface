@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css"></link>
     <link rel="stylesheet" type="text/css" href="/css/interface.css">
 
+    <script src="/siofu/client.js"></script>
     <script src="/socket.io/socket.io.js"></script>
   </head>
 
-  <!-- TODO: CSS: Load page to scroll position -->
   <body class='light-background'
         onload="askPassword()"
         oncontextmenu="return false;">
@@ -22,16 +22,8 @@
     }
     </script>
 
-    <!-- Information -->
+    <!-- Debug -->
     <div id="information">
-
-      <select id="audioSource" class='source'>
-        <option value="no-input" id="noAudio"> No Input </option>
-      </select>
-
-      <select id="videoSource" class='source'>
-        <option value="no-input" id="noVideo"> No Input </option>
-      </select>
 
       <!-- Click -->
       <p>
@@ -41,12 +33,39 @@
       <p id="click-button"></p>
       <!-- Click -->
 
+      <button type="button" onclick="alert('Keyboard Reset')">Reset Keyboard</button>
+      <button type="button" onclick="alert('Mouse Reset')">Reset Mouse</button>
+      <button type="button" onclick="alert('Mass Storage Reset')">Reset Mass Storage</button>
+      <br> <br>
+
       <!-- Position -->
       <div id="position"></div>
       <!-- Position -->
 
     </div>
-    <!-- Information -->
+    <!-- Debug -->
+
+    <!-- Sources -->
+    <select id="audioSource" class='source'>
+      <option value="no-input" id="noAudio"> No Input </option>
+    </select>
+
+    <select id="videoSource" class='source'>
+      <option value="no-input" id="noVideo"> No Input </option>
+    </select>
+
+    <div>
+      <script type="text/javascript" src="/js/file-capture.js"></script>
+      <p><label>Choose File: <input type="file" id="upload_input"/></label></p>
+      <label for="file">File progress:</label>
+      <progress id="fileProgress" max="100" value="0"></progress>
+      <br> <br>
+      <select id="fileDropdown" class='source'>
+        <option value="no-file" id="noFile"> No Files </option>
+      </select>
+    </div>
+
+    <!-- Sources -->
 
     <!-- Loading -->
     <div id='loading'></div>

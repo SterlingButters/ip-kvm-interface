@@ -26,6 +26,11 @@
   appearance: none;
 }
 
+.upload {
+  height: 100px;
+  width: 150px;
+}
+
 #monitor{
 position: absolute;
 top: 41%;

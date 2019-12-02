@@ -3,17 +3,21 @@
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Examples/Example.gif)
 
 # About
-This project is a "fork" of https://github.com/Fmstrat/diy-ipmi. The project creates a
-web-accessable IPMI / IP KVM system utilizing any OTG enabled Raspberry Pi device (theoretically - testing only done of RPi4) that provide full keyboard control, monitor view, and the ability to reboot computers with standard motherboards
-remotely. This projects intends to, first and foremost, provide mouse support but also create the same
-interface (or better) with more human-readable code structure via modularity and organization. This project is EXTREMELY light weight and easy to install and configure. 
+This project creates a web-accessable IPMI / IP KVM system utilizing any OTG enabled
+Raspberry Pi device (theoretically - testing only done on RPi4) that provides full keyboard and mouse control,
+monitor view, and the ability to reboot computers with standard motherboards
+remotely. This projects intends to also create an interface with consistent
+and minimal programmatic requirements (i.e. use of web stack languages only) with modularity and organization.
+This project is EXTREMELY light weight and easy to install and configure. Additionally, this allows further
+development with minimal orientation overhead.
 
-What's more, is that with the current method of implementation, it will eventually be possible to extend capabilities
-to the Xbox One as well. Whats left on the project is listed someplace below. 
+The project's working features:
+1) Keyboard Support
+2) Mouse Support
 
 ## Configuration
 #### Setup
-![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/configuration/Setup.png)
+![alt text]()
 
 #### DDNS and Port Forwarding:
 1) Log into router
@@ -63,17 +67,17 @@ Join me on Discord:
 ## ToDo List (Essential)
 1) Configuration:
   - Finish Install Script
-  
+
 2) I/O Features:
   - Add support for WOL
   - Add relay support for hard shutdown
-  
+
 3) Interface Features:
   - Virtual Keyboard support
   - General CSS Styling and "Ergonomics"
-  - Debug Panel & Latency Monitor 
+  - Debug Panel & Latency Monitor
   ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Latency.gif)
-  
+
 4) Miscellaneous Features:
   - Mass Storage Controller
 
@@ -83,6 +87,6 @@ Join me on Discord:
   - https://www.newegg.com/Product/Product.aspx?Item=N82E16812119896&ignorebbr=1&nm_mc=KNC-GoogleAdwords-PC&cm_mmc=KNC-GoogleAdwords-PC-_-pla-_-USB+Converters-_-N82E16812119896&gclid=Cj0KCQjwxvbdBRC0ARIsAKmec9YWANflFHZ5qjMTb48rHDq_Y0OstuPRQpPX8xWt4Quvn8GgXR1875YaAoK8EALw_wcB&gclsrc=aw.ds
 
 ## Note to developers
-This project hosts a node-generated server on an OTG-capable Raspberry Pi device. The install script creates the libcomposite device on the Pi. The code then transcribes the information that is fed through the browser and relays it to the target computer. There are likely many approaches to current solutions. For instance, the mouse report descriptor is that for a generic mouse with basic functions. It might be possible to create a report descriptor that generates output reports from the mouse to provide absolute position on the screen. Additionally, it might be possible to detect the display resolution and calibrate the mouse movement. Currently, it doesn't seem that that level of rigor is worth it. Other improvements like this could likely be made as well. 
+This project hosts a node-generated server on an OTG-capable Raspberry Pi device. The install script creates the libcomposite device on the Pi. The code then transcribes the information that is fed through the browser and relays it to the target computer. There are likely many approaches to current solutions. For instance, the mouse report descriptor is that for a generic mouse with basic functions. It might be possible to create a report descriptor that generates output reports from the mouse to provide absolute position on the screen. Additionally, it might be possible to detect the display resolution and calibrate the mouse movement. Currently, it doesn't seem that that level of rigor is worth it. Other improvements like this could likely be made as well.
 
 I do plan on going back and cleaning up this code to be more readable but we will see if that happens anytime soon.

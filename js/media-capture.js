@@ -78,11 +78,11 @@ function gotDevices(deviceInfos) {
 }
 
 function getStream() {
-  // Power-on loading icon; TODO: accept power-on from multiple servers (currently overconstrained)
+  // Power-on loading icon; TODO: accept power-on from multiple servers (currently overconstrained) and auto change input
   if (videoSelect.value == 'no-input') {
     powerButton.onclick = function() {
       if (icon.style.visibility != 'hidden') {
-        socketTx.emit('poweron', "ON");
+        socketTx.emit('powerChannel', "ON");
         icon.style.visibility = 'visible';
       }
     }

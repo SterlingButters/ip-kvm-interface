@@ -10,16 +10,40 @@ process.stdout.on('data', function(chunk){
 
 // Start WebServer
 const express = require('express');
-var app = express();
-const http = require('http').Server(app);
-const socketTx = require('socket.io')(http);
+var SocketIOFileUpload = require('socketio-file-upload');
+var app = express().use(express.static(__dirname + '/')).use(SocketIOFileUpload.router);
 
-app.use(express.static(__dirname + '/'));
+const http = require('http').Server(app);
+const socket = require('socket.io')(http);
 
 http.listen(3000, function(){
   console.log('Listening on http://127.0.0.1:3000');
 });
 
+// ------------------ upload start ------------------ //
+
+var io = socket.listen(http);
+io.sockets.on("connection", function(socket){
+
+    // Make an instance of SocketIOFileUpload and listen on this socket:
+    var uploader = new SocketIOFileUpload();
+    uploader.dir = "uploads";
+    uploader.listen(socket);
+
+    // Do something when a file is saved:
+    uploader.on("saved", function(event){
+        console.log(event.file);
+    });
+
+    // Error handler:
+    uploader.on("error", function(event){
+        console.log("Error from uploader", event);
+    });
+});
+
+// ------------------ upload end ------------------ //
+
+// ------------------ HID start ------------------ //
 // TODO: Throw error if peripherals not detected
 const fs = require('fs');
 var mouse = '/dev/hidg0';
@@ -32,7 +56,7 @@ function writeReport(device, data) {
 }
 
 // Make browser connection
-socketTx.on('connection', function(socketRx) {
+socket.on('connection', function(socketRx) {
   // Receive keyboard data from browser and log in node console
   socketRx.on('keyboardChannel', function(data){
     console.log(data);
@@ -46,11 +70,11 @@ socketTx.on('connection', function(socketRx) {
   });
 
   // Receive wake on LAN request
-  socketRx.on('poweron', function(data){
+  socketRx.on('powerChannel', function(data){
     console.log("Requesting Power-on");
     if (data === "ON") {
       var spawn = require('child_process').spawn;
-      var macAddress = '00:11:22:33:44:55';
+      var macAddress = 'A0:AF:BD:C3:3F:52';
       var ipAddress = '10.0.0.255';
 
       process.on('uncaughtException', function (err) {
@@ -64,6 +88,8 @@ socketTx.on('connection', function(socketRx) {
     };
   });
 });
+// ------------------ HID end ------------------ //
+
 
 //const openURL = require('opn');
 // opens the url in the default browser

@@ -1,6 +1,5 @@
-.pioenvs
-.piolibdeps
-.clang_complete
-.gcc-flags.json
-js/.DS_Store
-backups
+.DS_Store
+/node_modules
+/testing
+TODO.txt
+package-lock.json
