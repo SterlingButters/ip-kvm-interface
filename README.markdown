@@ -17,7 +17,7 @@ The project's working features:
 
 ## Configuration
 #### Setup
-![alt text]()
+![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/dev/configuration/setup.png)
 
 #### DDNS and Port Forwarding:
 1) Log into router
