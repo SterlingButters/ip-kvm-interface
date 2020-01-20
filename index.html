@@ -9,86 +9,257 @@
 
     <script src="/siofu/client.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://kit.fontawesome.com/6873aa3c17.js" crossorigin="anonymous"></script>
+
+    <script>
+	function askPassword() {
+      		var password = prompt("Please enter your password", "Password");
+      		// TODO: EZ Link: Change password here
+      		while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
+    	}	
+
+	function initFunctions() {
+		askPassword();
+	}
+
+	window.addEventListener("load", initFunctions, true)
+
+    </script>
   </head>
 
   <body class='light-background'
-        onload="askPassword()"
         oncontextmenu="return false;">
-    <script>
-    function askPassword() {
-      var password = prompt("Please enter your password", "Password");
-      // TODO: EZ Link: Change password here
-      while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
-    }
+
+    <ul>
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">HID</a>
+        <div class="dropdown-content">
+          <button class="button" id="keyboardReset"><i class="far fa-keyboard"></i> Keyboard</button>
+          <br>
+          <button class="button" id="mouseReset"><i class="fas fa-mouse"></i> Mouse</button>
+          <br>
+          <button class="button" id="keyboardToggle">Toggle Virtual Keyboard</button>
+		  <script>
+            toggle = document.getElementById('keyboardToggle');
+            keyBoard = document.getElementById('keyboard');
+            toggle.onclick = function toggleFullScreen() {
+              console.log(keyBoard.classList);
+              if (keyBoard.classList.contains('hide')) {
+                console.log(keyBoard.classList.contains(' hide'));
+                keyBoard.className -= ' hide'}
+              else {keyBoard.className += ' hide'};
+            }
+          </script>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Media</a>
+        <div class="dropdown-content">
+          <br>
+          <button type="button" onclick="alert('Mass Storage Reset')">Reset Mass Storage</button>
+          <div class="dropdown-content">
+            <br>
+            <!-- https://android.googlesource.com/kernel/common/+/android-3.18/Documentation/usb/mass-storage.txt -->
+            <!-- https://www.w3schools.com/howto/howto_css_custom_checkbox.asp -->
+            <label class="container" title="This parameter specifies whether each logical unit should simulate
+CD-ROM.  The default is false.">CD-ROM
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+
+            <label class="container" title="This parameter specifies whether each logical unit should be
+removable. “b” here is either “y”, “Y” or “1” for true or “n”,
+“N” or “0” for false.
+If this option is set for a logical unit, gadget will accept an
+“eject” SCSI request (Start/Stop Unit).  When it is sent, the
+backing file will be closed to simulate ejection and the logical
+unit will not be mountable by the host until a new backing file is
+specified by userspace on the device (see “sysfs entries”
+section).
+If a logical unit is not removable (the default), a backing file
+must be specified for it with the “file” parameter as the module
+is loaded.  The same applies if the module is built in, no
+exceptions.
+The default value of the flag is false, *HOWEVER* it used to be
+true.  This has been changed to better match File Storage Gadget
+and because it seems like a saner default after all.  Thus to
+maintain compatibility with older kernels, it's best to specify
+the default values.  Also, if one relied on old default, explicit
+“n” needs to be specified now.
+Note that “removable” means the logical unit's media can be
+ejected or removed (as is true for a CD-ROM drive or a card
+reader).  It does *not* mean that the entire gadget can be
+unplugged from the host; the proper term for that is
+“hot-unpluggable”.">Removable
+              <input type="checkbox"
+                     checked="checked">
+              <span class="checkmark"></span>
+            </label>
+
+            <label class="container" title="This parameter specifies whether each logical unit should be
+reported as read only.  This will prevent host from modifying the
+backing files.
+Note that if this flag for given logical unit is false but the
+backing file could not be opened in read/write mode, the gadget
+will fall back to read only mode anyway.
+The default value for non-CD-ROM logical units is false; for
+logical units simulating CD-ROM it is forced to true.">Read-Only
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+
+            <label class="container" title="This parameter specifies whether FUA flag should be ignored in SCSI
+Write10 and Write12 commands sent to given logical units.
+MS Windows mounts removable storage in “Removal optimised mode” by
+default.  All the writes to the media are synchronous, which is
+achieved by setting the FUA (Force Unit Access) bit in SCSI
+Write(10,12) commands.  This forces each write to wait until the
+data has actually been written out and prevents I/O requests
+aggregation in block layer dramatically decreasing performance.
+Note that this may mean that if the device is powered from USB and
+the user unplugs the device without unmounting it first (which at
+least some Windows users do), the data may be lost.
+The default value is false.">Force Unit Access
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+
+            <label class="container" title="Specifies whether the gadget is allowed to halt bulk endpoints.
+The default is determined according to the type of USB device
+controller, but usually true.">Stall
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+
+            <script type="text/javascript" src="/js/file-capture.js"></script>
+
+            <p><label>Choose File: <input type="file" id="upload_input"/></label></p>
+            <label for="file">File progress:</label>
+            <progress id="fileProgress" max="100" value="0"></progress>
+            <br> <br>
+
+            <select id="fileDropdown" class='source'>
+              <option value="no-file" id="noFile"> No Files </option>
+            </select>
+
+          </div>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Targets</a>
+        <div class="dropdown-content">
+          <!-- Sources -->
+          <label>Audio Source</label>
+          <select id="audioSource" class='source'>
+            <option value="no-input" id="noAudio"> No Input </option>
+          </select>
+          <br>
+          <label>Video Source</label>
+          <select id="videoSource" class='source'>
+            <option value="no-input" id="noVideo"> No Input </option>
+          </select>
+		  <script>
+				var socket = io.connect();
+				videoSource = document.getElementById('videoSource');
+				socket.on('sourceChannel', function(data){
+				  console.log(data);
+				  const option = document.createElement('option');
+
+        		  option.value = data; // file.path
+        		  option.text = data; // file.name
+          		  videoSource.appendChild(option);
+				});
+		  </script>
+		  <br>
+		  <button onclick='refreshSources()'>Refresh Sources</button>
+		  <script> 
+			  function refreshSources() {
+				  var socketTx = io();
+				  //videoSource = document.getElementById('videoSource');
+				  console.log("Requesting sources under <path>"); 
+				  socketTx.emit('sourceChannel', "RefreshVideo"); 					  
+			  };
+		  </script>
+          <button onclick='resetStream()'>Reset Stream</button>
+		  <script>
+				function resetStream() {
+				  var socketTx = io();
+				  streamSource = document.getElementById('videoSource');
+				  console.log("Sending Reset command for Stream");
+				  socketTx.emit('streamChannel', streamSource.value);
+				  alert('Stream Reset');
+				};
+		  </script>
+          <!-- Sources -->
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Power Management</a>
+        <div class="dropdown-content">
+          <label>Select Target to Reset</label>
+          <input type="number" id="gpioTargets">
+          <button onclick='resetTarget()'>Reset Specified Target</button>
+          <br>
+          <label>Enter Mac Address</label>
+          <input id="WOLmacAddress" type="text">
+          <label>Enter IP Address</label>
+          <input id="WOLipAddress" type="text">
+          <button onclick='submitWOL()' id="submitWOL">Wake via LAN</button>
+        </div>
+		<script>
+			function resetTarget() {
+			  var socketTx = io();
+			  gpioTargets = document.getElementById('gpioTargets');
+			  console.log("Sending Reset command for GPIO " + gpioTargets.value);
+			  var message = {Method: "GPIO", Pin: gpioTargets.value};
+			  socketTx.emit('powerChannel', message);
+			};
+		</script>
+		<script> 
+			  function submitWOL() {
+				  var socketTx = io();
+				  macAddress = document.getElementById('WOLmacAddress').value;
+				  ipAddress = document.getElementById('WOLipAddress').value;
+					
+				  console.log("Requesting WOL for" + ipAddress + " & " + macAddress); 
+			  	  var message = {Method: "WOL", IP: ipAddress, MAC: macAddress};
+				  socketTx.emit('powerChannel', message); 					  
+			  };
+		</script>
+      </li>
+
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Debugging</a>
+
+        <!-- Debug -->
+        <div class="dropdown-content">
+          <!-- Butterfly Terminal -->
+          <iframe id='butterfly'
+                  src="http://localhost:57575/" height="1000" width="1500">
+          </iframe>
+          <!-- Butterfly Terminal -->
+        </div>
+
+        <!-- Debug -->
+      </li>
+
+    </ul>
+
+    <!-- Video -->
+    <canvas id="video" class="regular-video"></canvas>
+    <script type="text/javascript" src="/js/jsmpeg.min.js"></script>
+    <script type="text/javascript">
+		var canvas = document.getElementById('video');
+		var url = 'ws://'+document.location.hostname+':8082/';
+		var player = new JSMpeg.Player(url, {canvas: canvas});
     </script>
 
-    <!-- Debug -->
-    <div id="information">
-
-      <!-- Click -->
-      <p>
-      Click the video with one of your mouse<br>
-      buttons to return a number.<br>
-      </p>
-      <p id="click-button"></p>
-      <!-- Click -->
-
-      <button type="button" onclick="alert('Keyboard Reset')">Reset Keyboard</button>
-      <button type="button" onclick="alert('Mouse Reset')">Reset Mouse</button>
-      <button type="button" onclick="alert('Mass Storage Reset')">Reset Mass Storage</button>
-      <br> <br>
-
-      <!-- Position -->
-      <div id="position"></div>
-      <!-- Position -->
-
-    </div>
-    <!-- Debug -->
-
-    <!-- Sources -->
-    <select id="audioSource" class='source'>
-      <option value="no-input" id="noAudio"> No Input </option>
-    </select>
-
-    <select id="videoSource" class='source'>
-      <option value="no-input" id="noVideo"> No Input </option>
-    </select>
-
-    <div>
-      <script type="text/javascript" src="/js/file-capture.js"></script>
-      <p><label>Choose File: <input type="file" id="upload_input"/></label></p>
-      <label for="file">File progress:</label>
-      <progress id="fileProgress" max="100" value="0"></progress>
-      <br> <br>
-      <select id="fileDropdown" class='source'>
-        <option value="no-file" id="noFile"> No Files </option>
-      </select>
-    </div>
-
-    <!-- Sources -->
-
-    <!-- Loading -->
-    <div id='loading'></div>
-    <!-- Loading -->
-
-    <!-- Monitor -->
-    <div id = "monitor">
-      <img class="monitor-border" src="/assets/monitor.png">
-
-      <!-- Power -->
-      <div id='power'
-           class="power-size">
-        <img class="power" src="/assets/power.png">
-      </div>
-      <!-- Power -->
-
-      <!-- Fullscreen -->
-      <div id='fullscreen'>
-          <img src="/assets/arrows.png">
-      </div>
-      <!-- Fullscreen -->
-    </div>
-    <!-- Monitor -->
+    <!-- <script src="/js/media-capture.js"></script> -->
+    <script src="/js/cursor-capture.js"></script>
+    <!-- Video -->
 
     <!-- Keyboard -->
     <div id='keyboard'>
@@ -106,22 +277,6 @@
         <script src="/js/keyboard-capture.js"></script>
     </div>
     <!-- Keyboard -->
-
-    <!-- Butterfly Terminal -->
-    <iframe id='butterfly'
-            src="http://localhost:57575/" height="1000" width="1500">
-    </iframe>
-    <!-- Butterfly Terminal -->
-
-    <!-- Video -->
-    <video id='video'
-           class='regular-video'
-           autoplay
-           muted>
-      <script src="/js/media-capture.js"></script>
-      <script src="/js/cursor-capture.js"></script>
-    </video>
-    <!-- Video -->
 
   </body>
 

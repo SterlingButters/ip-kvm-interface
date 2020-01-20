@@ -108,6 +108,14 @@ var changeCallback = function() {
   }
 }
 
+// Handle Reset
+resetButton = document.getElementById('mouseReset');
+resetButton.onclick = function(){
+	console.log("Resetting Mouse");
+	socketTx.emit('mouseChannel', [0, 0, 0]);
+	alert('Mouse Reset');
+};
+
 document.addEventListener('pointerlockchange', changeCallback, false);
 document.addEventListener('mozpointerlockchange', changeCallback, false);
 document.addEventListener('webkitpointerlockchange', changeCallback, false);

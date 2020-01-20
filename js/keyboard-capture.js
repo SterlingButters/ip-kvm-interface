@@ -1,4 +1,3 @@
-
 let Keyboard = window.SimpleKeyboard.default;
 
 let commonKeyboardOptions = {
@@ -293,6 +292,14 @@ function jsToDecimal(keyCode) {
   let decimal = decimalList[keyCode];
   return decimal;
 }
+
+// Handle Reset
+resetButton = document.getElementById('keyboardReset');
+resetButton.onclick = function(){
+	console.log("Resetting Keyboard");
+	socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
+	alert('Keyboard Reset');
+};
 
 var keyTracker = [];
 var modifierTracker = [];
