@@ -23,7 +23,7 @@ The project's working features:
 **Needs updating to show channel relay
 
 #### Installation 
-1) Enable the dwc2 dtoverlay in '/boot/config.txt' on your Pi4
+1) Enable the dwc2 dtoverlay in `/boot/config.txt` on your Pi4
 
 2) Install node/npm/pip in <project-directory>
   
