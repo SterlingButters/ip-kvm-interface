@@ -1,4 +1,4 @@
-# IP-KVM-InterFace ![](https://img.shields.io/badge/version-1.0.0-yellow.svg)
+# IP-KVM-InterFace ![](https://img.shields.io/badge/version-1.2.0-yellow.svg)
 
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Examples/Example.gif)
 
