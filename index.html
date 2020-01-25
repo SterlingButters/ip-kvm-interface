@@ -16,7 +16,7 @@
       		var password = prompt("Please enter your password", "Password");
       		// TODO: EZ Link: Change password here
       		while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
-    	}	
+    	}
 
 	function initFunctions() {
 		askPassword();
@@ -29,6 +29,23 @@
 
   <body class='light-background'
         oncontextmenu="return false;">
+
+    <!-- Keyboard -->
+    <div id='keyboard'>
+      <input class="input"
+             size=120
+             placeholder="Tap on the virtual keyboard to start" />
+      <div class="keyboardContainer">
+        <div class="simple-keyboard-main"></div>
+        <div class="controlArrows">
+          <div class="simple-keyboard-control"></div>
+          <div class="simple-keyboard-arrows"></div>
+        </div>
+      </div>
+        <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
+        <script src="/js/keyboard-capture.js"></script>
+    </div>
+    <!-- Keyboard -->
 
     <ul>
       <li class="dropdown">
@@ -143,6 +160,32 @@ controller, but usually true.">Stall
               <option value="no-file" id="noFile"> No Files </option>
             </select>
 
+            <button type="button" onclick="attachFile()">Attach File</button>
+            <button type="button" onclick="detachFile()">Detach File</button>
+            <script>
+              var file = document.getElementById('fileDropdown').value;
+              var socketTx = io();
+              var socketRx = io.connect();
+              // TODO^ "Global" variables?
+
+              function attachFile() {
+                var message = {Command: "Attach", Argument: file};
+                socketTx.emit('fileChannel', file);
+                alert('Attaching File as Lun');
+
+                // Receive message for > 8 files
+                socketRx.on('fileChannel', function(data){
+                  alert(data);
+                }
+              };
+
+              function detachFile() {
+                var message = {Command: "Detach", Argument: file};
+                socketTx.emit('fileChannel', message);
+                alert('Detaching File');
+              };
+
+            </script>
           </div>
         </div>
       </li>
@@ -174,12 +217,12 @@ controller, but usually true.">Stall
 		  </script>
 		  <br>
 		  <button onclick='refreshSources()'>Refresh Sources</button>
-		  <script> 
+		  <script>
 			  function refreshSources() {
 				  var socketTx = io();
 				  //videoSource = document.getElementById('videoSource');
-				  console.log("Requesting sources under <path>"); 
-				  socketTx.emit('sourceChannel', "RefreshVideo"); 					  
+				  console.log("Requesting sources under <path>");
+				  socketTx.emit('sourceChannel', "RefreshVideo");
 			  };
 		  </script>
           <button onclick='resetStream()'>Reset Stream</button>
@@ -218,15 +261,15 @@ controller, but usually true.">Stall
 			  socketTx.emit('powerChannel', message);
 			};
 		</script>
-		<script> 
+		<script>
 			  function submitWOL() {
 				  var socketTx = io();
 				  macAddress = document.getElementById('WOLmacAddress').value;
 				  ipAddress = document.getElementById('WOLipAddress').value;
-					
-				  console.log("Requesting WOL for" + ipAddress + " & " + macAddress); 
+
+				  console.log("Requesting WOL for" + ipAddress + " & " + macAddress);
 			  	  var message = {Method: "WOL", IP: ipAddress, MAC: macAddress};
-				  socketTx.emit('powerChannel', message); 					  
+				  socketTx.emit('powerChannel', message);
 			  };
 		</script>
       </li>
@@ -260,23 +303,6 @@ controller, but usually true.">Stall
     <!-- <script src="/js/media-capture.js"></script> -->
     <script src="/js/cursor-capture.js"></script>
     <!-- Video -->
-
-    <!-- Keyboard -->
-    <div id='keyboard'>
-      <input class="input"
-             size=120
-             placeholder="Tap on the virtual keyboard to start" />
-      <div class="keyboardContainer">
-  		  <div class="simple-keyboard-main"></div>
-  		  <div class="controlArrows">
-  			  <div class="simple-keyboard-control"></div>
-  			  <div class="simple-keyboard-arrows"></div>
-  		  </div>
-   	  </div>
-        <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
-        <script src="/js/keyboard-capture.js"></script>
-    </div>
-    <!-- Keyboard -->
 
   </body>
 

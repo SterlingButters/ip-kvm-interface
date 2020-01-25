@@ -161,10 +161,10 @@ socket.on("connection", function(socket){
 
 // TODO: Throw error if peripherals not detected
 const fs = require('fs');
-const Gpio = require('onoff').Gpio;  					// Include onoff to interact with the GPIO
-const relayTwo = new Gpio(2, 'out'); 					// Can this be implemented dynamically?
-const relayThree = new Gpio(3, 'out'); 			
-const relayFour = new Gpio(4, 'out'); 					
+// const Gpio = require('onoff').Gpio;  					// Include onoff to interact with the GPIO
+// const relayTwo = new Gpio(2, 'out'); 					// Can this be implemented dynamically?
+// const relayThree = new Gpio(3, 'out');
+// const relayFour = new Gpio(4, 'out');
 
 var mouse = '/dev/hidg0';
 var keyboard = '/dev/hidg1';
@@ -175,21 +175,73 @@ function writeReport(device, data) {
   });
 }
 
+var fileTracker = {};
+
 // Make browser connection
 socket.on('connection', function(client) {
   console.log("Client communication established");
-  
+
   // Receive keyboard data from browser and log in node console
   client.on('keyboardChannel', function(data){
     console.log(data);
-    writeReport(keyboard, Buffer.from(data));
+    // writeReport(keyboard, Buffer.from(data));
   });
 
   // Receive mouse data from browser and log in node console
   client.on('mouseChannel', function(data){
     console.log(data);
-    writeReport(mouse, Buffer.from(data));
+    // writeReport(mouse, Buffer.from(data));
   });
+
+	client.on('fileChannel', function(data){
+		console.log(data);
+
+		fs.writeFile('/sys/kernel/config/usb_gadget/kvm-gadget/UDC', "", (err) => {
+			if (err) throw err;
+			console.log('UDC Halted');
+		});
+
+		// Attach file to libcomposite
+		// TODO May need to join project file path with "uploads"
+		if (data.Command === "Attach") {
+			numAttachedFiles = Object.keys(fileTracker).length;
+
+			if (numAttachedFiles > 8) {
+				socket.emit('fileChannel', "Greater than 8 files attached");
+			} else {
+				lunNum = 'lun.'+numAttachedFiles;
+				fileTracker[lunNum] = data.Argument;
+				editFile = 'functions/mass_storage.usb/'+lunNum+'/file';
+				fs.writeFile(editFile, data.Argument, (err) => {
+					if (err) throw err;
+					console.log('File Attached');
+				});
+			}
+		}
+
+		// Detach file from libcomposite
+		if (data.Command === "Detach") {
+			var key = Object.keys(fileTracker).find(key => fileTracker[key] === data.Argument);
+			delete fileTracker[key];
+			editFile = 'functions/mass_storage.usb/'+key+'/file';
+			fs.writeFile(editFile, "", (err) => {
+				if (err) throw err;
+				console.log('File Detached');
+			});
+		}
+
+		// Reconnect UDC
+		fs.readdir('/sys/class/udc', function(err, dirContents) {
+		    console.log(dirContents);
+				if (err) throw err;
+
+				fs.writeFile('/sys/kernel/config/usb_gadget/kvm-gadget/UDC', dirContents[0], (err) => {
+					if (err) throw err;
+					console.log('UDC Reconnected');
+				});
+		});
+
+	});
 
   // Receive stream reset instructions from browser and reset the stream
   client.on('streamChannel', function(data){
@@ -198,7 +250,7 @@ socket.on('connection', function(client) {
 
   // Receive source refresh instructions from browser and repopulate menu
   client.on('sourceChannel', function(data){
-	if (data === "RefreshVideo") {	
+	if (data === "RefreshVideo") {
 		const glob = require('glob');
 
 		  	glob("/dev/video*", function(err, files) {
@@ -262,7 +314,7 @@ socket.on('connection', function(client) {
 		  	}
 			relayFour.unexport(); 							// Unexport GPIO to free resources
 		};
-     }; 
+     };
   });
 });
 

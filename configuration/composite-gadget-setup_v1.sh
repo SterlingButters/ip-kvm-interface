@@ -1,14 +1,14 @@
 #!/bin/bash
-
 # Composite Gadget Setup Script
 
-echo "Creating composite gadget..."
+echo "Enabling Modules"
 modprobe dwc2
 modprobe libcomposite
 
 # Assumes a disk image exists here...
 #FILE=/home/pi/KVM/mass-storage.img
 
+echo "Creating Composite Gadget..."
 cd /sys/kernel/config/usb_gadget/
 
 mkdir -p kvm-gadget
@@ -24,12 +24,13 @@ echo "0123456789" > strings/0x409/serialnumber
 echo "Butters" > strings/0x409/manufacturer
 echo "KVM-Gadget" > strings/0x409/product
 
+echo "Creating Functions"
 A="name"
 # mkdir -p functions/acm.$A
 # mkdir -p functions/ecm.$A
 mkdir -p functions/hid.mouse
 mkdir -p functions/hid.keyboard
-#mkdir -p functions/mass_storage.usb
+mkdir -p functions/mass_storage.usb
 
 # First byte of address must be even
 # HOST="48:6f:73:74:50:43" # "HostPC"
@@ -56,6 +57,7 @@ echo 1 > functions/hid.keyboard/subclass
 echo 8 > functions/hid.keyboard/report_length
 echo -ne \\x05\\x01\\x09\\x06\\xa1\\x01\\x05\\x07\\x19\\xe0\\x29\\xe7\\x15\\x00\\x25\\x01\\x75\\x01\\x95\\x08\\x81\\x02\\x95\\x01\\x75\\x08\\x81\\x03\\x95\\x05\\x75\\x01\\x05\\x08\\x19\\x01\\x29\\x05\\x91\\x02\\x95\\x01\\x75\\x03\\x91\\x03\\x95\\x06\\x75\\x08\\x15\\x00\\x25\\x65\\x05\\x07\\x19\\x00\\x29\\x65\\x81\\x00\\xc0 > functions/hid.keyboard/report_desc
 
+echo "Linking Functions to Configuration"
 C=1
 mkdir -p configs/c.$C/strings/0x409
 echo "Configuration $C" > configs/c.$C/strings/0x409/configuration
@@ -66,6 +68,10 @@ ln -s functions/hid.mouse configs/c.$C/
 ln -s functions/hid.keyboard configs/c.$C/
 #ln -s functions/mass_storage.usb configs/c.$C/
 
+echo "Changing Permissions for UDC Control"
+chmod -R ug+rw /sys/kernel/config/usb_gadget/kvm-gadget
+
+echo "Handing Off UDC Drivers To Controller"
 # Hand off UDC drivers to controller
 ls /sys/class/udc > UDC
 # echo '' > UDC # Remove driver controller

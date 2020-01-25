@@ -39,13 +39,3 @@ observer.observe(video, {
 const videoElement = document.querySelector('video');
 const videoSelect = document.querySelector('videoSource');
 const audioSelect = document.querySelector('audioSource');
-
-var socketTx = io();
-
-// Rerun FFMPEG (with new device)
-function resetStream() {
-  device = videoSelect.value;
-
-  console.log('Resetting Stream');
-  });
-}

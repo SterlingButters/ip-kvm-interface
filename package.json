@@ -17,7 +17,7 @@
     "glob": "^7.1.6",
     "http": "0.0.0",
     "mod_autoindex": "^1.8.0",
-    "onoff": "^5.0.1",
+    "onoff": "5.0.1",
     "opn": "5.4.0",
     "socket.io": "2.1.1",
     "socket.io-client": "2.1.1",
