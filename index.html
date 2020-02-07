@@ -43,7 +43,6 @@
         </div>
       </div>
         <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
-        <script src="/js/keyboard-capture.js"></script>
     </div>
     <!-- Keyboard -->
 
@@ -56,6 +55,7 @@
           <button class="button" id="mouseReset"><i class="fas fa-mouse"></i> Mouse</button>
           <br>
           <button class="button" id="keyboardToggle">Toggle Virtual Keyboard</button>
+          <script src="/js/keyboard-capture.js"></script>		  
 		  <script>
             toggle = document.getElementById('keyboardToggle');
             keyBoard = document.getElementById('keyboard');
@@ -163,26 +163,31 @@ controller, but usually true.">Stall
             <button type="button" onclick="attachFile()">Attach File</button>
             <button type="button" onclick="detachFile()">Detach File</button>
             <script>
-              var file = document.getElementById('fileDropdown').value;
-              var socketTx = io();
-              var socketRx = io.connect();
-              // TODO^ "Global" variables?
 
               function attachFile() {
+				alert('Attaching File as Lun');
+
+				var file = document.getElementById('fileDropdown').value;
+                var socketTx = io();
+                var socketRx = io.connect();
+
                 var message = {Command: "Attach", Argument: file};
-                socketTx.emit('fileChannel', file);
-                alert('Attaching File as Lun');
+                socketTx.emit('fileChannel', message);
 
                 // Receive message for > 8 files
                 socketRx.on('fileChannel', function(data){
                   alert(data);
-                }
+                });
               };
 
               function detachFile() {
+                alert('Detaching File');
+
+				var file = document.getElementById('fileDropdown').value;
+                var socketTx = io();
+
                 var message = {Command: "Detach", Argument: file};
                 socketTx.emit('fileChannel', message);
-                alert('Detaching File');
               };
 
             </script>

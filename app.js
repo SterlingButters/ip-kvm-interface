@@ -161,10 +161,12 @@ socket.on("connection", function(socket){
 
 // TODO: Throw error if peripherals not detected
 const fs = require('fs');
-// const Gpio = require('onoff').Gpio;  					// Include onoff to interact with the GPIO
-// const relayTwo = new Gpio(2, 'out'); 					// Can this be implemented dynamically?
-// const relayThree = new Gpio(3, 'out');
-// const relayFour = new Gpio(4, 'out');
+var spawn = require('child_process').spawnSync;
+
+const Gpio = require('onoff').Gpio;  					// Include onoff to interact with the GPIO
+const relayTwo = new Gpio(2, 'out'); 					// Can this be implemented dynamically?
+const relayThree = new Gpio(3, 'out');
+const relayFour = new Gpio(4, 'out');
 
 var mouse = '/dev/hidg0';
 var keyboard = '/dev/hidg1';
@@ -184,64 +186,73 @@ socket.on('connection', function(client) {
   // Receive keyboard data from browser and log in node console
   client.on('keyboardChannel', function(data){
     console.log(data);
-    // writeReport(keyboard, Buffer.from(data));
+    writeReport(keyboard, Buffer.from(data));
   });
 
   // Receive mouse data from browser and log in node console
   client.on('mouseChannel', function(data){
     console.log(data);
-    // writeReport(mouse, Buffer.from(data));
+    writeReport(mouse, Buffer.from(data));
   });
 
-	client.on('fileChannel', function(data){
-		console.log(data);
+  client.on('fileChannel', function(data){
+	console.log(data);
+	
+	udcPath = '/sys/kernel/config/usb_gadget/kvm-gadget/UDC';
+	// UDC not recognized by the filesystem as a file -> must use echo
+	disconnect = spawn('bash', [__dirname+"/configuration/disconnectUDC.sh"]);
+	console.log(disconnect);
+	console.log('UDC Halted');	
+	
+	let confirmWrite = fs.readFileSync(udcPath, 'utf-8');
+	// console.log(confirmWrite);	
 
-		fs.writeFile('/sys/kernel/config/usb_gadget/kvm-gadget/UDC', "", (err) => {
-			if (err) throw err;
-			console.log('UDC Halted');
-		});
+	// Attach file to libcomposite
+	if (data.Command === "Attach") {
 
-		// Attach file to libcomposite
-		// TODO May need to join project file path with "uploads"
-		if (data.Command === "Attach") {
-			numAttachedFiles = Object.keys(fileTracker).length;
+		numAttachedFiles = Object.keys(fileTracker).length;
+		
+		lunNum = 'lun.'+numAttachedFiles;
+		fileTracker[lunNum] = data.Argument;
+		editFile = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+lunNum+'/file';
 
-			if (numAttachedFiles > 8) {
-				socket.emit('fileChannel', "Greater than 8 files attached");
-			} else {
-				lunNum = 'lun.'+numAttachedFiles;
-				fileTracker[lunNum] = data.Argument;
-				editFile = 'functions/mass_storage.usb/'+lunNum+'/file';
-				fs.writeFile(editFile, data.Argument, (err) => {
-					if (err) throw err;
-					console.log('File Attached');
-				});
-			}
+		if (numAttachedFiles > 8) {
+			socket.emit('fileChannel', "Greater than 8 files attached");
+		} else {
+			lunNum = 'lun.'+numAttachedFiles;
+			fileTracker[lunNum] = data.Argument;
+			editFile = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+lunNum+'/file';
+			
+			try {			
+				fs.writeFileSync(editFile, __dirname+'/uploads/'+data.Argument);
+				console.log('File Attached');
+			} catch (err) {console.log(err)}
 		}
 
-		// Detach file from libcomposite
-		if (data.Command === "Detach") {
-			var key = Object.keys(fileTracker).find(key => fileTracker[key] === data.Argument);
-			delete fileTracker[key];
-			editFile = 'functions/mass_storage.usb/'+key+'/file';
-			fs.writeFile(editFile, "", (err) => {
-				if (err) throw err;
-				console.log('File Detached');
-			});
-		}
+	}
 
-		// Reconnect UDC
-		fs.readdir('/sys/class/udc', function(err, dirContents) {
-		    console.log(dirContents);
-				if (err) throw err;
+	// Detach file from libcomposite
+	if (data.Command === "Detach") {
+		var key = Object.keys(fileTracker).find(key => fileTracker[key] === data.Argument);
+		delete fileTracker[key];
+		editFile = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+key+'/file';
 
-				fs.writeFile('/sys/kernel/config/usb_gadget/kvm-gadget/UDC', dirContents[0], (err) => {
-					if (err) throw err;
-					console.log('UDC Reconnected');
-				});
-		});
+		try {			
+			fs.writeFileSync(editFile, "");
+			console.log('File Attached');
+		} catch (err) {console.log(err)}
+	}
+	
+	// Reconnect UDC
+	let dirContents = fs.readdirSync('/sys/class/udc')
+	console.log(dirContents);
+	
+	try {
+		fs.writeFileSync(udcPath, dirContents[0]);
+		console.log('UDC Reconnected');
+	} catch (err) {console.log(err)};
 
-	});
+  });
 
   // Receive stream reset instructions from browser and reset the stream
   client.on('streamChannel', function(data){
@@ -321,7 +332,7 @@ socket.on('connection', function(client) {
 // ------------------ HID End ------------------ //
 
 
-//const openURL = require('opn');
+const openURL = require('opn');
 // opens the url in the default browser
 console.log("Opening Server URL");
-//openURL('http://127.0.0.1:3000');
+openURL('http://127.0.0.1:3000');
