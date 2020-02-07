@@ -14,7 +14,9 @@ development with minimal orientation overhead.
 The project's working features:
 1) Keyboard Support
 2) Mouse Support
-3) Video Source Selectability
+3) Video Source Selectability (e.g. `/dev/video0`, etc)
+4) GPIO Relay Reset (must initialize pins manually in `app.js`)
+5) WOL Support (code written; untested)
 
 ## Configuration
 #### Setup
@@ -82,24 +84,27 @@ Join me on Discord:
 
 ## ToDo List (Essential)
 1) Configuration:
-  - Finish Install Script
+  - Improve Install Script
 
 2) I/O Features:
-  - Add support for WOL
-  - Add relay support for hard shutdown
+  - Test WOL Support
+  - Identify GPIO Relay error on 2nd actuation
 
 3) Interface Features:
-  - Virtual Keyboard support
-  - General CSS Styling and "Ergonomics"
-  - Debug Panel & Latency Monitor
+  - Test Virtual Keyboard
+  - General CSS Styling
+  - Debug Panel
   ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/master/Latency.gif)
 
 4) Miscellaneous Features:
   - Mass Storage Controller
+    - Working on `fs.writeFileSync` `EBUSY` errors
 
 ## Potential Releases
 1) Mass Storage Controller
 [YKUSH3](https://www.yepkit.com/product/300110/YKUSH3)
+
+2) IR Controller 
 
 ## Note to developers
 This project hosts a node-generated server on an OTG-capable Raspberry Pi device. The install script creates the libcomposite device on the Pi. The code then transcribes the information that is fed through the browser and relays it to the target computer using socket.io. Video is achieved using JSMPEG (would like to find something even faster like WebRTC maybe). There are likely many approaches to current solutions. For instance, the mouse report descriptor is that for a generic mouse with basic functions. It might be possible to create a report descriptor that generates output reports from the mouse to provide absolute position on the screen. Additionally, it might be possible to detect the display resolution and calibrate the mouse movement. Currently, it doesn't seem that that level of rigor is worth it. Other improvements like this could likely be made as well.
