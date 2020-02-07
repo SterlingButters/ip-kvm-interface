@@ -137,6 +137,12 @@ function resetStream(input) {
 
 // ------------------ Upload Start ------------------ //
 
+var uploadPath = __dirname+'/uploads';
+
+if (!fs.existsSync(uploadPath)){
+    fs.mkdirSync(uploadPath);
+}
+
 socket.on("connection", function(socket){
 
     // Make an instance of SocketIOFileUpload and listen on this socket:
@@ -197,21 +203,21 @@ socket.on('connection', function(client) {
 
   client.on('fileChannel', function(data){
 	console.log(data);
-	
+
 	udcPath = '/sys/kernel/config/usb_gadget/kvm-gadget/UDC';
 	// UDC not recognized by the filesystem as a file -> must use echo
 	disconnect = spawn('bash', [__dirname+"/configuration/disconnectUDC.sh"]);
 	console.log(disconnect);
-	console.log('UDC Halted');	
-	
+	console.log('UDC Halted');
+
 	let confirmWrite = fs.readFileSync(udcPath, 'utf-8');
-	// console.log(confirmWrite);	
+	// console.log(confirmWrite);
 
 	// Attach file to libcomposite
 	if (data.Command === "Attach") {
 
 		numAttachedFiles = Object.keys(fileTracker).length;
-		
+
 		lunNum = 'lun.'+numAttachedFiles;
 		fileTracker[lunNum] = data.Argument;
 		editFile = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+lunNum+'/file';
@@ -222,8 +228,8 @@ socket.on('connection', function(client) {
 			lunNum = 'lun.'+numAttachedFiles;
 			fileTracker[lunNum] = data.Argument;
 			editFile = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+lunNum+'/file';
-			
-			try {			
+
+			try {
 				fs.writeFileSync(editFile, __dirname+'/uploads/'+data.Argument);
 				console.log('File Attached');
 			} catch (err) {console.log(err)}
@@ -237,16 +243,16 @@ socket.on('connection', function(client) {
 		delete fileTracker[key];
 		editFile = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+key+'/file';
 
-		try {			
+		try {
 			fs.writeFileSync(editFile, "");
 			console.log('File Attached');
 		} catch (err) {console.log(err)}
 	}
-	
+
 	// Reconnect UDC
 	let dirContents = fs.readdirSync('/sys/class/udc')
 	console.log(dirContents);
-	
+
 	try {
 		fs.writeFileSync(udcPath, dirContents[0]);
 		console.log('UDC Reconnected');
