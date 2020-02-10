@@ -3,9 +3,14 @@
     display: inline-block;
     vertical-align: middle;
 }
-
+/* https://stackoverflow.com/questions/23226888/horizontal-list-items-fit-to-100-with-even-spacing/23226961 */
 ul {
   list-style-type: none;
+  height: 150px;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  width: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -14,18 +19,22 @@ ul {
 
 li {
   float: left;
+  display: block;
+  flex: 0 1 auto;
 }
 
 li a, .dropbtn {
   display: inline-block;
   color: white;
+  font-family: Helvetica;
+  font-size: 20px;
   text-align: center;
-  padding: 14px 16px;
+  padding: 20px 25px;
   text-decoration: none;
 }
 
 li a:hover, .dropdown:hover .dropbtn {
-  background-color: blue;
+  background-color: gray;
 }
 
 li.dropdown {
@@ -36,7 +45,7 @@ li.dropdown {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 100px;
+  width: 350px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
@@ -55,6 +64,26 @@ li.dropdown {
   display: block;
 }
 
+button {
+  width: 100%;
+  height: 70px;
+  padding: 20px;
+  border: none;
+  background: none;
+  border: 1px solid #ccc;
+}
+
+button:hover {
+  background-color: white;
+}
+
+.toggleButton {
+  width: 10%;
+  position: absolute;
+  top: 100%;
+  left: 45%;
+  border: none;
+}
 /*  */
 
 .hide {
@@ -69,14 +98,23 @@ li.dropdown {
   background-color: black;
 }
 
-.source {
+label {
+  display: inline-block;
+  font-family: Helvetica;
+  text-align: center;
+  font-size: 15p
+  /* padding: 22px 0px;
+  height: 22px; */
+}
+
+select {
   /* General styling */
-  height: 30px;
-  width: 150px;
+  height: 60px;
+  width: 100%;
   border-radius: 0;
   border: 1px solid #d9d9d9;
   border-radius: 15px;
-
+  margin: auto;
   padding-left: 10px;
 
   /* Removes the default <select> styling */
@@ -85,9 +123,24 @@ li.dropdown {
   appearance: none;
 }
 
-.upload {
-  height: 100px;
-  width: 150px;
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    font-family: Helvetica;
+    text-align: center;
+    padding: 22px 0px;
+    cursor: pointer;
+    height: 22px;
+    width: 100%;
+    background: none;
+}
+
+.custom-file-upload:hover {
+  background-color: white;
+}
+
+input[type="file"] {
+    display: none;
 }
 
 .regular-video {
@@ -104,21 +157,6 @@ li.dropdown {
   top: 50%;
   left: 50%;
   width: 100%;
-  transform: translate(-50%, -50%);
-}
-
-#fullscreen{
-  position: absolute;
-  top: 6%;
-  left: 88%;
-  transform: translate(0%, 0%);
-  cursor: pointer;
-}
-
-#power{
-  position: absolute;
-  top: 75%;
-  left: 50%;
   transform: translate(-50%, -50%);
 }
 
@@ -162,7 +200,7 @@ li.dropdown {
 }
 
 input {
-  width: 100%;
+  width: 93%;
   height: 20px;
   padding: 10px;
   font-size: 15px;

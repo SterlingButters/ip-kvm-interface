@@ -45,33 +45,33 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
     </div>
     <!-- Keyboard -->
+    <button class="toggleButton" id="keyboardToggle" title="Toggle Virtual Keyboard"><i class="fas fa-eye-slash"></i></button>
+    <script>
+          toggle = document.getElementById('keyboardToggle');
+          keyBoard = document.getElementById('keyboard');
+          toggle.onclick = function toggleFullScreen() {
+            console.log(keyBoard.classList);
+            if (keyBoard.classList.contains('hide')) {
+              console.log(keyBoard.classList.contains(' hide'));
+              keyBoard.className -= ' hide'}
+            else {keyBoard.className += ' hide'};
+          }
+        </script>
 
     <ul>
       <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">HID</a>
+        <a href="javascript:void(0)" class="dropbtn" title="HID"><i class="far fa-hand-paper fa-5x"></i></a>
         <div class="dropdown-content">
           <button class="button" id="keyboardReset"><i class="far fa-keyboard"></i> Keyboard</button>
           <br>
           <button class="button" id="mouseReset"><i class="fas fa-mouse"></i> Mouse</button>
           <br>
-          <button class="button" id="keyboardToggle">Toggle Virtual Keyboard</button>
-          <script src="/js/keyboard-capture.js"></script>		  
-		  <script>
-            toggle = document.getElementById('keyboardToggle');
-            keyBoard = document.getElementById('keyboard');
-            toggle.onclick = function toggleFullScreen() {
-              console.log(keyBoard.classList);
-              if (keyBoard.classList.contains('hide')) {
-                console.log(keyBoard.classList.contains(' hide'));
-                keyBoard.className -= ' hide'}
-              else {keyBoard.className += ' hide'};
-            }
-          </script>
+          <script src="/js/keyboard-capture.js"></script>
         </div>
       </li>
 
       <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Media</a>
+        <a href="javascript:void(0)" class="dropbtn" title="Media"><i class="fas fa-hdd fa-5x"></i></a>
         <div class="dropdown-content">
           <br>
           <button type="button" onclick="alert('Mass Storage Reset')">Reset Mass Storage</button>
@@ -151,15 +151,14 @@ controller, but usually true.">Stall
 
             <script type="text/javascript" src="/js/file-capture.js"></script>
 
-            <p><label>Choose File: <input type="file" id="upload_input"/></label></p>
+            <p><label class="custom-file-upload">Choose File<input type="file" id="upload_input"/></label></p>
             <label for="file">File progress:</label>
-            <progress id="fileProgress" max="100" value="0"></progress>
+            <progress style="width:100%" id="fileProgress" max="100" value="0"></progress>
             <br> <br>
 
-            <select id="fileDropdown" class='source'>
+            <select id="fileDropdown">
               <option value="no-file" id="noFile"> No Files </option>
             </select>
-
             <button type="button" onclick="attachFile()">Attach File</button>
             <button type="button" onclick="detachFile()">Detach File</button>
             <script>
@@ -196,16 +195,16 @@ controller, but usually true.">Stall
       </li>
 
       <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Targets</a>
+        <a href="javascript:void(0)" class="dropbtn" title="Targets"><i class="fas fa-bullseye fa-5x"></i></a>
         <div class="dropdown-content">
           <!-- Sources -->
           <label>Audio Source</label>
-          <select id="audioSource" class='source'>
+          <select id="audioSource">
             <option value="no-input" id="noAudio"> No Input </option>
           </select>
           <br>
           <label>Video Source</label>
-          <select id="videoSource" class='source'>
+          <select id="videoSource">
             <option value="no-input" id="noVideo"> No Input </option>
           </select>
 		  <script>
@@ -245,7 +244,7 @@ controller, but usually true.">Stall
       </li>
 
       <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Power Management</a>
+        <a href="javascript:void(0)" class="dropbtn" title="Power Management"><i class="fas fa-power-off fa-5x"></i></a>
         <div class="dropdown-content">
           <label>Select Target to Reset</label>
           <input type="number" id="gpioTargets">
@@ -253,6 +252,7 @@ controller, but usually true.">Stall
           <br>
           <label>Enter Mac Address</label>
           <input id="WOLmacAddress" type="text">
+          <br>
           <label>Enter IP Address</label>
           <input id="WOLipAddress" type="text">
           <button onclick='submitWOL()' id="submitWOL">Wake via LAN</button>
@@ -280,7 +280,7 @@ controller, but usually true.">Stall
       </li>
 
       <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Debugging</a>
+        <a href="javascript:void(0)" class="dropbtn" title="Debugging"><i class="fas fa-bug fa-5x"></i></a>
 
         <!-- Debug -->
         <div class="dropdown-content">

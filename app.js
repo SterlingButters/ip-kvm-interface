@@ -21,6 +21,7 @@ const http = require('http');
 const server = http.Server(app);
 const socket = require('socket.io')(server);
 const WebSocket = require('ws');
+const fs = require('fs');
 
 server.listen(3000, function(){
   console.log('Listening on http://127.0.0.1:3000');
@@ -138,7 +139,6 @@ function resetStream(input) {
 // ------------------ Upload Start ------------------ //
 
 var uploadPath = __dirname+'/uploads';
-
 if (!fs.existsSync(uploadPath)){
     fs.mkdirSync(uploadPath);
 }
@@ -166,7 +166,6 @@ socket.on("connection", function(socket){
 // ------------------ HID Start ------------------ //
 
 // TODO: Throw error if peripherals not detected
-const fs = require('fs');
 var spawn = require('child_process').spawnSync;
 
 const Gpio = require('onoff').Gpio;  					// Include onoff to interact with the GPIO
