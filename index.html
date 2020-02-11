@@ -31,7 +31,7 @@
         oncontextmenu="return false;">
 
     <!-- Keyboard -->
-    <div id='keyboard'>
+    <div id='keyboard' class='keyboard'>
       <input class="input"
              size=120
              placeholder="Tap on the virtual keyboard to start" />
@@ -50,23 +50,23 @@
           toggle = document.getElementById('keyboardToggle');
           keyBoard = document.getElementById('keyboard');
           toggle.onclick = function toggleFullScreen() {
-            console.log(keyBoard.classList);
-            if (keyBoard.classList.contains('hide')) {
-              console.log(keyBoard.classList.contains(' hide'));
-              keyBoard.className -= ' hide'}
-            else {keyBoard.className += ' hide'};
+            keyBoard.classList.toggle('hide');
           }
         </script>
 
     <ul>
       <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn" title="HID Resets"><i class="far fa-hand-paper fa-5x"></i></a>
+        <a href="javascript:void(0)" class="dropbtn" title="HID Keyboard"><i class="far fa-keyboard fa-5x"></i></a>
         <div class="dropdown-content">
-          <button class="button" id="keyboardReset" title="Keyboard"><i class="far fa-keyboard fa-3x"></i></button>
-          <br>
-          <button class="button" id="mouseReset" title="Mouse"><i class="fas fa-mouse fa-3x"></i></button>
-          <br>
+          <button class="button" id="keyboardReset">Reset Keyboard</button>
           <script src="/js/keyboard-capture.js"></script>
+        </div>
+      </li>
+
+	  <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn" title="HID Mouse"><i class="fas fa-mouse fa-5x"></i></a>
+        <div class="dropdown-content">
+          <button class="button" id="mouseReset">Reset Mouse</button>
         </div>
       </li>
 
@@ -79,37 +79,23 @@
             <br>
             <!-- https://android.googlesource.com/kernel/common/+/android-3.18/Documentation/usb/mass-storage.txt -->
             <!-- https://www.w3schools.com/howto/howto_css_custom_checkbox.asp -->
-            <label class="container" title="This parameter specifies whether each logical unit should simulate
+
+            <label class="container" title="Specifies whether the gadget is allowed to halt bulk endpoints.
+The default is determined according to the type of USB device
+controller, but usually true.">Stall
+              <input id='stall' type="checkbox">
+              <span class="checkmark"></span>
+            </label>            
+
+			<label class="container" title="This parameter specifies whether each logical unit should simulate
 CD-ROM.  The default is false.">CD-ROM
-              <input type="checkbox">
+              <input id='cdrom' type="checkbox">
               <span class="checkmark"></span>
             </label>
 
-            <label class="container" title="This parameter specifies whether each logical unit should be
-removable. “b” here is either “y”, “Y” or “1” for true or “n”,
-“N” or “0” for false.
-If this option is set for a logical unit, gadget will accept an
-“eject” SCSI request (Start/Stop Unit).  When it is sent, the
-backing file will be closed to simulate ejection and the logical
-unit will not be mountable by the host until a new backing file is
-specified by userspace on the device (see “sysfs entries”
-section).
-If a logical unit is not removable (the default), a backing file
-must be specified for it with the “file” parameter as the module
-is loaded.  The same applies if the module is built in, no
-exceptions.
-The default value of the flag is false, *HOWEVER* it used to be
-true.  This has been changed to better match File Storage Gadget
-and because it seems like a saner default after all.  Thus to
-maintain compatibility with older kernels, it's best to specify
-the default values.  Also, if one relied on old default, explicit
-“n” needs to be specified now.
-Note that “removable” means the logical unit's media can be
-ejected or removed (as is true for a CD-ROM drive or a card
-reader).  It does *not* mean that the entire gadget can be
-unplugged from the host; the proper term for that is
-“hot-unpluggable”.">Removable
-              <input type="checkbox"
+            <label class="container" title="This parameter specifies whether each logical unit should be removable. “b” here is either “y”, “Y” or “1” for true or “n”, “N” or “0” for false. If this option is set for a logical unit, gadget will accept an “eject” SCSI request (Start/Stop Unit).  When it is sent, the backing file will be closed to simulate ejection and the logical unit will not be mountable by the host until a new backing file is specified by userspace on the device (see “sysfs entries” section). If a logical unit is not removable (the default), a backing file must be specified for it with the “file” parameter as the module is loaded. The same applies if the module is built in, no exceptions. The default value of the flag is false, *HOWEVER* it used to be true.  This has been changed to better match File Storage Gadget and because it seems like a saner default after all.  Thus to maintain compatibility with older kernels, it's best to specify the default values.  Also, if one relied on old default, explicit “n” needs to be specified now. Note that “removable” means the logical unit's media can be ejected or removed (as is true for a CD-ROM drive or a card reader). It does *not* mean that the entire gadget can be unplugged from the host; the proper term for that is “hot-unpluggable”."
+				   >Removable
+              <input id='removable' type="checkbox"
                      checked="checked">
               <span class="checkmark"></span>
             </label>
@@ -122,7 +108,7 @@ backing file could not be opened in read/write mode, the gadget
 will fall back to read only mode anyway.
 The default value for non-CD-ROM logical units is false; for
 logical units simulating CD-ROM it is forced to true.">Read-Only
-              <input type="checkbox">
+              <input id='read-only' type="checkbox">
               <span class="checkmark"></span>
             </label>
 
@@ -137,15 +123,8 @@ aggregation in block layer dramatically decreasing performance.
 Note that this may mean that if the device is powered from USB and
 the user unplugs the device without unmounting it first (which at
 least some Windows users do), the data may be lost.
-The default value is false.">Force Unit Access
-              <input type="checkbox">
-              <span class="checkmark"></span>
-            </label>
-
-            <label class="container" title="Specifies whether the gadget is allowed to halt bulk endpoints.
-The default is determined according to the type of USB device
-controller, but usually true.">Stall
-              <input type="checkbox">
+The default value is false.">Don't Force Unit Access
+              <input id='nofua' type="checkbox">
               <span class="checkmark"></span>
             </label>
 
@@ -155,6 +134,14 @@ controller, but usually true.">Stall
             <label for="file">File progress:</label>
             <progress style="width:100%" id="fileProgress" max="100" value="0"></progress>
             <br> <br>
+			<table id="file-table" style="width:100%">
+			  <tr>
+				<th>Attached Files</th>
+			  </tr>
+			  <tr>
+				<td>Test</td>
+			  </tr>
+			</table>
 
             <select id="fileDropdown">
               <option value="no-file" id="noFile"> No Files </option>
@@ -164,18 +151,31 @@ controller, but usually true.">Stall
             <script>
 
               function attachFile() {
-				alert('Attaching File as Lun');
 
 				var file = document.getElementById('fileDropdown').value;
+				var cdrom = document.getElementById('cdrom').checked;
+				var removable = document.getElementById('removable').checked;
+				var readonly = document.getElementById('read-only').checked;
+				var stall = document.getElementById('stall').checked;
+				var fua = document.getElementById('nofua').checked;
+
                 var socketTx = io();
                 var socketRx = io.connect();
 
-                var message = {Command: "Attach", Argument: file};
+                var message = {Command: "Attach", 
+							   		  File: file, 
+								   CDRom: +cdrom, 
+						   Removable: +removable, 
+						     ReadOnly: +readonly, 
+									  FUA: +fua};
                 socketTx.emit('fileChannel', message);
 
-                // Receive message for > 8 files
+                // Receive attached files or > 8 message
+				var table = document.getElementById('file-table');
                 socketRx.on('fileChannel', function(data){
-                  alert(data);
+				  console.log(data);
+				  alert('File Attached as Lun');
+                  // alert(data);
                 });
               };
 
@@ -253,8 +253,6 @@ controller, but usually true.">Stall
           <label>Enter Mac Address</label>
           <input id="WOLmacAddress" type="text">
           <br>
-          <label>Enter IP Address</label>
-          <input id="WOLipAddress" type="text">
           <button onclick='submitWOL()' id="submitWOL">Wake via LAN</button>
         </div>
 		<script>
@@ -270,10 +268,9 @@ controller, but usually true.">Stall
 			  function submitWOL() {
 				  var socketTx = io();
 				  macAddress = document.getElementById('WOLmacAddress').value;
-				  ipAddress = document.getElementById('WOLipAddress').value;
 
-				  console.log("Requesting WOL for" + ipAddress + " & " + macAddress);
-			  	  var message = {Method: "WOL", IP: ipAddress, MAC: macAddress};
+				  console.log("Requesting WOL for" + macAddress);
+			  	  var message = {Method: "WOL", MAC: macAddress};
 				  socketTx.emit('powerChannel', message);
 			  };
 		</script>
@@ -281,14 +278,10 @@ controller, but usually true.">Stall
 
       <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn" title="Debugging"><i class="fas fa-bug fa-5x"></i></a>
-
-        <!-- Debug -->
         <div class="dropdown-content">
           <button class="button" id="butterflyToggle" title="Toggle Terminal"><i class="fas fa-terminal fa-3x"></i></button>
         </div>
       </li>
-
-      <!-- Debug -->
 
       <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn" title="Miscellaneous"><i class="fas fa-desktop fa-5x"></i></a>
@@ -300,9 +293,7 @@ controller, but usually true.">Stall
     </ul>
 
     <!-- Video -->
-    <div class="regular-video black-box">
-        <a class="loading-prompt">No video loaded...</a>
-    </div>
+
     <canvas id="video" class="regular-video"></canvas>
     <script type="text/javascript" src="/js/jsmpeg.min.js"></script>
     <script type="text/javascript">
@@ -311,24 +302,25 @@ controller, but usually true.">Stall
 		var player = new JSMpeg.Player(url, {canvas: canvas});
     </script>
 
+    <div class="regular-video black-box hide">
+        <a class="loading-prompt">No video loaded...</a>
+    </div>
+
     <!-- <script src="/js/media-capture.js"></script> -->
     <script src="/js/cursor-capture.js"></script>
     <!-- Video -->
-
-    <iframe id='butterfly' class='butterfly-overlay hide'
-            width="1920px" height="1000px"
-            frameBorder="0"
-            src="http://localhost:57575/">
-    </iframe>
+	
+	<iframe id='butterfly'
+			class='butterfly-overlay hide'
+	        width="1920px" height="1000px"
+	        frameBorder="0"
+	        src="http://localhost:57575/">
+	</iframe>
     <script>
-      var toggleButterfly = document.getElementById('butterflyToggle');
+      var toggle = document.getElementById('butterflyToggle');
       var butterfly = document.getElementById('butterfly');
-      toggleButterfly.onclick = function toggleButterfly() {
-        console.log(butterfly.classList);
-        if (butterfly.classList.contains('hide')) {
-          console.log(keyBoard.classList.contains(' hide'));
-          butterfly.className -= ' hide'}
-        else {butterfly.className += ' hide'};
+      toggle.onclick = function toggleButterfly() {
+        butterfly.classList.toggle('hide');
       }
     </script>
 

@@ -66,7 +66,7 @@ echo 250 > configs/c.$C/MaxPower
 # ln -s functions/ecm.$A configs/c.$C/
 ln -s functions/hid.mouse configs/c.$C/
 ln -s functions/hid.keyboard configs/c.$C/
-#ln -s functions/mass_storage.usb configs/c.$C/
+ln -s functions/mass_storage.usb configs/c.$C/
 
 echo "Changing Permissions for UDC Control"
 chmod -R ug+rw /sys/kernel/config/usb_gadget/kvm-gadget

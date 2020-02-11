@@ -21,6 +21,7 @@ const http = require('http');
 const server = http.Server(app);
 const socket = require('socket.io')(server);
 const WebSocket = require('ws');
+const spawn = require('child_process').spawnSync;
 const fs = require('fs');
 
 server.listen(3000, function(){
@@ -28,14 +29,13 @@ server.listen(3000, function(){
 });
 
 // Start Butterfly for User
-// var spawn = require("child_process").spawnSync;
-// var terminal = spawn('butterfly.server.py',["--port=57575", "--unsecure"]);
-// 
-// console.log('Starting Butterfly Server on port 57575...');
-// terminal.stdout.on('data', function(chunk){
+//var instance = spawn('butterfly.server.py',["--port=57575", "--unsecure"]);
+
+//console.log('Starting Butterfly Server on port 57575...');
+//instance.stdout.on('data', function(chunk){
 //    var textChunk = chunk.toString('utf8');
 //    console.log(textChunk);
-// });
+//});
 
 // ------------------ Video Start ------------------ //
 
@@ -111,8 +111,6 @@ console.log('Awaiting WebSocket connections on ws://127.0.0.1:'+WEBSOCKET_PORT+'
 function resetStream(input) {
 
 	// Terminate Existing process here first
-
-	var spawn = require("child_process").spawn;
 	var ffmpeg = spawn('ffmpeg', ["-f","v4l2",
 		                     "-framerate","30",
 		                     "-video_size","1920x1080",
@@ -138,11 +136,6 @@ function resetStream(input) {
 
 // ------------------ Upload Start ------------------ //
 
-var uploadPath = __dirname+'/uploads';
-if (!fs.existsSync(uploadPath)){
-    fs.mkdirSync(uploadPath);
-}
-
 socket.on("connection", function(socket){
 
     // Make an instance of SocketIOFileUpload and listen on this socket:
@@ -166,12 +159,10 @@ socket.on("connection", function(socket){
 // ------------------ HID Start ------------------ //
 
 // TODO: Throw error if peripherals not detected
-var spawn = require('child_process').spawnSync;
-
-// const Gpio = require('onoff').Gpio;  					// Include onoff to interact with the GPIO
-// const relayTwo = new Gpio(2, 'out'); 					// Can this be implemented dynamically?
-// const relayThree = new Gpio(3, 'out');
-// const relayFour = new Gpio(4, 'out');
+const Gpio = require('onoff').Gpio;  					// Include onoff to interact with the GPIO
+const relayTwo = new Gpio(2, 'out'); 					// Can this be implemented dynamically?
+const relayThree = new Gpio(3, 'out');
+const relayFour = new Gpio(4, 'out');
 
 var mouse = '/dev/hidg0';
 var keyboard = '/dev/hidg1';
@@ -202,35 +193,45 @@ socket.on('connection', function(client) {
 
   client.on('fileChannel', function(data){
 	console.log(data);
-
+	
 	udcPath = '/sys/kernel/config/usb_gadget/kvm-gadget/UDC';
-	// UDC not recognized by the filesystem as a file -> must use echo
+	// UDC not recognized by the filesystem as a file -> must use echo (try removing configs also)
 	disconnect = spawn('bash', [__dirname+"/configuration/disconnectUDC.sh"]);
 	console.log(disconnect);
-	console.log('UDC Halted');
-
+	console.log('UDC Halted');	
+	
 	let confirmWrite = fs.readFileSync(udcPath, 'utf-8');
-	// console.log(confirmWrite);
+	// console.log(confirmWrite);	
 
 	// Attach file to libcomposite
 	if (data.Command === "Attach") {
+		
+		fs.unlinkSync('/sys/kernel/config/usb_gadget/kvm-gadget/configs/c.1/mass_storage.usb');
 
 		numAttachedFiles = Object.keys(fileTracker).length;
-
+		
 		lunNum = 'lun.'+numAttachedFiles;
-		fileTracker[lunNum] = data.Argument;
-		editFile = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+lunNum+'/file';
+		fileTracker[lunNum] = data.File;
+		
+		lunPath = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+lunNum;
+		if (!fs.existsSync(lunPath)) {
+			fs.mkdirSync(lunPath);
+		}
 
 		if (numAttachedFiles > 8) {
 			socket.emit('fileChannel', "Greater than 8 files attached");
 		} else {
 			lunNum = 'lun.'+numAttachedFiles;
-			fileTracker[lunNum] = data.Argument;
-			editFile = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+lunNum+'/file';
-
-			try {
-				fs.writeFileSync(editFile, __dirname+'/uploads/'+data.Argument);
+			fileTracker[lunNum] = data.File;
+			
+			try {			
+				fs.writeFileSync(lunPath+'/file', __dirname+'/uploads/'+data.File);
+				fs.writeFileSync(lunPath+'/cdrom', data.CDRom);
+				fs.writeFileSync(lunPath+'/removable', data.Removable);
+				//fs.writeFileSync(lunPath+'/ro', data.ReadOnly); // Find out why read-only doesn't work
+				fs.writeFileSync(lunPath+'/nofua', data.FUA);
 				console.log('File Attached');
+				socket.emit('fileChannel', fileTracker);
 			} catch (err) {console.log(err)}
 		}
 
@@ -238,20 +239,28 @@ socket.on('connection', function(client) {
 
 	// Detach file from libcomposite
 	if (data.Command === "Detach") {
-		var key = Object.keys(fileTracker).find(key => fileTracker[key] === data.Argument);
+		var key = Object.keys(fileTracker).find(key => fileTracker[key] === data.File);
 		delete fileTracker[key];
-		editFile = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+key+'/file';
+		file = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+key+'/file';
 
-		try {
-			fs.writeFileSync(editFile, "");
-			console.log('File Attached');
+		try {			
+			fs.writeFileSync(file, "");
+			fs.writeFileSync(lunPath+'/cdrom', "");
+			fs.writeFileSync(lunPath+'/removable', "");
+			//fs.writeFileSync(lunPath+'/ro', ""); // Find out why read-only doesn't work
+			fs.writeFileSync(lunPath+'/nofua', "");
+			console.log('File Detached');
+			socket.emit('fileChannel', fileTracker);
 		} catch (err) {console.log(err)}
 	}
-
+	
 	// Reconnect UDC
-	let dirContents = fs.readdirSync('/sys/class/udc')
-	console.log(dirContents);
+	if (!fs.existsSync('/sys/kernel/config/usb_gadget/kvm-gadget/configs/c.1/mass_storage.usb')) {
+	fs.symlinkSync('/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb', '/sys/kernel/config/usb_gadget/kvm-gadget/configs/c.1/mass_storage.usb');
+	}
 
+	let dirContents = fs.readdirSync('/sys/class/udc')
+	
 	try {
 		fs.writeFileSync(udcPath, dirContents[0]);
 		console.log('UDC Reconnected');
@@ -289,19 +298,11 @@ socket.on('connection', function(client) {
   client.on('powerChannel', function(data){
 
     if (data.Method === "WOL") {
-      console.log("Requesting WOL for " + data.IP + " & " + data.MAC);
-      var spawn = require('child_process').spawn;
+      console.log("Requesting WOL for " + data.MAC);
       var macAddress = data.MAC;
-      var ipAddress = data.IP;
 
-      process.on('uncaughtException', function (err) {
-        var etherwake = spawn('etherwake', ['-b', ipAddress, macAddress]);
-        console.log('Caught exception: ', err);
+      var etherwake = spawn('etherwake', ['-b', macAddress]);
 
-        etherwake.stdout.on('data', function(output){console.log("stdout: " + output)});
-        etherwake.stderr.on('data', function(output){console.log("stderr: " + output)});
-        etherwake.on('close', function(code){console.log("Exited with code: " + code)});
-      });
     } else {
 		console.log("Resetting GPIO Connection " + data.Pin);
 	    if (Number(data.Pin) === 2) {

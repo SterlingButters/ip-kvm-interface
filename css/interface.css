@@ -143,8 +143,16 @@ input[type="file"] {
     display: none;
 }
 
-.black-box{
+.black-box {
   background: #110f13;
+  z-index: 0;
+}
+
+.front {
+  z-index: 1;
+}
+
+.back {
   z-index: -10;
 }
 
@@ -170,6 +178,11 @@ input[type="file"] {
   top: 15%;
   position: absolute;
   transform: translate(-50%, 0%);
+
+}
+
+.butterfly-overlay.hide {
+  display: none;
 }
 
 .full-video {
@@ -178,10 +191,6 @@ input[type="file"] {
   left: 50%;
   width: 100%;
   transform: translate(-50%, -50%);
-}
-
-.power{
-  cursor: pointer;
 }
 
 /************ LOADING ************/
@@ -212,11 +221,15 @@ input[type="file"] {
 /************ LOADING ************/
 
 /************ KEYBOARD ************/
-#keyboard{
+.keyboard{
   position: absolute;
   top: 90%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.keyboard.hide {
+	display: none;
 }
 
 input {
@@ -311,14 +324,3 @@ input {
   width: 350px;
 }
 /************ KEYBOARD ************/
-
-/* #butterfly {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-} */
-
-#information {
-  padding-left: 5px;
-}
