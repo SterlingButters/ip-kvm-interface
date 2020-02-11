@@ -28,14 +28,14 @@ server.listen(3000, function(){
 });
 
 // Start Butterfly for User
-//var spawn = require("child_process").spawn;
-//var instance = spawn('butterfly.server.py',["--port=57575", "--unsecure"]);
-
-//console.log('Starting Butterfly Server on port 57575...');
-//instance.stdout.on('data', function(chunk){
+// var spawn = require("child_process").spawnSync;
+// var terminal = spawn('butterfly.server.py',["--port=57575", "--unsecure"]);
+// 
+// console.log('Starting Butterfly Server on port 57575...');
+// terminal.stdout.on('data', function(chunk){
 //    var textChunk = chunk.toString('utf8');
 //    console.log(textChunk);
-//});
+// });
 
 // ------------------ Video Start ------------------ //
 
@@ -168,10 +168,10 @@ socket.on("connection", function(socket){
 // TODO: Throw error if peripherals not detected
 var spawn = require('child_process').spawnSync;
 
-const Gpio = require('onoff').Gpio;  					// Include onoff to interact with the GPIO
-const relayTwo = new Gpio(2, 'out'); 					// Can this be implemented dynamically?
-const relayThree = new Gpio(3, 'out');
-const relayFour = new Gpio(4, 'out');
+// const Gpio = require('onoff').Gpio;  					// Include onoff to interact with the GPIO
+// const relayTwo = new Gpio(2, 'out'); 					// Can this be implemented dynamically?
+// const relayThree = new Gpio(3, 'out');
+// const relayFour = new Gpio(4, 'out');
 
 var mouse = '/dev/hidg0';
 var keyboard = '/dev/hidg1';

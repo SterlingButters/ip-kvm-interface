@@ -60,11 +60,11 @@
 
     <ul>
       <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn" title="HID"><i class="far fa-hand-paper fa-5x"></i></a>
+        <a href="javascript:void(0)" class="dropbtn" title="HID Resets"><i class="far fa-hand-paper fa-5x"></i></a>
         <div class="dropdown-content">
-          <button class="button" id="keyboardReset"><i class="far fa-keyboard"></i> Keyboard</button>
+          <button class="button" id="keyboardReset" title="Keyboard"><i class="far fa-keyboard fa-3x"></i></button>
           <br>
-          <button class="button" id="mouseReset"><i class="fas fa-mouse"></i> Mouse</button>
+          <button class="button" id="mouseReset" title="Mouse"><i class="fas fa-mouse fa-3x"></i></button>
           <br>
           <script src="/js/keyboard-capture.js"></script>
         </div>
@@ -284,19 +284,25 @@ controller, but usually true.">Stall
 
         <!-- Debug -->
         <div class="dropdown-content">
-          <!-- Butterfly Terminal -->
-          <iframe id='butterfly'
-                  src="http://localhost:57575/" height="1000" width="1500">
-          </iframe>
-          <!-- Butterfly Terminal -->
+          <button class="button" id="butterflyToggle" title="Toggle Terminal"><i class="fas fa-terminal fa-3x"></i></button>
         </div>
+      </li>
 
-        <!-- Debug -->
+      <!-- Debug -->
+
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn" title="Miscellaneous"><i class="fas fa-desktop fa-5x"></i></a>
+        <div class="dropdown-content">
+          <a>VNC (future)</a>
+        </div>
       </li>
 
     </ul>
 
     <!-- Video -->
+    <div class="regular-video black-box">
+        <a class="loading-prompt">No video loaded...</a>
+    </div>
     <canvas id="video" class="regular-video"></canvas>
     <script type="text/javascript" src="/js/jsmpeg.min.js"></script>
     <script type="text/javascript">
@@ -308,6 +314,23 @@ controller, but usually true.">Stall
     <!-- <script src="/js/media-capture.js"></script> -->
     <script src="/js/cursor-capture.js"></script>
     <!-- Video -->
+
+    <iframe id='butterfly' class='butterfly-overlay hide'
+            width="1920px" height="1000px"
+            frameBorder="0"
+            src="http://localhost:57575/">
+    </iframe>
+    <script>
+      var toggleButterfly = document.getElementById('butterflyToggle');
+      var butterfly = document.getElementById('butterfly');
+      toggleButterfly.onclick = function toggleButterfly() {
+        console.log(butterfly.classList);
+        if (butterfly.classList.contains('hide')) {
+          console.log(keyBoard.classList.contains(' hide'));
+          butterfly.className -= ' hide'}
+        else {butterfly.className += ' hide'};
+      }
+    </script>
 
   </body>
 

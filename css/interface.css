@@ -143,13 +143,33 @@ input[type="file"] {
     display: none;
 }
 
+.black-box{
+  background: #110f13;
+  z-index: -10;
+}
+
+.loading-prompt {
+  color: white;
+  font-size: 20px;
+  font-family: Helvetica;
+  position: absolute;
+  left: 46%;
+  top: 50%
+}
+
 .regular-video {
+  left: 50%;
   height: 1080px;
   width: 1920px;
   position: absolute;
-  /*top: 32%;
+  transform: translate(-50%, 1%);
+}
+
+.butterfly-overlay {
   left: 50%;
-  transform: translate(-50%, -50%);*/
+  top: 15%;
+  position: absolute;
+  transform: translate(-50%, 0%);
 }
 
 .full-video {
@@ -292,12 +312,12 @@ input {
 }
 /************ KEYBOARD ************/
 
-#butterfly {
+/* #butterfly {
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translate(-50%, 0%);
-}
+  transform: translate(-50%, -50%);
+} */
 
 #information {
   padding-left: 5px;
