@@ -209,9 +209,12 @@ socket.on('connection', function(client) {
 		fs.unlinkSync('/sys/kernel/config/usb_gadget/kvm-gadget/configs/c.1/mass_storage.usb');
 
 		numAttachedFiles = Object.keys(fileTracker).length;
-		
 		lunNum = 'lun.'+numAttachedFiles;
-		fileTracker[lunNum] = data.File;
+		fileTracker[lunNum] = {File: data.File, 
+						 CDRom: data.CDRom, 
+				 Removable: data.Removable, 
+			       ReadOnly: data.ReadOnly, 
+			    	        FUA: data.FUA};
 		
 		lunPath = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+lunNum;
 		if (!fs.existsSync(lunPath)) {
@@ -221,9 +224,6 @@ socket.on('connection', function(client) {
 		if (numAttachedFiles > 8) {
 			socket.emit('fileChannel', "Greater than 8 files attached");
 		} else {
-			lunNum = 'lun.'+numAttachedFiles;
-			fileTracker[lunNum] = data.File;
-			
 			try {			
 				fs.writeFileSync(lunPath+'/file', __dirname+'/uploads/'+data.File);
 				fs.writeFileSync(lunPath+'/cdrom', data.CDRom);
@@ -231,6 +231,8 @@ socket.on('connection', function(client) {
 				//fs.writeFileSync(lunPath+'/ro', data.ReadOnly); // Find out why read-only doesn't work
 				fs.writeFileSync(lunPath+'/nofua', data.FUA);
 				console.log('File Attached');
+				
+				console.log(fileTracker);
 				socket.emit('fileChannel', fileTracker);
 			} catch (err) {console.log(err)}
 		}
@@ -239,6 +241,7 @@ socket.on('connection', function(client) {
 
 	// Detach file from libcomposite
 	if (data.Command === "Detach") {
+		// Will need revision
 		var key = Object.keys(fileTracker).find(key => fileTracker[key] === data.File);
 		delete fileTracker[key];
 		file = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+key+'/file';

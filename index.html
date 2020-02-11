@@ -80,15 +80,14 @@
             <!-- https://android.googlesource.com/kernel/common/+/android-3.18/Documentation/usb/mass-storage.txt -->
             <!-- https://www.w3schools.com/howto/howto_css_custom_checkbox.asp -->
 
-            <label class="container" title="Specifies whether the gadget is allowed to halt bulk endpoints.
-The default is determined according to the type of USB device
-controller, but usually true.">Stall
+            <label class="container" title="Specifies whether the gadget is allowed to halt bulk endpoints. The default is determined according to the type of USB device controller, but usually true."
+				   >Stall
               <input id='stall' type="checkbox">
               <span class="checkmark"></span>
             </label>            
 
-			<label class="container" title="This parameter specifies whether each logical unit should simulate
-CD-ROM.  The default is false.">CD-ROM
+			<label class="container" title="This parameter specifies whether each logical unit should simulate CD-ROM.  The default is false."
+				   >CD-ROM
               <input id='cdrom' type="checkbox">
               <span class="checkmark"></span>
             </label>
@@ -100,30 +99,13 @@ CD-ROM.  The default is false.">CD-ROM
               <span class="checkmark"></span>
             </label>
 
-            <label class="container" title="This parameter specifies whether each logical unit should be
-reported as read only.  This will prevent host from modifying the
-backing files.
-Note that if this flag for given logical unit is false but the
-backing file could not be opened in read/write mode, the gadget
-will fall back to read only mode anyway.
-The default value for non-CD-ROM logical units is false; for
-logical units simulating CD-ROM it is forced to true.">Read-Only
+            <label class="container" title="This parameter specifies whether each logical unit should be reported as read only. This will prevent host from modifying the backing files. Note that if this flag for given logical unit is false but the backing file could not be opened in read/write mode, the gadget will fall back to read only mode anyway. The default value for non-CD-ROM logical units is false; for logical units simulating CD-ROM it is forced to true.">Read-Only
               <input id='read-only' type="checkbox">
               <span class="checkmark"></span>
             </label>
 
-            <label class="container" title="This parameter specifies whether FUA flag should be ignored in SCSI
-Write10 and Write12 commands sent to given logical units.
-MS Windows mounts removable storage in “Removal optimised mode” by
-default.  All the writes to the media are synchronous, which is
-achieved by setting the FUA (Force Unit Access) bit in SCSI
-Write(10,12) commands.  This forces each write to wait until the
-data has actually been written out and prevents I/O requests
-aggregation in block layer dramatically decreasing performance.
-Note that this may mean that if the device is powered from USB and
-the user unplugs the device without unmounting it first (which at
-least some Windows users do), the data may be lost.
-The default value is false.">Don't Force Unit Access
+            <label class="container" title="This parameter specifies whether FUA flag should be ignored in SCSI Write10 and Write12 commands sent to given logical units. MS Windows mounts removable storage in “Removal optimised mode” by default.  All the writes to the media are synchronous, which is achieved by setting the FUA (Force Unit Access) bit in SCSI Write(10,12) commands.  This forces each write to wait until the data has actually been written out and prevents I/O requests aggregation in block layer dramatically decreasing performance. Note that this may mean that if the device is powered from USB and the user unplugs the device without unmounting it first (which at least some Windows users do), the data may be lost. The default value is false."
+				   >Don't Force Unit Access
               <input id='nofua' type="checkbox">
               <span class="checkmark"></span>
             </label>
@@ -135,17 +117,20 @@ The default value is false.">Don't Force Unit Access
             <progress style="width:100%" id="fileProgress" max="100" value="0"></progress>
             <br> <br>
 			<table id="file-table" style="width:100%">
-			  <tr>
-				<th>Attached Files</th>
-			  </tr>
-			  <tr>
-				<td>Test</td>
-			  </tr>
+				<thead>
+ 					<tr>
+						<th>Lun</th>
+						<th>File</th>
+						<th>CD</th>
+						<th>Removable</th>
+						<th>ReadOnly</th>
+						<th>NoFUA</th>
+					</tr>
+				</thead>
 			</table>
 
-            <select id="fileDropdown">
-              <option value="no-file" id="noFile"> No Files </option>
-            </select>
+            <select id="fileDropdown"></select>
+
             <button type="button" onclick="attachFile()">Attach File</button>
             <button type="button" onclick="detachFile()">Detach File</button>
             <script>
@@ -171,11 +156,35 @@ The default value is false.">Don't Force Unit Access
                 socketTx.emit('fileChannel', message);
 
                 // Receive attached files or > 8 message
-				var table = document.getElementById('file-table');
-                socketRx.on('fileChannel', function(data){
+                socketRx.on('fileChannel', function(data){		  
 				  console.log(data);
 				  alert('File Attached as Lun');
                   // alert(data);
+
+				  var tbdy = document.createElement('tbody');
+				  
+				  for (var lun in data) {
+					console.log(lun);
+					var tr = document.createElement('tr');
+					tr.appendChild(document.createElement('td').appendChild(document.createTextNode(lun)));
+					
+					for (var info in data[lun]) {
+					  var td = document.createElement('td');
+					  td.appendChild(document.createTextNode(data[lun][info]))
+							tr.appendChild(td)
+					}
+					tbdy.appendChild(tr);
+				  }
+
+				  var table = document.getElementById('file-table')
+				  var old_tbdy = table.getElementsByTagName('tbody')[0];
+
+				  if (!old_tbdy) {
+				    table.appendChild(tbdy);
+				  } else {
+				  table.replaceChild(tbdy, old_tbdy)
+				  }
+
                 });
               };
 
