@@ -23,10 +23,10 @@ The project's working features (with caveats):
 #### 4) GPIO Interface (must initialize pins manually in `app.js`)
     - Known Issue: GPIO error on 2nd actuation  
     - Future Work: Identification of GPIO pin configuration for support of the following:
-          - Relay Channel
-          - Upstream USB Switch
-          - USB Switchable Hub
-          - LIRC Transmitter/Receiver
+          - Relay Channel [IOT](https://www.amazon.com/gp/product/B00WV7GMA2/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
+          - Upstream USB Switch [YKUP](https://www.yepkit.com/product/300114/YKUP)
+          - USB Switchable Hub [YKUSH3](https://www.yepkit.com/product/300110/YKUSH3)
+          - LIRC Transmitter/Receiver [ENER314-IR](https://www.amazon.co.uk/dp/B00T9JPA4O/ref=pe_3187911_185740111_TE_item)
 #### 5) WOL
     - Future Work: Configure `/network/interfaces` for user
     - Future Work: Detect MAC addresses with button
@@ -42,8 +42,8 @@ The project's working features (with caveats):
     - Future Work: Embedded VNC Client using noVNC
     - Future Work: Dataplicity "Wormhole" Instruction
 #### 9) Installation
-    - Future Work: Configure as `systemd` service
-    - Future Work: Add `dtoverlay=dwc2` to `/boot/config.txt`
+    - ~~Future Work: Configure as `systemd` service~~
+    - ~~Future Work: Add `dtoverlay=dwc2` to `/boot/config.txt`~~
   
 ## Configuration
 #### Setup
@@ -108,14 +108,6 @@ Donate with PayPal:
 
 Join me on Discord:
 [![Discord](https://img.shields.io/discord/102860784329052160.svg)](https://discord.gg/uSTr7DZ)
-
-  - Identify GPIO Relay error on 2nd actuation
-
-## Future Releases
-1) Mass Storage Controller
-[YKUSH3](https://www.yepkit.com/product/300110/YKUSH3)
-
-2) IR Controller 
 
 ## Note to developers
 This project hosts a node-generated server on an OTG-capable Raspberry Pi device. The install script creates the libcomposite device on the Pi. The code then transcribes the information that is fed through the browser and relays it to the target computer using socket.io. Video is achieved using JSMPEG (would like to find something even faster like WebRTC maybe). There are likely many approaches to current solutions. For instance, the mouse report descriptor is that for a generic mouse with basic functions. It might be possible to create a report descriptor that generates output reports from the mouse to provide absolute position on the screen. Additionally, it might be possible to detect the display resolution and calibrate the mouse movement. Currently, it doesn't seem that that level of rigor is worth it. Other improvements like this could likely be made as well.
