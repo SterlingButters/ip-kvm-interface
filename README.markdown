@@ -12,38 +12,38 @@ This project is EXTREMELY light weight and easy to install and configure. Additi
 development with minimal orientation overhead.
 
 The project's working features (with caveats):
-1) Keyboard
-  - Known Issue: Physical keyboard does not send `shift` event
-  - Known Issue: Physical keyboard `metaleft` registers as a key, not modifier
-  - Known Issue: Physical keyboard `alt` events need `preventDefault`
-2) Mouse 
-  - Future Work: Scroll wheel support
-3) Video Source (selection/refresh) (e.g. `/dev/video0`, etc)
-  - Future Work: Test uStreamer over JSMPEG
-4) GPIO Interface (must initialize pins manually in `app.js`)
-  - Known Issue: GPIO error on 2nd actuation  
-  - Future Work: Identification of GPIO pin configuration for support of the following:
+#### 1) Keyboard
+    - Known Issue: Physical keyboard does not send `shift` event
+    - Known Issue: Physical keyboard `metaleft` registers as a key, not modifier
+    - Known Issue: Physical keyboard `alt` events need `preventDefault`
+#### 2) Mouse 
+    - Future Work: Scroll wheel support
+#### 3) Video Source (selection/refresh) (e.g. `/dev/video0`, etc)
+    - Future Work: Test uStreamer over JSMPEG
+#### 4) GPIO Interface (must initialize pins manually in `app.js`)
+    - Known Issue: GPIO error on 2nd actuation  
+    - Future Work: Identification of GPIO pin configuration for support of the following:
           - Relay Channel
           - Upstream USB Switch
           - USB Switchable Hub
           - LIRC Transmitter/Receiver
-5) WOL
-  - Future Work: Configure `/network/interfaces` for user
-  - Future Work: Detect MAC addresses with button
-6) Terminal
-  - Future Work: Add "Copy Command" button (`tail -f /proc/< pid >/fd/1`[out] or `tail -f /proc/< pid >/fd/2`[err])
-7) Authentication (password configurable in `index.html` - currently 'pass')
-  - Future Work: Twilio-based multi-factor authentication 
-  - Future Work: Link to file containing password under `configuration `
-8) Remote Access
-  - Future Work: Link/iFrame to gateway address (for port forwarding configuration)
-  - Future Work: no-ip2 API DDNS support in interface
-  - Future Work: VPN configuration information
-  - Future Work: Embedded VNC Client using noVNC
-  - Future Work: Dataplicity "Wormhole" Instruction
-9) Installation
-  - Future Work: Configure as `systemd` service
-  - Future Work: Add `dtoverlay=dwc2` to `/boot/config.txt`
+#### 5) WOL
+    - Future Work: Configure `/network/interfaces` for user
+    - Future Work: Detect MAC addresses with button
+#### 6) Terminal
+    - Future Work: Add "Copy Command" button (`tail -f /proc/< pid >/fd/1`[out] or `tail -f /proc/< pid >/fd/2`[err])
+#### 7) Authentication (password configurable in `index.html` - currently 'pass')
+    - Future Work: Twilio-based multi-factor authentication 
+    - Future Work: Link to file containing password under `configuration `
+#### 8) Remote Access
+    - Future Work: Link/iFrame to gateway address (for port forwarding configuration)
+    - Future Work: no-ip2 API DDNS support in interface
+    - Future Work: VPN configuration information
+    - Future Work: Embedded VNC Client using noVNC
+    - Future Work: Dataplicity "Wormhole" Instruction
+#### 9) Installation
+    - Future Work: Configure as `systemd` service
+    - Future Work: Add `dtoverlay=dwc2` to `/boot/config.txt`
   
 ## Configuration
 #### Setup
