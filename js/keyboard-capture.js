@@ -3,6 +3,7 @@ let Keyboard = window.SimpleKeyboard.default;
 let commonKeyboardOptions = {
   onChange: input => onChange(input),
   onKeyPress: button => onKeyPress(button),
+  onKeyReleased: button => onKeyReleased(button),
   theme: "simple-keyboard hg-theme-default hg-layout-default",
   physicalKeyboardHighlight: true,
   syncInstanceInputs: true,
@@ -71,6 +72,18 @@ let keyboardArrows = new Keyboard(".simple-keyboard-arrows", {
   }
 });
 
+// Handle Reset
+resetButton = document.getElementById('keyboardReset');
+resetButton.onclick = function(){
+	console.log("Resetting Keyboard");
+	socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
+	alert('Keyboard Reset');
+};
+
+var keyTracker = [];
+var modifierTracker = [];
+
+// Function to obtain js keyCode from virtual keyboard button press
 function getKeyCode(layoutKey) {
   let layoutKeyProcessed = layoutKey.replace("{", "").replace("}", "");
 
@@ -168,35 +181,7 @@ function getKeyCode(layoutKey) {
   return code;
 }
 
-function onChange(input) {
-  document.querySelector(".input").value = input;
-  keyboard.setInput(input);
-}
-
-function onKeyPress(button) {
-  console.log("Button pressed", button);
-  button = button.replace('{','').replace('}','');
-  // Use line below for keyCode
-  var buttonOnScreen = String(getKeyCode(button));
-  socketTx.emit('keyboardChannel', buttonOnScreen);
-
-  // If you want to handle the shift and caps lock buttons
-  if (
-    button === "{shift}" ||
-    button === "{shiftleft}" ||
-    button === "{shiftright}" ||
-    button === "{capslock}"
-  ) {
-    toggleShiftMode();
-  }
-}
-
-/**
- * Physical Keyboard support
- * Whenever the input is changed with the keyboard, updating SimpleKeyboard's internal input
- */
-
- // Function to change array of js keycodes to decimal input reports
+// Function to change array of js keycodes to decimal input reports
 function jsToDecimal(keyCode) {
 
   let decimalList = {
@@ -293,16 +278,99 @@ function jsToDecimal(keyCode) {
   return decimal;
 }
 
-// Handle Reset
-resetButton = document.getElementById('keyboardReset');
-resetButton.onclick = function(){
-	console.log("Resetting Keyboard");
-	socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
-	alert('Keyboard Reset');
-};
+function onChange(input) {
+  document.querySelector(".input").value = input;
+  keyboard.setInput(input);
+}
 
-var keyTracker = [];
-var modifierTracker = [];
+/**
+ * Virtual Keyboard support
+ * Using SimpleKeyboard
+ */
+
+function onKeyPress(button) {
+  console.log("Button pressed", button);
+  button = button.replace('{','').replace('}','');
+
+  // Insert key into tracker - ignore duplicates, ignore modifiers
+  if (!(button === "shiftleft" || button === "shiftright" || button === "metaleft" || button ==="metaright" || button === "controlleft" || button === "controlright" || button === "altleft" || button === "altright")) {
+    if (! keyTracker.includes(jsToDecimal(getKeyCode(button)))) {
+        keyTracker.push(jsToDecimal(getKeyCode(button)));
+    }
+  }
+
+  // Insert modifier into tracker - ignore duplicates, ignore keys
+  if (button === "shiftleft" || button === "shiftright" || button === "metaleft" || button ==="metaright" || button === "controlleft" || button === "controlright" || button === "altleft" || button === "altright") {
+    if (! modifierTracker.includes(jsToDecimal(getKeyCode(button)))) {
+        modifierTracker.push(jsToDecimal(getKeyCode(button)));
+    }
+  }
+
+  var recentKeys = keyTracker.reverse();
+  var inputReport = new Array(8).fill(0);
+  inputReport[0] = modifierTracker.reduce((a,b) => a + b, 0);
+  // inputReport[1] = <always 0>
+  inputReport[2] = recentKeys[0] || 0;
+  inputReport[3] = recentKeys[1] || 0;
+  inputReport[4] = recentKeys[2] || 0;
+  inputReport[5] = recentKeys[3] || 0;
+  inputReport[6] = recentKeys[4] || 0;
+  inputReport[7] = recentKeys[5] || 0;
+
+  socketTx.emit('keyboardChannel', inputReport);
+
+  // If you want to handle the shift and caps lock buttons
+  if (
+    button === "{shift}" ||
+    button === "{shiftleft}" ||
+    button === "{shiftright}" ||
+    button === "{capslock}"
+  ) {
+    toggleShiftMode();
+  }
+}
+
+
+function onKeyReleased(button) {
+  console.log("Button released", button);
+  button = button.replace('{','').replace('}','');
+
+  var keyTrackerUp = [];
+  var modifierTrackerUp = [];
+
+  if (keyTracker.includes(jsToDecimal(getKeyCode(button)))) {
+      keyTrackerUp = keyTracker.filter(function(key){
+       return key !== jsToDecimal(getKeyCode(button));
+   });
+  }
+
+  if (modifierTracker.includes(jsToDecimal(getKeyCode(button)))) {
+      modifierTrackerUp = modifierTracker.filter(function(key){
+       return key !== jsToDecimal(getKeyCode(button));
+   });
+  }
+
+  keyTracker = keyTrackerUp;
+  modifierTracker = modifierTrackerUp;
+
+  var recentKeys = keyTrackerUp.reverse();
+  var inputReport = new Array(8).fill(0);
+  inputReport[0] = modifierTrackerUp.reduce((a,b) => a + b, 0);
+  // inputReport[1] = <always 0>
+  inputReport[2] = recentKeys[0] || 0;
+  inputReport[3] = recentKeys[1] || 0;
+  inputReport[4] = recentKeys[2] || 0;
+  inputReport[5] = recentKeys[3] || 0;
+  inputReport[6] = recentKeys[4] || 0;
+  inputReport[7] = recentKeys[5] || 0;
+
+  socketTx.emit('keyboardChannel', inputReport);
+}
+
+/**
+ * Physical Keyboard support
+ * Using document listeners
+ */
 
 document.addEventListener("keydown", event => {
   // Insert key into tracker - ignore duplicates, ignore modifiers
@@ -378,6 +446,7 @@ document.addEventListener("keyup", event => {
   inputReport[6] = recentKeys[4] || 0;
   inputReport[7] = recentKeys[5] || 0;
 
+  // Revise this
   let input = document.querySelector(".input").value;
   keyboard.setInput(input);
 

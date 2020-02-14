@@ -1,36 +1,91 @@
 #!/bin/bash
 
-sudo apt-get update
-sudo apt-get -y install etherwake node git python3-pip # {other tools}
-pip install butterfly
-cd /opt/sterling
-sudo git clone -b dev https://github.com/SterlingButters/ip-kvm-interface.git
-sudo chown pi ip-kvm-interface -R
-cd ip-kvm-interface
-sudo bash /configuration/composite-gadget-setup_v1.sh
-sudo npm install
+apt-get update
 
-#echo "Enter Mac Address (00:11:22:33:44:55) of the PC you would like to power on:"
-#read macAddress
-#echo "Enter ip Address of the PC you would like to power on:" # Remember *.255
-#read ipAddress
-#echo "Enter desired port for Butterfly terminal [57575]:"
-#read butterflyPort
-#echo "Enter desired port for Desktop InterFace [3000]:"
-#read interfacePort
+dpkg -s git
+git=`$?`
+if [ git -eq 0 ]
+then
+  echo "git installed... moving on"
+else
+  echo "git not installed... installing"
+  apt-get install -y git
+fi
 
-# Ask user for serial ports?
-#echo "cd /dev && ls"
-#echo "Enter desired path for serial keyboard:"
-#read keyboardPort
-#echo "Enter desired path for serial mouse:"
-#read mousePort
+dpkg -s etherwake
+etherwake=`$?`
+if [ etherwake -eq 0 ]
+then
+  echo "etherwake installed... moving on"
+else
+  echo "etherwake not installed... installing"
+  apt-get install -y etherwake
+fi
 
-# Get below to take arguments
-#sudo cp /etc/rc.local /etc/rc.local.bak
-#sudo sed -i 's/exit 0//g' /etc/rc.local
-# Need "?"?
-#echo "/bin/ip-kvm-interface/app.js &" | sudo tee --append /etc/rc.local
-#echo "exit 0" | sudo tee --append /etc/rc.local
+dpkg -s python3-pip
+pip=`$?`
+if [ git -eq 0 ]
+then
+  echo "pip installed... moving on"
+else
+  echo "pip not installed... installing"
+  apt-get install -y python3-pip
+fi
 
-#node app.js $macAddress $ipAddress $butterflyPort $interfacePort $keyboardPort $mousePort # To rc.local
+node -v
+node=`$?`
+npm -v
+npm=`$?`
+if [ node -eq 0 ] || [ npm -eq 0]
+then
+  echo "node installed... moving on"
+else
+  echo "node not installed... installing"
+  wget https://nodejs.org/dist/v12.16.0/node-v12.16.0-linux-armv7l.tar.xz
+  tar -xzf node-v12.16.0-linux-armv7l.tar.xz
+  cd node-v12.16.0-linux-armv7l/
+  cp -R * /usr/local/
+fi
+
+python -c "import butterfly"
+butterfly=`$?`
+if [ butterfly -eq 0 ]
+then
+  echo "butterfly installed... moving on"
+else
+  echo "butterfly not installed... installing"
+  pip install butterfly
+fi
+
+echo "moving project under /opt"
+cp ../../ip-kvm-interface /opt/ip-kvm-interface
+rm -r ../../ip-kvm-interface
+cd /opt/ip-kvm-interface
+
+echo "changing some permissions"
+chown pi . -R
+
+echo "setting up composite gadget"
+bash /configuration/composite-gadget-setup_v1.sh
+
+echo "npm configuring project"
+npm install
+
+# Once app.js can accept arguments, they can be supplied through ExecStart
+echo "converting project into a service"
+echo "[Unit]
+Description=RPi IPMI KVM Solution
+Documentation=https://github.com/SterlingButters/ip-kvm-interface
+After=network.target
+
+[Service]
+#Environment=NODE_PORT=3001
+Type=simple
+User=pi
+ExecStart=/usr/local/bin/node /opt/ip-kvm-interface/app.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target" > /lib/systemd/system/KVM.service
+
+service KVM start
