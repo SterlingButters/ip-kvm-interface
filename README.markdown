@@ -16,7 +16,7 @@ The project's working features:
 2) Mouse Support
 3) Video Source Selectability (e.g. `/dev/video0`, etc)
 4) GPIO Relay Reset (must initialize pins manually in `app.js`)
-5) WOL Support (code written; untested)
+5) WOL Support
 
 ## Configuration
 #### Setup
@@ -31,7 +31,7 @@ The project's working features:
   
 3) Run `npm install`
 
-4) Run `sudo bash <project-directory>/configuration/composit-gadget-setup_v1.sh`
+4) Run `sudo bash < project-directory >/configuration/composit-gadget-setup_v1.sh`
 
 5) Run `sudo node app.js`
 
