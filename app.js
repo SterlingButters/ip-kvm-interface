@@ -21,7 +21,8 @@ const http = require('http');
 const server = http.Server(app);
 const socket = require('socket.io')(server);
 const WebSocket = require('ws');
-const spawn = require('child_process').spawnSync;
+const spawnSync = require('child_process').spawnSync;
+const spawn = require('child_process').spawn;
 const fs = require('fs');
 
 server.listen(3000, function(){
@@ -125,12 +126,12 @@ function resetStream(input) {
 
 	ffmpeg.stdout.on('data', function(chunk){
 		var textChunk = chunk.toString('utf8');
-		//console.log(textChunk);
+		console.log(textChunk);
 	});
 
 	ffmpeg.stderr.on('data', function(chunk){
 		var textChunk = chunk.toString('utf8');
-		//console.log(textChunk);
+		console.log(textChunk);
 	});
 };
 
@@ -169,7 +170,7 @@ var keyboard = '/dev/hidg1';
 
 function writeReport(device, data) {
   fs.writeFile(device, data, (err) => {
-    if (err) throw err;
+    if (err) console.log(err);
   });
 }
 
@@ -196,7 +197,7 @@ socket.on('connection', function(client) {
 	
 	udcPath = '/sys/kernel/config/usb_gadget/kvm-gadget/UDC';
 	// UDC not recognized by the filesystem as a file -> must use echo (try removing configs also)
-	disconnect = spawn('bash', [__dirname+"/configuration/disconnectUDC.sh"]);
+	disconnect = spawnSync('bash', [__dirname+"/configuration/disconnectUDC.sh"]);
 	console.log(disconnect);
 	console.log('UDC Halted');	
 	
@@ -273,6 +274,7 @@ socket.on('connection', function(client) {
 
   // Receive stream reset instructions from browser and reset the stream
   client.on('streamChannel', function(data){
+		console.log("Request for stream reset received");
 		resetStream(data);
   });
 
@@ -304,7 +306,7 @@ socket.on('connection', function(client) {
       console.log("Requesting WOL for " + data.MAC);
       var macAddress = data.MAC;
 
-      var etherwake = spawn('etherwake', ['-b', macAddress]);
+      var etherwake = spawnSync('etherwake', ['-b', macAddress]);
 
     } else {
 		console.log("Resetting GPIO Connection " + data.Pin);

@@ -1,6 +1,18 @@
 #!/bin/bash
 # Composite Gadget Setup Script
 
+echo "Adding dwc2 overlay"
+if grep -q dtoverlay=dwc2 "/boot/config.txt"
+then
+	echo "dwc2 overlay enabled, proceeding..."
+else
+	echo "dwc2 overlay not enabled, enabling..."
+	echo "dtoverlay=dwc2" >> /boot/config.txt
+	echo "rebooting in 10 seconds for changes to take effect"
+	sleep 10
+	echo "rerun this script when reboot completes..."
+fi
+
 echo "Enabling Modules"
 modprobe dwc2
 modprobe libcomposite
