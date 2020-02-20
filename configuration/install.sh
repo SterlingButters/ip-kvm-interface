@@ -10,7 +10,7 @@ node -v
 node=`$?`
 npm -v
 npm=`$?`
-if [ node -eq 0 ] || [ npm -eq 0]
+if [[ node == 0 || npm == 0]]
 then
   echo "node installed... moving on"
 else
