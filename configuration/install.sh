@@ -1,36 +1,10 @@
 #!/bin/bash
 
 apt-get update
-
-dpkg -s git
-git=`$?`
-if [ git -eq 0 ]
-then
-  echo "git installed... moving on"
-else
-  echo "git not installed... installing"
-  apt-get install -y git
-fi
-
-dpkg -s etherwake
-etherwake=`$?`
-if [ etherwake -eq 0 ]
-then
-  echo "etherwake installed... moving on"
-else
-  echo "etherwake not installed... installing"
-  apt-get install -y etherwake
-fi
-
-dpkg -s python3-pip
-pip=`$?`
-if [ git -eq 0 ]
-then
-  echo "pip installed... moving on"
-else
-  echo "pip not installed... installing"
-  apt-get install -y python3-pip
-fi
+apt-get install git
+apt-get install etherwake
+apt-get install python3-pip
+pip install butterfly
 
 node -v
 node=`$?`
@@ -47,19 +21,11 @@ else
   cp -R * /usr/local/
 fi
 
-python -c "import butterfly"
-butterfly=`$?`
-if [ butterfly -eq 0 ]
-then
-  echo "butterfly installed... moving on"
-else
-  echo "butterfly not installed... installing"
-  pip install butterfly
-fi
-
 echo "moving project under /opt"
-cp ../../ip-kvm-interface /opt/ip-kvm-interface
+cp -a ../../ip-kvm-interface /opt/ip-kvm-interface
 rm -r ../../ip-kvm-interface
+
+echo "entering project directory"
 cd /opt/ip-kvm-interface
 
 echo "changing some permissions"

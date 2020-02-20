@@ -326,7 +326,8 @@ function onKeyPress(button) {
     button === "{shiftright}" ||
     button === "{capslock}"
   ) {
-    toggleShiftMode();
+    //toggleShiftMode();
+ 	enableShiftMode();
   }
 }
 
@@ -373,9 +374,10 @@ function onKeyReleased(button) {
  */
 
 document.addEventListener("keydown", event => {
+  console.log(event.key);
   // Insert key into tracker - ignore duplicates, ignore modifiers
   if (!(event.key === "Shift" || event.key === "Meta" || event.key === "Control" || event.key === "Alt")) {
-    if (! keyTracker.includes(jsToDecimal(event.keyCode))) {
+	if (! keyTracker.includes(jsToDecimal(event.keyCode))) {
         keyTracker.push(jsToDecimal(event.keyCode));
     }
   }
@@ -398,6 +400,8 @@ document.addEventListener("keydown", event => {
   inputReport[6] = recentKeys[4] || 0;
   inputReport[7] = recentKeys[5] || 0;
 
+  socketTx.emit('keyboardChannel', inputReport);
+
   // Disabling keyboard input, as some keys (like F5) make the browser lose focus.
   if (event.key === "Alt") event.preventDefault();
   if (event.key === "F5") event.preventDefault();
@@ -411,8 +415,6 @@ document.addEventListener("keydown", event => {
   // TODO: Enabling shift mode prevents registering as modifier on keydown
   if (event.key === "Shift") enableShiftMode(event);
   if (event.key === "CapsLock") enableShiftMode(event);
-
-  socketTx.emit('keyboardChannel', inputReport);
 });
 
 document.addEventListener("keyup", event => {
@@ -446,14 +448,14 @@ document.addEventListener("keyup", event => {
   inputReport[6] = recentKeys[4] || 0;
   inputReport[7] = recentKeys[5] || 0;
 
+  socketTx.emit('keyboardChannel', inputReport);
+
   // Revise this
   let input = document.querySelector(".input").value;
   keyboard.setInput(input);
 
   if (event.key === "Shift") disableShiftMode(event);
   if (event.key === "CapsLock") disableShiftMode(event);
-
-  socketTx.emit('keyboardChannel', inputReport);
 });
 
 function toggleShiftMode(event) {
