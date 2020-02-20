@@ -7,9 +7,9 @@ apt-get install python3-pip
 pip install butterfly
 
 node -v
-node=`$?`
+node=$?
 npm -v
-npm=`$?`
+npm=$?
 if [[ node==0 || npm==0 ]]
 then
   echo "node installed... moving on"
@@ -18,7 +18,7 @@ else
   wget https://nodejs.org/dist/v12.16.0/node-v12.16.0-linux-armv7l.tar.xz
   tar -xzf node-v12.16.0-linux-armv7l.tar.xz
   cd node-v12.16.0-linux-armv7l/
-  cp -R * /usr/local/
+  cp -R * /usr/bin/
 fi
 
 echo "moving project under /opt"
