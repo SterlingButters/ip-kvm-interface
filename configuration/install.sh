@@ -15,8 +15,7 @@ then
   echo "node/npm not installed... installing"
   wget https://nodejs.org/dist/v12.16.0/node-v12.16.0-linux-armv7l.tar.xz
   tar -xzf node-v12.16.0-linux-arm7vl.tar.xz
-  cd node-v12.16.0-linux-arm7vl/
-  cp -R * /usr/bin/
+  cp -a node-v12.16.0-linux-arm7vl/* /usr/bin/
 else
   echo "node installed... moving on"
 fi
