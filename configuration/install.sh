@@ -10,15 +10,15 @@ node -v
 node=$?
 npm -v
 npm=$?
-if [[ node==0 || npm==0 ]]
+if [[ node!=0 || npm!=0 ]]
 then
-  echo "node installed... moving on"
-else
-  echo "node not installed... installing"
+  echo "node/npm not installed... installing"
   wget https://nodejs.org/dist/v12.16.0/node-v12.16.0-linux-armv7l.tar.xz
-  tar -xzf node-v12.16.0-linux-armv7l.tar.xz
-  cd node-v12.16.0-linux-armv7l/
+  tar -xzf node-v12.16.0-linux-arm7vl.tar.xz
+  cd node-v12.16.0-linux-arm7vl/
   cp -R * /usr/bin/
+else
+  echo "node installed... moving on"
 fi
 
 echo "moving project under /opt"
