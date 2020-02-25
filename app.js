@@ -25,18 +25,18 @@ const spawnSync = require('child_process').spawnSync;
 const spawn = require('child_process').spawn;
 const fs = require('fs');
 
-server.listen(3000, function(){
+server.listen(80, function(){
   console.log('Listening on http://127.0.0.1:3000');
 });
 
 // Start Butterfly for User
-//var instance = spawn('butterfly.server.py',["--port=57575", "--unsecure"]);
-
-//console.log('Starting Butterfly Server on port 57575...');
-//instance.stdout.on('data', function(chunk){
+// var butterfly = spawn('butterfly.server.py',["--port=57575", "--unsecure"]);
+//
+// console.log('Starting Butterfly Server on port 57575...');
+// butterfly.stdout.on('data', function(chunk){
 //    var textChunk = chunk.toString('utf8');
 //    console.log(textChunk);
-//});
+// });
 
 // ------------------ Video Start ------------------ //
 
@@ -159,12 +159,25 @@ socket.on("connection", function(socket){
 
 // ------------------ HID Start ------------------ //
 
-// TODO: Throw error if peripherals not detected
-const Gpio = require('onoff').Gpio;  					// Include onoff to interact with the GPIO
-const relayTwo = new Gpio(2, 'out'); 					// Can this be implemented dynamically?
-const relayThree = new Gpio(3, 'out');
-const relayFour = new Gpio(4, 'out');
+var contents = fs.readFileSync(__dirname + "/configuration/gpioConfig.json");
+var Relays = JSON.parse(contents).Relay;
+var Switchs = JSON.parse(contents).Switch;
+var Hubs = JSON.parse(contents).Hub;
+var Lircs = JSON.parse(contents).LIRC;
+console.log("Relay Pins:", Relays);
+console.log("Switch Pins:", Switchs);
+console.log("Hub:", Hubs);
+console.log("LIRC Pins:", Lircs);
 
+const Gpio = require('onoff').Gpio;  					// Include onoff to interact with the GPIO
+
+let RELAYS = [];
+for (let i = 0; i < Relays.length; i++) {
+	const relay = new Gpio(Relays[i], 'out');
+	RELAYS.push({"gpio": Relays[i], "object": relay});
+}; 
+
+// TODO: Throw error if peripherals not detected
 var mouse = '/dev/hidg0';
 var keyboard = '/dev/hidg1';
 
@@ -194,29 +207,29 @@ socket.on('connection', function(client) {
 
   client.on('fileChannel', function(data){
 	console.log(data);
-	
+
 	udcPath = '/sys/kernel/config/usb_gadget/kvm-gadget/UDC';
 	// UDC not recognized by the filesystem as a file -> must use echo (try removing configs also)
 	disconnect = spawnSync('bash', [__dirname+"/configuration/disconnectUDC.sh"]);
 	console.log(disconnect);
-	console.log('UDC Halted');	
-	
+	console.log('UDC Halted');
+
 	let confirmWrite = fs.readFileSync(udcPath, 'utf-8');
-	// console.log(confirmWrite);	
+	// console.log(confirmWrite);
 
 	// Attach file to libcomposite
 	if (data.Command === "Attach") {
-		
+
 		fs.unlinkSync('/sys/kernel/config/usb_gadget/kvm-gadget/configs/c.1/mass_storage.usb');
 
 		numAttachedFiles = Object.keys(fileTracker).length;
 		lunNum = 'lun.'+numAttachedFiles;
-		fileTracker[lunNum] = {File: data.File, 
-						 CDRom: data.CDRom, 
-				 Removable: data.Removable, 
-			       ReadOnly: data.ReadOnly, 
+		fileTracker[lunNum] = {File: data.File,
+						 CDRom: data.CDRom,
+				 Removable: data.Removable,
+			       ReadOnly: data.ReadOnly,
 			    	        FUA: data.FUA};
-		
+
 		lunPath = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+lunNum;
 		if (!fs.existsSync(lunPath)) {
 			fs.mkdirSync(lunPath);
@@ -225,14 +238,14 @@ socket.on('connection', function(client) {
 		if (numAttachedFiles > 8) {
 			socket.emit('fileChannel', "Greater than 8 files attached");
 		} else {
-			try {			
+			try {
 				fs.writeFileSync(lunPath+'/file', __dirname+'/uploads/'+data.File);
 				fs.writeFileSync(lunPath+'/cdrom', data.CDRom);
 				fs.writeFileSync(lunPath+'/removable', data.Removable);
 				//fs.writeFileSync(lunPath+'/ro', data.ReadOnly); // Find out why read-only doesn't work
 				fs.writeFileSync(lunPath+'/nofua', data.FUA);
 				console.log('File Attached');
-				
+
 				console.log(fileTracker);
 				socket.emit('fileChannel', fileTracker);
 			} catch (err) {console.log(err)}
@@ -247,7 +260,7 @@ socket.on('connection', function(client) {
 		delete fileTracker[key];
 		file = '/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb/'+key+'/file';
 
-		try {			
+		try {
 			fs.writeFileSync(file, "");
 			fs.writeFileSync(lunPath+'/cdrom', "");
 			fs.writeFileSync(lunPath+'/removable', "");
@@ -257,14 +270,14 @@ socket.on('connection', function(client) {
 			socket.emit('fileChannel', fileTracker);
 		} catch (err) {console.log(err)}
 	}
-	
+
 	// Reconnect UDC
 	if (!fs.existsSync('/sys/kernel/config/usb_gadget/kvm-gadget/configs/c.1/mass_storage.usb')) {
 	fs.symlinkSync('/sys/kernel/config/usb_gadget/kvm-gadget/functions/mass_storage.usb', '/sys/kernel/config/usb_gadget/kvm-gadget/configs/c.1/mass_storage.usb');
 	}
 
 	let dirContents = fs.readdirSync('/sys/class/udc')
-	
+
 	try {
 		fs.writeFileSync(udcPath, dirContents[0]);
 		console.log('UDC Reconnected');
@@ -299,6 +312,12 @@ socket.on('connection', function(client) {
 			};
   	});
 
+	// Receive request for process PID
+	client.on('debugChannel', function(data){
+		console.log("Request for PID received");
+		socket.emit('debugChannel', process.pid);
+	});
+
   // Receive wake on LAN request
   client.on('powerChannel', function(data){
 
@@ -310,32 +329,18 @@ socket.on('connection', function(client) {
 
     } else {
 		console.log("Resetting GPIO Connection " + data.Pin);
-	    if (Number(data.Pin) === 2) {
-			if (relayTwo.readSync() === 0) { 					// Check the pin state, if the state is 0 (or off)
-				relayTwo.writeSync(1); 						// Set pin state to 1 (turn LED on)
-		    } else {
-				relayTwo.writeSync(0); 						// Set pin state to 0 (turn LED off)
-		  	}
-			relayTwo.unexport(); 							// Unexport GPIO to free resources
-		};
+		for (let j = 0; j < RELAYS.length; j++) {
+			console.log(j);
+			console.log(RELAYS[j]);
+			if (Number(data.Pin) === RELAYS[j]['gpio']) {
+				if (RELAYS[j]['object'].readSync() === 0) { 					// Check the pin state, if the state is 0 (or off)
+					RELAYS[j]['object'].writeSync(1); 						// Set pin state to 1 (turn LED on)
+				} else {
+					RELAYS[j]['object'].writeSync(0); 						// Set pin state to 0 (turn LED off)
+			  	}
+			};
 
-		if (Number(data.Pin) === 3) {
-			if (relayThree.readSync() === 0) { 					// Check the pin state, if the state is 0 (or off)
-				relayThree.writeSync(1); 						// Set pin state to 1 (turn LED on)
-			} else {
-				relayThree.writeSync(0); 						// Set pin state to 0 (turn LED off)
-		  	}
-			relayThree.unexport(); 							// Unexport GPIO to free resources
-		};
-
-		if (Number(data.Pin) === 4) {
-			if (relayFour.readSync() === 0) { 					// Check the pin state, if the state is 0 (or off)
-				relayFour.writeSync(1); 						// Set pin state to 1 (turn LED on)
-			} else {
-				relayFour.writeSync(0); 						// Set pin state to 0 (turn LED off)
-		  	}
-			relayFour.unexport(); 							// Unexport GPIO to free resources
-		};
+		}
      };
   });
 });

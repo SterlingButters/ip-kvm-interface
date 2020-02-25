@@ -12,18 +12,16 @@
     <script src="https://kit.fontawesome.com/6873aa3c17.js" crossorigin="anonymous"></script>
 
     <script>
-	function askPassword() {
-      		var password = prompt("Please enter your password", "Password");
-      		// TODO: EZ Link: Change password here
-      		while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
+      function askPassword() {
+              var password = prompt("Please enter your password", "Password");
+              while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
+          }
+
+    	function initFunctions() {
+    		askPassword();
     	}
 
-	function initFunctions() {
-		askPassword();
-	}
-
-	window.addEventListener("load", initFunctions, true)
-
+    	window.addEventListener("load", initFunctions, true)
     </script>
   </head>
 
@@ -58,7 +56,20 @@
       <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn" title="HID Keyboard"><i class="far fa-keyboard fa-5x"></i></a>
         <div class="dropdown-content">
-          <button class="button" id="keyboardReset">Reset Keyboard</button>
+          <button class="button" id="keyboardReset" title="Reset Keyboard"><i class="fas fa-sync fa-3x"></i></button>
+          <br><br>
+          <button class="button" id="">Send Alt+Shift</button>
+          <button class="button" id="">Send Crtl+Shift</button>
+          <button class="button" id="">Send Shift+Shift</button>
+          <button class="button" id="">Send Meta(Win)+Space</button>
+          <button class="button" id="">Send Crtl+W</button>
+          <button class="button" id="">Send Alt+Tab</button>
+          <button class="button" id="">Send Alt+Enter</button>
+          <button class="button" id="">Send Alt+F4</button>
+          <button class="button" id="">Send Crtl+Alt+Del</button>
+          <input type="text" value="" placeholder="Paste Text Here">
+          <button class="button" id="">Send (ASCII) Keys</button>
+
           <script src="/js/keyboard-capture.js"></script>
         </div>
       </li>
@@ -66,15 +77,24 @@
 	  <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn" title="HID Mouse"><i class="fas fa-mouse fa-5x"></i></a>
         <div class="dropdown-content">
-          <button class="button" id="mouseReset">Reset Mouse</button>
+          <button class="button" id="mouseReset" title="Reset Mouse"><i class="fas fa-sync fa-3x"></i></button>
         </div>
-      </li>
+    </li>
+
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn" title="Write Method"><i class="fas fa-pencil-alt fa-5x"></i></a>
+        <div class="dropdown-content">
+          <a>(Future)</a>
+          <button class="button" id="" title="bluetooth"><i class="fab fa-bluetooth-b fa-3x"></i></button>
+          <button class="button" id="" title="arduino"><i class="fas fa-infinity fa-3x"></i></button>
+        </div>
+    </li>
 
       <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn" title="Media"><i class="fas fa-hdd fa-5x"></i></a>
         <div class="dropdown-content">
           <br>
-          <button type="button" onclick="alert('Mass Storage Reset')">Reset Mass Storage</button>
+          <button type="button" onclick="alert('Mass Storage Reset')" title="Reset Mass Storage"><i class="fas fa-sync fa-3x"></i></button>
           <div class="dropdown-content">
             <br>
             <!-- https://android.googlesource.com/kernel/common/+/android-3.18/Documentation/usb/mass-storage.txt -->
@@ -84,9 +104,9 @@
 				   >Stall
               <input id='stall' type="checkbox">
               <span class="checkmark"></span>
-            </label>            
+            </label>
 
-			<label class="container" title="This parameter specifies whether each logical unit should simulate CD-ROM.  The default is false."
+			      <label class="container" title="This parameter specifies whether each logical unit should simulate CD-ROM.  The default is false."
 				   >CD-ROM
               <input id='cdrom' type="checkbox">
               <span class="checkmark"></span>
@@ -116,18 +136,18 @@
             <label for="file">File progress:</label>
             <progress style="width:100%" id="fileProgress" max="100" value="0"></progress>
             <br> <br>
-			<table id="file-table" style="width:100%">
-				<thead>
- 					<tr>
-						<th>Lun</th>
-						<th>File</th>
-						<th>CD</th>
-						<th>Removable</th>
-						<th>ReadOnly</th>
-						<th>NoFUA</th>
-					</tr>
-				</thead>
-			</table>
+      			<table id="file-table" style="width:100%">
+      				<thead>
+       					<tr>
+      						<th>Lun</th>
+      						<th>File</th>
+      						<th>CD</th>
+      						<th>Removable</th>
+      						<th>ReadOnly</th>
+      						<th>NoFUA</th>
+      					</tr>
+      				</thead>
+      			</table>
 
             <select id="fileDropdown"></select>
 
@@ -137,37 +157,37 @@
 
               function attachFile() {
 
-				var file = document.getElementById('fileDropdown').value;
-				var cdrom = document.getElementById('cdrom').checked;
-				var removable = document.getElementById('removable').checked;
-				var readonly = document.getElementById('read-only').checked;
-				var stall = document.getElementById('stall').checked;
-				var fua = document.getElementById('nofua').checked;
+        				var file = document.getElementById('fileDropdown').value;
+        				var cdrom = document.getElementById('cdrom').checked;
+        				var removable = document.getElementById('removable').checked;
+        				var readonly = document.getElementById('read-only').checked;
+        				var stall = document.getElementById('stall').checked;
+        				var fua = document.getElementById('nofua').checked;
 
                 var socketTx = io();
                 var socketRx = io.connect();
 
-                var message = {Command: "Attach", 
-							   		  File: file, 
-								   CDRom: +cdrom, 
-						   Removable: +removable, 
-						     ReadOnly: +readonly, 
+                var message = {Command: "Attach",
+							   		  File: file,
+								   CDRom: +cdrom,
+						   Removable: +removable,
+						     ReadOnly: +readonly,
 									  FUA: +fua};
                 socketTx.emit('fileChannel', message);
 
                 // Receive attached files or > 8 message
-                socketRx.on('fileChannel', function(data){		  
-				  console.log(data);
-				  alert('File Attached as Lun');
-                  // alert(data);
+                socketRx.on('fileChannel', function(data){
+				              console.log(data);
+				              alert('File Attached as Lun');
+                      // alert(data);
 
 				  var tbdy = document.createElement('tbody');
-				  
+
 				  for (var lun in data) {
 					console.log(lun);
 					var tr = document.createElement('tr');
 					tr.appendChild(document.createElement('td').appendChild(document.createTextNode(lun)));
-					
+
 					for (var info in data[lun]) {
 					  var td = document.createElement('td');
 					  td.appendChild(document.createTextNode(data[lun][info]))
@@ -184,7 +204,6 @@
 				  } else {
 				  table.replaceChild(tbdy, old_tbdy)
 				  }
-
                 });
               };
 
@@ -199,6 +218,10 @@
               };
 
             </script>
+
+      	  <a>Samba Server (future)</a>
+      	  <a>PXE Server (future)</a>
+
           </div>
         </div>
       </li>
@@ -262,6 +285,7 @@
           <label>Enter Mac Address</label>
           <input id="WOLmacAddress" type="text">
           <br>
+	  <button onclick='detectMACs()' id="detectMACs">Detect MAC Addresses (future)</button>
           <button onclick='submitWOL()' id="submitWOL">Wake via LAN</button>
         </div>
 		<script>
@@ -272,6 +296,15 @@
 			  var message = {Method: "GPIO", Pin: gpioTargets.value};
 			  socketTx.emit('powerChannel', message);
 			};
+		</script>
+    <script>
+			  function detectMACs() {
+				  var socketTx = io();
+
+				  console.log("Requesting MAC Addresses");
+			  	  var message = "requestMACs";
+				  socketTx.emit('networkChannel', message);
+			  };
 		</script>
 		<script>
 			  function submitWOL() {
@@ -289,6 +322,33 @@
         <a href="javascript:void(0)" class="dropbtn" title="Debugging"><i class="fas fa-bug fa-5x"></i></a>
         <div class="dropdown-content">
           <button class="button" id="butterflyToggle" title="Toggle Terminal"><i class="fas fa-terminal fa-3x"></i></button>
+          <input type="text" style="display: none" value="" id="command">
+          <button class="button" id="copyCommand" onclick="copyCommand()" title="Copy command to paste into butterfly terminal for standard output of server process">
+            <i class="far fa-clipboard fa-3x"></i></button>
+        </div>
+        <script>
+          function copyCommand() {
+            var copyText = document.getElementById("command");
+            var socketTx = io();
+
+  				  console.log("Requesting PID");
+  				  socketTx.emit('debugChannel', "PID");
+
+            var socket = io.connect();
+    				socket.on('debugChannel', function(data){
+              copyText.value = "tail -f /proc/" + data + "/fd/1"
+              copyText.select();
+              // copyText.setSelectionRange(0, 99999);
+              document.execCommand("copy");
+              alert("Copied Command: " + copyText.value);
+            });
+          }
+        </script>
+      </li>
+
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn" title="Remote Capability"><i class="fas fa-network-wired fa-5x"></i></a>
+        <div class="dropdown-content">
         </div>
       </li>
 
@@ -311,25 +371,26 @@
 		var player = new JSMpeg.Player(url, {canvas: canvas});
     </script>
 
-    <div class="regular-video black-box hide">
+    <div id="signal-screen" class="regular-video black-box hide">
         <a class="loading-prompt">No video loaded...</a>
     </div>
 
-    <!-- <script src="/js/media-capture.js"></script> -->
     <script src="/js/cursor-capture.js"></script>
     <!-- Video -->
-	
+
 	<iframe id='butterfly'
-			class='butterfly-overlay hide'
-	        width="1920px" height="1000px"
+			class='butterfly-overlay'
+	        width="1920px" height="1080px"
 	        frameBorder="0"
-	        src="http://localhost:57575/">
+	        src="http://10.0.0.146:3000/">
 	</iframe>
     <script>
       var toggle = document.getElementById('butterflyToggle');
       var butterfly = document.getElementById('butterfly');
+      var signalScreen = document.getElementById('signal-screen');
       toggle.onclick = function toggleButterfly() {
         butterfly.classList.toggle('hide');
+        signalScreen.classList.toggle('hide');
       }
     </script>
 

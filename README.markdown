@@ -13,55 +13,52 @@ development with minimal orientation overhead.
 
 The project's working features (with caveats):
 #### 1) Keyboard
-    - Known Issue: Physical keyboard does not send `shift` event
-    - Known Issue: Physical keyboard `metaleft` registers as a key, not modifier
-    - Known Issue: Physical keyboard `alt` events need `preventDefault`
-    - Future Work: Send shortcuts via HTML button interface
-#### 2) Mouse 
-    - Future Work: Scroll wheel support
+  - Future Work: Send shortcuts via HTML button interface
+#### 2) Mouse
+  - Future Work: Scroll wheel support
 #### 3) Video Source (selection/refresh) (e.g. `/dev/video0`, etc)
-    - Future Work: Test uStreamer over JSMPEG
+  - Future Work: Test uStreamer over JSMPEG
 #### 4) Mass Storage Emulation
-    - Future Work: Verify detachability
-    - Future Work: Perform `.img` test
-    - Future Work: Support `licomposite` "stall"
-    - Future Work: Add a `dd` file converter and/or alter `accept` attribute of file `input` tag
+  - Future Work: Verify detachability
+  - Future Work: Perform `.img` test
+  - Future Work: Support `licomposite` "stall"
+  - Future Work: Add a `dd` file converter and/or alter `accept` attribute of file `input` tag
 #### 5) GPIO Interface (must initialize pins manually in `app.js`)
-    - Known Issue: GPIO error on 2nd actuation  
-    - Future Work: Identification of GPIO pin configuration for support of the following:
-          - Relay Channel [IOT](https://www.amazon.com/gp/product/B00WV7GMA2/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
-          - Upstream USB Switch [YKUP](https://www.yepkit.com/product/300114/YKUP)
-          - USB Switchable Hub [YKUSH3](https://www.yepkit.com/product/300110/YKUSH3)
-          - LIRC Transmitter/Receiver [ENER314-IR](https://www.amazon.co.uk/dp/B00T9JPA4O/ref=pe_3187911_185740111_TE_item)
+  - Known Issue: GPIO error on 2nd actuation
+  - Future Work: Identification of GPIO pin configuration for support of the following:
+        - Relay Channel [IOT](https://www.amazon.com/gp/product/B00WV7GMA2/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
+        - Upstream USB Switch [YKUP](https://www.yepkit.com/product/300114/YKUP)
+        - USB Switchable Hub [YKUSH3](https://www.yepkit.com/product/300110/YKUSH3)
+        - LIRC Transmitter/Receiver [ENER314-IR](https://www.amazon.co.uk/dp/B00T9JPA4O/ref=pe_3187911_185740111_TE_item)
 #### 6) WOL
-    - Future Work: Configure `/network/interfaces` for user
-    - Future Work: Detect MAC addresses with button
+  - Future Work: Configure `/network/interfaces` for user
+  - Future Work: Detect MAC addresses with button
 #### 7) Terminal
-    - Future Work: Add "Copy Command" button (`tail -f /proc/< pid >/fd/1`[out] or `tail -f /proc/< pid >/fd/2`[err])
+  - Future Work: Add "Copy Command" button (`tail -f /proc/< pid >/fd/1`[out] or `tail -f /proc/< pid >/fd/2`[err])
 #### 8) Authentication (password configurable in `index.html` - currently 'pass')
-    - Future Work: Twilio-based multi-factor authentication 
-    - Future Work: Link to file containing password under `configuration `
+  - Future Work: Twilio-based multi-factor authentication
+  - Future Work: Link to file containing password under `configuration `
 #### 9) Remote Access
-    - Future Work: Link/iFrame to gateway address (for port forwarding configuration)
-    - Future Work: no-ip2 API DDNS support in interface
-    - Future Work: VPN configuration information
-    - Future Work: Embedded VNC Client using noVNC
-    - Future Work: Dataplicity "Wormhole" Instruction
+  - Future Work: Link/iFrame to gateway address (for port forwarding configuration)
+  - Future Work: no-ip2 API DDNS support in interface
+  - Future Work: VPN configuration information
+  - Future Work: Embedded VNC Client using noVNC
+  - ~~Future Work: Dataplicity "Wormhole" Instruction~~ video stream is "insecure" content
 #### 10) ~~Installation Script~~ (`/configuration/install.sh`
-    - Future Work: Configure as `systemd` service
-    - Future Work: Add `dtoverlay=dwc2` to `/boot/config.txt`
-  
+  - Future Work: Configure as `systemd` service
+  - Future Work: Add `dtoverlay=dwc2` to `/boot/config.txt`
+
 ## Configuration
 #### Setup
 ![alt text](https://github.com/SterlingButters/ip-kvm-interface/blob/dev/configuration/setup.png)
 
-**Image needs updating to show possible GPIO configurations 
+**Image needs updating to show possible GPIO configurations
 
-#### Installation 
+#### Installation
 1) Enable the dwc2 dtoverlay in `/boot/config.txt` on your Pi4
 
 2) Install node/npm/pip in <project-directory>
-  
+
 3) Run `npm install`
 
 4) Run `sudo bash < project-directory >/configuration/composit-gadget-setup_v1.sh`

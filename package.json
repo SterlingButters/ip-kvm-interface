@@ -13,15 +13,20 @@
   "dependencies": {
     "child_process": "1.0.2",
     "express": "4.16.4",
+    "express-ws": "^4.0.0",
     "fs": "0.0.1-security",
     "glob": "^7.1.6",
     "http": "0.0.0",
     "mod_autoindex": "^1.8.0",
+    "network-list": "^1.1.5",
+    "node-pty": "^0.9.0",
     "onoff": "5.0.1",
     "opn": "5.4.0",
     "socket.io": "2.1.1",
     "socket.io-client": "2.1.1",
-    "socketio-file-upload": "^0.7.0"
+    "socketio-file-upload": "^0.7.0",
+    "xterm": "^4.4.0",
+    "yargs": "^15.1.0"
   },
   "keywords": [],
   "author": "sterlingbutters",

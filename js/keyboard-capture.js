@@ -321,13 +321,12 @@ function onKeyPress(button) {
 
   // If you want to handle the shift and caps lock buttons
   if (
-    button === "{shift}" ||
-    button === "{shiftleft}" ||
-    button === "{shiftright}" ||
-    button === "{capslock}"
+    button === "shift" ||
+    button === "shiftleft" ||
+    button === "shiftright" ||
+    button === "capslock"
   ) {
-    //toggleShiftMode();
- 	enableShiftMode();
+    	toggleShiftMode();
   }
 }
 
@@ -366,6 +365,14 @@ function onKeyReleased(button) {
   inputReport[7] = recentKeys[5] || 0;
 
   socketTx.emit('keyboardChannel', inputReport);
+
+  if (
+    button === "shift" ||
+    button === "shiftleft" ||
+    button === "shiftright"
+  ) {
+    toggleShiftMode();
+  }
 }
 
 /**
@@ -412,10 +419,15 @@ document.addEventListener("keydown", event => {
   if (event.key === "ArrowRight") event.preventDefault();
   if (event.key === " ") event.preventDefault();
 
-  // TODO: Enabling shift mode prevents registering as modifier on keydown
   if (event.key === "Shift") enableShiftMode(event);
-  if (event.key === "CapsLock") enableShiftMode(event);
+  if (event.key === "CapsLock") {
+    toggleShiftMode(event);
+    highlightButton(event);
+  }
 });
+
+var capsTracker = 0;
+var isEven = function(x) { return !( x & 1) };
 
 document.addEventListener("keyup", event => {
 
@@ -455,7 +467,12 @@ document.addEventListener("keyup", event => {
   keyboard.setInput(input);
 
   if (event.key === "Shift") disableShiftMode(event);
-  if (event.key === "CapsLock") disableShiftMode(event);
+  if (event.key === "CapsLock") {
+    if (isEven(capsTracker)) {
+      highlightButton(event);
+    } else {unhighlightButton(event)}
+    capsTracker += 1;
+  }
 });
 
 function toggleShiftMode(event) {
@@ -467,10 +484,6 @@ function toggleShiftMode(event) {
   keyboard.setOptions({
     layoutName: shiftToggle
   });
-
-  if (event) {
-    highlightButton(event);
-  }
 }
 
 function enableShiftMode(event) {
@@ -488,7 +501,7 @@ function disableShiftMode(event) {
 }
 
 function highlightButton(event) {
-  let layoutKeyName = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
+  let layoutKeyName = keyboard.physicalKeyboard.getSimpleKeyboardLayoutKey(event);
 
   let buttonElement =
     keyboard.getButtonElement(layoutKeyName) ||
@@ -501,7 +514,7 @@ function highlightButton(event) {
 }
 
 function unhighlightButton(event) {
-  let layoutKeyName = keyboard.physicalKeyboardInterface.getSimpleKeyboardLayoutKey(event);
+  let layoutKeyName = keyboard.physicalKeyboard.getSimpleKeyboardLayoutKey(event);
 
   let buttonElement =
     keyboard.getButtonElement(layoutKeyName) ||

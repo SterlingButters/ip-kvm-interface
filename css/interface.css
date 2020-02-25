@@ -175,7 +175,7 @@ input[type="file"] {
 
 .butterfly-overlay {
   left: 50%;
-  top: 15%;
+  top: 11%;
   position: absolute;
   transform: translate(-50%, 0%);
 
