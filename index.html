@@ -5,10 +5,12 @@
     <meta charset="utf-8">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css"></link>
-    <link rel="stylesheet" type="text/css" href="/css/interface.css">
+    <link rel="stylesheet" type="text/css" href="/css/interface.css"></link>
+    <link rel="stylesheet" href="node_modules/xterm/css/xterm.css"></link>
 
     <script src="/siofu/client.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="node_modules/xterm/lib/xterm.js"></script>
     <script src="https://kit.fontawesome.com/6873aa3c17.js" crossorigin="anonymous"></script>
 
     <script>
@@ -282,6 +284,14 @@
           <input type="number" id="gpioTargets">
           <button onclick='resetTarget()'>Reset Specified Target</button>
           <br>
+	  <table id="mac-table" style="width:100%">
+                                <thead>
+                                        <tr>
+                                                <th>IP Address</th>
+                                                <th>Mac Address</th>
+	              	</tr>
+          	</thead>
+          </table>
           <label>Enter Mac Address</label>
           <input id="WOLmacAddress" type="text">
           <br>
@@ -300,10 +310,39 @@
     <script>
 			  function detectMACs() {
 				  var socketTx = io();
+				  var socketRx = io.connect();
 
 				  console.log("Requesting MAC Addresses");
 			  	  var message = "requestMACs";
 				  socketTx.emit('networkChannel', message);
+
+				  socketRx.on('networkChannel', function(data) {
+				    console.log(data);
+
+				    var tbdy = document.createElement('tbody');
+
+                                    for (var device in data) {
+					console.log(data[device]);
+                                        var tr = document.createElement('tr');
+                                        //tr.appendChild(document.createElement('td').appendChild(document.createTextNode(device['name'])));
+
+                                        var td = document.createElement('td');
+                                        td.appendChild(document.createTextNode(data[device].ip));
+					td.appendChild(document.createTextNode(data[device].mac));
+                                        tr.appendChild(td);
+                                       
+                                        tbdy.appendChild(tr);
+                                    }
+
+                                    var table = document.getElementById('mac-table')
+                                    var old_tbdy = table.getElementsByTagName('tbody')[0];
+
+                                    if (!old_tbdy) {
+                                      table.appendChild(tbdy);
+                                    } else {
+                                        table.replaceChild(tbdy, old_tbdy)
+                                    }
+				  });
 			  };
 		</script>
 		<script>
@@ -321,7 +360,7 @@
       <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn" title="Debugging"><i class="fas fa-bug fa-5x"></i></a>
         <div class="dropdown-content">
-          <button class="button" id="butterflyToggle" title="Toggle Terminal"><i class="fas fa-terminal fa-3x"></i></button>
+          <button class="button" id="terminalToggle" title="Toggle Terminal"><i class="fas fa-terminal fa-3x"></i></button>
           <input type="text" style="display: none" value="" id="command">
           <button class="button" id="copyCommand" onclick="copyCommand()" title="Copy command to paste into butterfly terminal for standard output of server process">
             <i class="far fa-clipboard fa-3x"></i></button>
@@ -378,18 +417,44 @@
     <script src="/js/cursor-capture.js"></script>
     <!-- Video -->
 
-	<iframe id='butterfly'
-			class='butterfly-overlay'
-	        width="1920px" height="1080px"
-	        frameBorder="0"
-	        src="http://10.0.0.146:3000/">
-	</iframe>
+    <div class="regular-video" id="terminal"></div>
     <script>
-      var toggle = document.getElementById('butterflyToggle');
-      var butterfly = document.getElementById('butterfly');
+      var socketTx = io();
+      var socketRx = io.connect();
+
+      var options = {'cols': 250};
+      var term = new Terminal(options);
+      term.welcome = function() {
+        term.write('Hello from \x1B[1;3;31mR(p)ipMI\x1B[0m\r\n');
+      };
+      term.open(document.getElementById('terminal'));
+      term.welcome();
+    
+      //Initialize Terminal
+      socketTx.emit('data', 'su pi\r');
+
+      term.onKey(function(e) {
+        console.log(e);
+        socketTx.emit('data', e.key);
+      });
+
+      // Capture Pasting
+      term.onData(function (e) {
+          if (e.length > 1) { 
+            socketTx.emit('data', e);
+          }
+      })
+
+      socketRx.on('data', function(data){
+      	term.write(data);
+      });
+    </script>
+    <script>
+      var toggle = document.getElementById('terminalToggle');
+      var terminal = document.getElementById('terminal');
       var signalScreen = document.getElementById('signal-screen');
-      toggle.onclick = function toggleButterfly() {
-        butterfly.classList.toggle('hide');
+      toggle.onclick = function toggleTerminal() {
+        terminal.classList.toggle('hide');
         signalScreen.classList.toggle('hide');
       }
     </script>

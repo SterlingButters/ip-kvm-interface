@@ -17,6 +17,7 @@
     "fs": "0.0.1-security",
     "glob": "^7.1.6",
     "http": "0.0.0",
+    "local-devices": "^3.0.0",
     "mod_autoindex": "^1.8.0",
     "network-list": "^1.1.5",
     "node-pty": "^0.9.0",

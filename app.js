@@ -25,18 +25,10 @@ const spawnSync = require('child_process').spawnSync;
 const spawn = require('child_process').spawn;
 const fs = require('fs');
 
-server.listen(80, function(){
-  console.log('Listening on http://127.0.0.1:3000');
+const PORT = 80;
+server.listen(PORT, function(){
+  console.log(`Listening on http://localhost:${PORT}`);
 });
-
-// Start Butterfly for User
-// var butterfly = spawn('butterfly.server.py',["--port=57575", "--unsecure"]);
-//
-// console.log('Starting Butterfly Server on port 57575...');
-// butterfly.stdout.on('data', function(chunk){
-//    var textChunk = chunk.toString('utf8');
-//    console.log(textChunk);
-// });
 
 // ------------------ Video Start ------------------ //
 
@@ -317,6 +309,15 @@ socket.on('connection', function(client) {
 		console.log("Request for PID received");
 		socket.emit('debugChannel', process.pid);
 	});
+
+  // Receive request for mac address population
+  const detect = require('local-devices');
+  client.on('networkChannel', function(data) {
+    console.log("Request for MACs received");
+    detect().then(devices => {
+      socket.emit('networkChannel', devices);
+    });
+  });
 
   // Receive wake on LAN request
   client.on('powerChannel', function(data){

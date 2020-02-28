@@ -24,7 +24,6 @@ The project's working features (with caveats):
   - Future Work: Support `licomposite` "stall"
   - Future Work: Add a `dd` file converter and/or alter `accept` attribute of file `input` tag
 #### 5) GPIO Interface (must initialize pins manually in `app.js`)
-  - Known Issue: GPIO error on 2nd actuation
   - Future Work: Identification of GPIO pin configuration for support of the following:
         - Relay Channel [IOT](https://www.amazon.com/gp/product/B00WV7GMA2/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
         - Upstream USB Switch [YKUP](https://www.yepkit.com/product/300114/YKUP)
