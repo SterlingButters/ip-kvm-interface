@@ -17,14 +17,13 @@ The project's working features (with caveats):
 #### 2) Mouse
   - Future Work: Scroll wheel support
 #### 3) Video Source (selection/refresh) (e.g. `/dev/video0`, etc)
-  - Future Work: Test uStreamer over JSMPEG
+  - Future Work: Try HLS stream
 #### 4) Mass Storage Emulation
   - Future Work: Verify detachability
   - Future Work: Perform `.img` test
   - Future Work: Support `licomposite` "stall"
   - Future Work: Add a `dd` file converter and/or alter `accept` attribute of file `input` tag
 #### 5) GPIO Interface (must initialize pins manually in `app.js`)
-  - Known Issue: GPIO error on 2nd actuation
   - Future Work: Identification of GPIO pin configuration for support of the following:
         - Relay Channel [IOT](https://www.amazon.com/gp/product/B00WV7GMA2/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
         - Upstream USB Switch [YKUP](https://www.yepkit.com/product/300114/YKUP)
@@ -34,10 +33,10 @@ The project's working features (with caveats):
   - Future Work: Configure `/network/interfaces` for user
   - Future Work: Detect MAC addresses with button
 #### 7) Terminal
-  - Future Work: Add "Copy Command" button (`tail -f /proc/< pid >/fd/1`[out] or `tail -f /proc/< pid >/fd/2`[err])
-#### 8) Authentication (password configurable in `index.html` - currently 'pass')
+  - Future Work: Add "Copy Command" button to fork process output
+#### 8) Authentication 
   - Future Work: Twilio-based multi-factor authentication
-  - Future Work: Link to file containing password under `configuration `
+  - Future Work: PAM authentication || equivalent
 #### 9) Remote Access
   - Future Work: Link/iFrame to gateway address (for port forwarding configuration)
   - Future Work: no-ip2 API DDNS support in interface
