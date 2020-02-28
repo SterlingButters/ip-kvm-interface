@@ -17,7 +17,7 @@ The project's working features (with caveats):
 #### 2) Mouse
   - Future Work: Scroll wheel support
 #### 3) Video Source (selection/refresh) (e.g. `/dev/video0`, etc)
-  - Future Work: Test uStreamer over JSMPEG
+  - Future Work: Try HLS stream
 #### 4) Mass Storage Emulation
   - Future Work: Verify detachability
   - Future Work: Perform `.img` test
@@ -33,10 +33,10 @@ The project's working features (with caveats):
   - Future Work: Configure `/network/interfaces` for user
   - Future Work: Detect MAC addresses with button
 #### 7) Terminal
-  - Future Work: Add "Copy Command" button (`tail -f /proc/< pid >/fd/1`[out] or `tail -f /proc/< pid >/fd/2`[err])
-#### 8) Authentication (password configurable in `index.html` - currently 'pass')
+  - Future Work: Add "Copy Command" button to fork process output
+#### 8) Authentication 
   - Future Work: Twilio-based multi-factor authentication
-  - Future Work: Link to file containing password under `configuration `
+  - Future Work: PAM authentication || equivalent
 #### 9) Remote Access
   - Future Work: Link/iFrame to gateway address (for port forwarding configuration)
   - Future Work: no-ip2 API DDNS support in interface
