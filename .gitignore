@@ -1,5 +1,5 @@
 .DS_Store
 /node_modules
 /testing
-TODO.txt
+/uploads/*
 package-lock.json

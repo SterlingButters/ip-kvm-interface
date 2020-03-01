@@ -17,7 +17,6 @@ const express = require('express');
 var SocketIOFileUpload = require('socketio-file-upload');
 var app = express().use(express.static(__dirname + '/')).use(SocketIOFileUpload.router);
 
-const net = require('net');
 const http = require('http');
 const server = http.Server(app);
 const socket = require('socket.io')(server);
@@ -29,104 +28,30 @@ const fs = require('fs');
 const PORT = 80;
 server.listen(PORT, function(){
   console.log(`Listening on http://localhost:${PORT}`);
-  //vncClient = new WebSocket.Server({server: server});
-  vncClient = new WebSocket.Server({port: 3000});
-  vncClient.on('connection', new_client);
 });
-
-// ------------------ Websockify Start ------------------ //
-// Handle new WebSocket client
-var onConnectedCallback = null;
-var onDisconnectedCallback = null;
-
-
-var new_client = function(client, req) {
-	var clientAddr = client._socket.remoteAddress;
-	console.log(req ? req.url : client.upgradeReq.url);
-	var log = function (msg) {
-		console.log(' ' + clientAddr + ': '+ msg);
-	};
-	log('WebSocket connection from : ' + clientAddr);
-	log('Version ' + client.protocolVersion + ', subprotocol: ' + client.protocol);
-
-	var target = net.createConnection(5900,'localhost', function() {
-		log('connected to target');
-		if (onConnectedCallback)
-		{
-			try {
-				onConnectedCallback(client, target);
-			} catch(e) {
-				log("onConnectedCallback failed, cleaning up target");
-				target.end();
-			}
-		}
-	});
-	target.on('data', function(data) {
-		//log("sending message: " + data);
-		try {
-			client.send(data);
-		} catch(e) {
-			log("Client closed, cleaning up target");
-			target.end();
-		}
-	});
-	target.on('end', function() {
-		log('target disconnected');
-		client.close();
-	});
-	target.on('error', function() {
-		log('target connection error');
-		target.end();
-		client.close();
-	});
-
-	client.on('message', function(msg) {
-		//log('got message: ' + msg);
-		target.write(msg);
-	});
-	client.on('close', function(code, reason) {
-		
-		if (onDisconnectedCallback)
-		{
-			try {
-				onDisconnectedCallback(client, code, reason);
-			} catch(e) {
-				log("onDisconnectedCallback failed");
-			}
-		}		
-
-		log('WebSocket client disconnected: ' + code + ' [' + reason + ']');
-		target.end();
-	});
-	client.on('error', function(a) {
-		log('WebSocket client error: ' + a);
-		target.end();
-	});
-};
-// ------------------ Websockify End ------------------ //
 
 // ------------------ Video Start ------------------ //
 
 // Websocket Server
-var videoServer = new WebSocket.Server({port: WEBSOCKET_PORT, perMessageDeflate: false});
-videoServer.connectionCount = 0;
-videoServer.on('connection', function(socket, upgradeReq) {
-	videoServer.connectionCount++;
+var socketServer = new WebSocket.Server({port: WEBSOCKET_PORT, perMessageDeflate: false});
+socketServer.connectionCount = 0;
+socketServer.on('connection', function(socket, upgradeReq) {
+	socketServer.connectionCount++;
 	console.log(
 		'New WebSocket Connection: ',
 		(upgradeReq || socket.upgradeReq).socket.remoteAddress,
 		(upgradeReq || socket.upgradeReq).headers['user-agent'],
-		'('+videoServer.connectionCount+' total)'
+		'('+socketServer.connectionCount+' total)'
 	);
 	socket.on('close', function(code, message){
-		videoServer.connectionCount--;
+		socketServer.connectionCount--;
 		console.log(
-			'Disconnected WebSocket ('+videoServer.connectionCount+' total)'
+			'Disconnected WebSocket ('+socketServer.connectionCount+' total)'
 		);
 	});
 });
-videoServer.broadcast = function(data) {
-	videoServer.clients.forEach(function each(client) {
+socketServer.broadcast = function(data) {
+	socketServer.clients.forEach(function each(client) {
 		if (client.readyState === WebSocket.OPEN) {
 			client.send(data);
 		}
@@ -152,7 +77,7 @@ var streamServer = http.createServer( function(request, response) {
 		request.socket.remotePort
 	);
 	request.on('data', function(data){
-		videoServer.broadcast(data);
+		socketServer.broadcast(data);
 		if (request.socket.recording) {
 			request.socket.recording.write(data);
 		}

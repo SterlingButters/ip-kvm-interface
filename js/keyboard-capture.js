@@ -80,6 +80,45 @@ resetButton.onclick = function(){
 	alert('Keyboard Reset');
 };
 
+function sendCombos(id) {
+	if (id == "Alt+Shift") {
+		socketTx.emit('keyboardChannel', [96, 0, 0, 0, 0, 0, 0, 0]);
+		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
+	};
+	if (id == "Crtl+Shift" ) {
+		socketTx.emit('keyboardChannel', [48, 0, 0, 0, 0, 0, 0, 0]);
+		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
+	};
+	if (id == "Shift+Shift" ) {
+		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
+		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
+	};
+	if (id == "Meta+Space") {
+		socketTx.emit('keyboardChannel', [128, 0, 44, 0, 0, 0, 0, 0]);
+		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
+	};
+	if (id == "Ctrl+W") {
+		socketTx.emit('keyboardChannel', [16, 0, 26, 0, 0, 0, 0, 0]);
+		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
+	};
+	if (id == "Alt+Tab") {
+		socketTx.emit('keyboardChannel', [64, 0, 43, 0, 0, 0, 0, 0]);
+		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
+	};
+	if (id == "Alt+Enter") {
+		socketTx.emit('keyboardChannel', [64, 0, 40, 0, 0, 0, 0, 0]);
+		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
+	};
+	if (id == "Alt+F4") {
+		socketTx.emit('keyboardChannel', [64, 0, 61, 0, 0, 0, 0, 0]);
+		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
+	};
+	if (id == "Ctrl+Alt+Del") {
+		socketTx.emit('keyboardChannel', [80, 0, 40, 0, 0, 0, 0, 0]);
+		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);	
+	};
+}
+
 var keyTracker = [];
 var modifierTracker = [];
 
