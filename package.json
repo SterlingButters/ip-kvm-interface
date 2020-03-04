@@ -11,7 +11,10 @@
     "url": "git+https://github.com/SterlingButters/ip-kvm-interface.git"
   },
   "dependencies": {
+    "@abandonware/noble": "^1.9.2-6",
+    "bluetooth-serial-port": "^2.2.7",
     "child_process": "1.0.2",
+    "dotenv": "^8.2.0",
     "express": "4.16.4",
     "express-ws": "^4.0.0",
     "fs": "0.0.1-security",
@@ -21,14 +24,16 @@
     "mod_autoindex": "^1.8.0",
     "network": "^0.5.0",
     "noble": "^1.9.1",
-    "node-gyp": "^6.1.0",
+    "node-linux-pam": "0.0.1",
     "node-pty": "^0.9.0",
     "node-websockify": "^1.0.3",
     "onoff": "5.0.1",
     "opn": "5.4.0",
+    "serialport": "^8.0.7",
     "socket.io": "2.1.1",
     "socket.io-client": "2.1.1",
     "socketio-file-upload": "^0.7.0",
+    "twilio": "^3.39.5",
     "xterm": "^4.4.0",
     "yargs": "^15.1.0"
   },

@@ -1,9 +1,7 @@
 #!/bin/bash
 
 apt-get update
-apt-get install git
-apt-get install etherwake
-apt-get install python3-pip
+apt-get install git etherwake python3-pip samba samba-common-bin libpam0g-dev bluetooth bluez libbluetooth-dev libudev-dev
 pip install butterfly
 
 node -v

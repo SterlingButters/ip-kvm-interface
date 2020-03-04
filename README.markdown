@@ -34,9 +34,8 @@ The project's working features (with caveats):
   - Future Work: Detect MAC addresses with button
 #### 7) Terminal
   - Future Work: Add "Copy Command" button to fork process output
-#### 8) Authentication 
+#### 8) Authentication (PAM)
   - Future Work: Twilio-based multi-factor authentication
-  - Future Work: PAM authentication || equivalent
 #### 9) Remote Access
   - Future Work: Link/iFrame to gateway address (for port forwarding configuration)
   - Future Work: no-ip2 API DDNS support in interface

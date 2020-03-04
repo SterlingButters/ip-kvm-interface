@@ -14,20 +14,47 @@
     <script src="https://kit.fontawesome.com/6873aa3c17.js" crossorigin="anonymous"></script>
 
     <script>
-      function askPassword() {
-              var password = prompt("Please enter your password", "Password");
-              while (password != 'pass') {var password = prompt("Please enter your password", "Password")}
+
+     async function authenticateUser() {
+        let authenticated = false;
+        socketTx = io();
+        socketRx = io.connect();
+
+    	var user = prompt("Please enter username", "");
+      var pass = prompt("Please enter your password", "");
+      //var mfaCode = prompt("Please enter your 6 digit code", "");
+
+    	socketTx.emit('authChannel', {username: user, password: pass});
+
+      let promise = new Promise((resolve, reject) => {
+        socketRx.on('authChannel', function(auth) {
+      		resolve(auth);
+        });
+      });
+
+    	setTimeout(function() {
+      	  alert("Authenticating... Please wait a few seconds");
+    	});
+      authenticated = await promise;
+
+      if (authenticated == false) {
+    	    authenticateUser();
+        } else {
+    	    authenticated == true;
+    	    document.body.classList.toggle('hide');
+    	}
           }
 
-    	function initFunctions() {
-    		askPassword();
-    	}
+          function initFunctions() {
+        		authenticateUser();
+          }
 
-    	window.addEventListener("load", initFunctions, true)
+      window.addEventListener("load", initFunctions, true)
+
     </script>
   </head>
 
-  <body class='light-background'
+  <body class='light-background hide'
         oncontextmenu="return false;">
 
     <!-- Keyboard -->
@@ -154,17 +181,17 @@
             <button type="button" onclick="attachFile()">Attach File</button>
             <button type="button" onclick="detachFile()">Detach File</button>
             <script>
-			  
+
 			  function refreshFiles() {
 				var socketTx = io();
                 var socketRx = io.connect();
-					
+
 				fileDropdown = document.getElementById("fileDropdown");
 
 				socketTx.emit('fileChannel', "RESET");
 				socketRx.on('fileChannel', function(data) {
 					if (data.Status) {
-						// data is received [button press]x -- why? 
+						// data is received [button press]x -- why?
 						console.log(data);
 						fileDropdown.innerHTML = '';
 
@@ -173,8 +200,8 @@
 							option.value = data.Files[file];
 							option.text = data.Files[file];
 							fileDropdown.appendChild(option);
-						}	
-					}		
+						}
+					}
 				});
 			  }
 
@@ -354,7 +381,7 @@
                                         td.appendChild(document.createTextNode(data[device].ip));
 					td.appendChild(document.createTextNode(data[device].mac));
                                         tr.appendChild(td);
-                                       
+
                                         tbdy.appendChild(tr);
                                     }
 
@@ -437,7 +464,7 @@
     <div id="signal-screen" class="regular-video black-box hide">
         <a class="loading-prompt">No video loaded...</a>
     </div>
-    
+
 	<div id="status">Loading</div>
 	<div id="screen">
         <!-- This is where the remote screen will appear -->
@@ -458,7 +485,7 @@
       };
       term.open(document.getElementById('terminal'));
       term.welcome();
-    
+
       //Initialize Terminal
       //socketTx.emit('data', 'su pi\r');
 
@@ -469,7 +496,7 @@
 
       // Capture Pasting
       term.onData(function (e) {
-          if (e.length > 1) { 
+          if (e.length > 1) {
             socketTx.emit('data', e);
           }
       })

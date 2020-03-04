@@ -115,7 +115,7 @@ function sendCombos(id) {
 	};
 	if (id == "Ctrl+Alt+Del") {
 		socketTx.emit('keyboardChannel', [80, 0, 40, 0, 0, 0, 0, 0]);
-		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);	
+		socketTx.emit('keyboardChannel', [0, 0, 0, 0, 0, 0, 0, 0]);
 	};
 }
 
@@ -446,7 +446,9 @@ document.addEventListener("keydown", event => {
   inputReport[6] = recentKeys[4] || 0;
   inputReport[7] = recentKeys[5] || 0;
 
-  socketTx.emit('keyboardChannel', inputReport);
+  // socketTx.emit('keyboardChannel', inputReport);
+  // Arduino Test
+  socketTx.emit('keyboardChannel', event.keyCode);
 
   // Disabling keyboard input, as some keys (like F5) make the browser lose focus.
   if (event.key === "Alt") event.preventDefault();
@@ -499,7 +501,7 @@ document.addEventListener("keyup", event => {
   inputReport[6] = recentKeys[4] || 0;
   inputReport[7] = recentKeys[5] || 0;
 
-  socketTx.emit('keyboardChannel', inputReport);
+  // socketTx.emit('keyboardChannel', inputReport);
 
   // Revise this
   let input = document.querySelector(".input").value;

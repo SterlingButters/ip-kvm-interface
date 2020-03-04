@@ -12,6 +12,8 @@ var STREAM_SECRET = process.argv[2] || "DEFAULT",
     WEBSOCKET_PORT = process.argv[4] || 8082,
     RECORD_STREAM = false;
 
+require('dotenv').config({path:__dirname+'/runtime.env'});
+
 // Start Interface WebServer
 const express = require('express');
 var SocketIOFileUpload = require('socketio-file-upload');
@@ -19,6 +21,7 @@ var app = express().use(express.static(__dirname + '/')).use(SocketIOFileUpload.
 
 const net = require('net');
 const http = require('http');
+const https = require('https');
 const server = http.Server(app);
 const socket = require('socket.io')(server);
 const WebSocket = require('ws');
@@ -27,9 +30,24 @@ const spawn = require('child_process').spawn;
 const fs = require('fs');
 
 const PORT = 80;
+
+// we will pass our 'app' to 'https' server
+// const server = https.createServer({
+//     key: fs.readFileSync(__dirname+'/configuration/key.pem'),
+//     cert: fs.readFileSync(__dirname+'/configuration/cert.pem'),
+//     passphrase: process.env.SSL_PASSPHRASE
+// }, app);
+//
+// server.listen(PORT, function(){
+//     console.log(`Listening on http://localhost:${PORT}`);
+//   vncClient = new WebSocket.Server({port: 3000});
+//   vncClient.on('connection', new_client);
+// });
+// const socket = require('socket.io')(server);
+
 server.listen(PORT, function(){
   console.log(`Listening on http://localhost:${PORT}`);
-  //vncClient = new WebSocket.Server({server: server});
+  // vncClient = new WebSocket.Server({server: server});
   vncClient = new WebSocket.Server({port: 3000});
   vncClient.on('connection', new_client);
 });
@@ -85,7 +103,7 @@ var new_client = function(client, req) {
 		target.write(msg);
 	});
 	client.on('close', function(code, reason) {
-		
+
 		if (onDisconnectedCallback)
 		{
 			try {
@@ -93,7 +111,7 @@ var new_client = function(client, req) {
 			} catch(e) {
 				log("onDisconnectedCallback failed");
 			}
-		}		
+		}
 
 		log('WebSocket client disconnected: ' + code + ' [' + reason + ']');
 		target.end();
@@ -283,6 +301,22 @@ socket.on('connect', function(client) {
 
 // ------------------ HID Start ------------------ //
 
+const { pamAuthenticate, pamErrors } = require('node-linux-pam');
+
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+
+var twilio = require('twilio'); //https://www.twilio.com/docs/libraries/node
+var twilioKey = Math.floor(100000 + Math.random() * 900000);
+// var sms = new twilio(accountSid, authToken);
+// //console.log(client);
+// sms.messages.create({
+//     body: twilioKey,
+//     to: '+12103609722',  // Text this number
+//     from: '+12053033616' // From a valid Twilio number
+// })
+// .then((message) => console.log(message.sid));
+
 var contents = fs.readFileSync(__dirname + "/configuration/gpioConfig.json");
 var Relays = JSON.parse(contents).Relay;
 var Switchs = JSON.parse(contents).Switch;
@@ -299,11 +333,14 @@ let RELAYS = [];
 for (let i = 0; i < Relays.length; i++) {
 	const relay = new Gpio(Relays[i], 'out');
 	RELAYS.push({"gpio": Relays[i], "object": relay});
-}; 
+};
 
 // TODO: Throw error if peripherals not detected
 var mouse = '/dev/hidg0';
 var keyboard = '/dev/hidg1';
+
+const SerialPort = require('serialport');
+const ttyPort = new SerialPort('/dev/ttyUSB0', {baudRate:115200})
 
 function writeReport(device, data) {
   fs.writeFile(device, data, (err) => {
@@ -316,11 +353,32 @@ var fileTracker = {};
 // Make browser connection
 socket.on('connection', function(client) {
   //console.log("Client communication established");
-  
+
+  // Receive and Handle authentication data
+  client.on('authChannel', function(data) {
+    console.log(data);
+		// Add twilio mfa code to data and handle here;
+    pamAuthenticate(data, function(err, code) {
+    if (!err) {
+        console.log("Authenticated!");
+				socket.emit('authChannel', true);
+				return;
+    } else {socket.emit('authChannel', false); return;}
+
+    if (err && code === pamErrors.PAM_NEW_AUTHTOK_REQD) {
+        console.log('Authentication token is expired');
+				socket.emit('authChannel', false);
+				return;
+    }
+
+    });
+  });
+
   // Receive keyboard data from browser and log in node console
   client.on('keyboardChannel', function(data){
     console.log(data);
-    writeReport(keyboard, Buffer.from(data));
+		ttyPort.write(String(data));
+    //writeReport(keyboard, Buffer.from(data));
   });
 
   // Receive mouse data from browser and log in node console
@@ -331,11 +389,11 @@ socket.on('connection', function(client) {
 
   client.on('fileChannel', function(data){
 	console.log(data);
-	
+
 	if (data == "RESET") {
 		let uploads = fs.readdirSync(__dirname + '/uploads');
-		var message = {Status: "Refreshed", Files: uploads}; 
-		socket.emit('fileChannel', message);	
+		var message = {Status: "Refreshed", Files: uploads};
+		socket.emit('fileChannel', message);
 	}
 	else {
 		udcPath = '/sys/kernel/config/usb_gadget/kvm-gadget/UDC';
