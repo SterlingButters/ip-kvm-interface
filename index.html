@@ -336,7 +336,7 @@
 
     <!-- Video -->
 
-    <canvas id="video" class="regular-video hide"></canvas>
+    <canvas id="video" class="regular-video"></canvas>
     <script type="text/javascript" src="/js/jsmpeg.min.js"></script>
     <script type="text/javascript">
 		var canvas = document.getElementById('video');
@@ -348,28 +348,45 @@
         <a class="loading-prompt">No video loaded...</a>
     </div>
 
-	  <div id="screen" class="regular-video"></div>
+	  <div id="screen" class="regular-video hide"></div>
     <script src="/js/cursor-capture.js"></script>
     <!-- Video -->
 
     <div class="regular-video hide" id="terminal"></div>
     <script src="/js/terminal-capture.js"></script>
     <script>
+
+      var signalScreen = document.getElementById('signal-screen');
+
       var terminal = document.getElementById('terminal');
       var vncScreen = document.getElementById('screen');
       var video = document.getElementById('video');
-      var signalScreen = document.getElementById('signal-screen');
+
       var vncToggle = document.getElementById('vncToggle');
       var termToggle = document.getElementById('terminalToggle');
+
       termToggle.onclick = function toggleTerminal() {
-        terminal.classList.toggle('hide');
-        signalScreen.classList.toggle('hide');
-        video.classList.toggle('hide');
+
+        if (terminal.classList.contains('hide')) {
+          terminal.classList.remove('hide');
+          if (vncScreen.classList.contains('hide')) {} else {vncScreen.classList.add('hide')}
+          if (video.classList.contains('hide')) {} else {video.classList.add('hide')}
+        } else {
+          terminal.classList.add('hide');
+          if (video.classList.contains('hide')) {video.classList.remove('hide')} else {}
+        }
       }
+
       vncToggle.onclick = function toggleVNC() {
-        vncScreen.classList.toggle('hide');
-        signalScreen.classList.toggle('hide');
-        video.classList.toggle('hide');
+
+        if (vncScreen.classList.contains('hide')) {
+          vncScreen.classList.remove('hide');
+          if (terminal.classList.contains('hide')) {} else {terminal.classList.add('hide')}
+          if (video.classList.contains('hide')) {} else {video.classList.add('hide')}
+        } else {
+          vncScreen.classList.add('hide');
+          if (video.classList.contains('hide')) {video.classList.remove('hide')} else {}
+          }
       }
     </script>
 
