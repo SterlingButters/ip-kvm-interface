@@ -12,50 +12,19 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="node_modules/xterm/lib/xterm.js"></script>
     <script src="https://kit.fontawesome.com/6873aa3c17.js" crossorigin="anonymous"></script>
-
+    <script src="/js/auth-capture.js"></script>
     <script>
-
-     async function authenticateUser() {
-        let authenticated = false;
-        socketTx = io();
-        socketRx = io.connect();
-
-    	var user = prompt("Please enter username", "");
-      var pass = prompt("Please enter your password", "");
-      //var mfaCode = prompt("Please enter your 6 digit code", "");
-
-    	socketTx.emit('authChannel', {username: user, password: pass});
-
-      let promise = new Promise((resolve, reject) => {
-        socketRx.on('authChannel', function(auth) {
-      		resolve(auth);
-        });
-      });
-
-    	setTimeout(function() {
-      	  alert("Authenticating... Please wait a few seconds");
-    	});
-      authenticated = await promise;
-
-      if (authenticated == false) {
-    	    authenticateUser();
-        } else {
-    	    authenticated == true;
-    	    document.body.classList.toggle('hide');
-    	}
-          }
-
-          function initFunctions() {
-        		authenticateUser();
-          }
-
+      function initFunctions() {
+        // authenticateUser();
+      }
       window.addEventListener("load", initFunctions, true)
-
     </script>
   </head>
 
-  <body class='light-background hide'
+  <body class='light-background'
         oncontextmenu="return false;">
+
+    <!-- <div id='pre-auth' class="pre-auth"></div> -->
 
     <!-- Keyboard -->
     <div id='keyboard' class='keyboard'>
@@ -180,96 +149,6 @@
             <button type="button" onclick="refreshFiles()">Refresh Files</button>
             <button type="button" onclick="attachFile()">Attach File</button>
             <button type="button" onclick="detachFile()">Detach File</button>
-            <script>
-
-			  function refreshFiles() {
-				var socketTx = io();
-                var socketRx = io.connect();
-
-				fileDropdown = document.getElementById("fileDropdown");
-
-				socketTx.emit('fileChannel', "RESET");
-				socketRx.on('fileChannel', function(data) {
-					if (data.Status) {
-						// data is received [button press]x -- why?
-						console.log(data);
-						fileDropdown.innerHTML = '';
-
-						for (var file in data.Files) {
-							const option = document.createElement('option');
-							option.value = data.Files[file];
-							option.text = data.Files[file];
-							fileDropdown.appendChild(option);
-						}
-					}
-				});
-			  }
-
-              function attachFile() {
-
-        				var file = document.getElementById('fileDropdown').value;
-        				var cdrom = document.getElementById('cdrom').checked;
-        				var removable = document.getElementById('removable').checked;
-        				var readonly = document.getElementById('read-only').checked;
-        				var stall = document.getElementById('stall').checked;
-        				var fua = document.getElementById('nofua').checked;
-
-                var socketTx = io();
-                var socketRx = io.connect();
-
-                var message = {Command: "Attach",
-							   		  File: file,
-								   CDRom: +cdrom,
-						   Removable: +removable,
-						     ReadOnly: +readonly,
-									  FUA: +fua};
-                socketTx.emit('fileChannel', message);
-
-                // Receive attached files or > 8 message
-                socketRx.on('fileChannel', function(data){
-				  if(!data.Status) {
-			          console.log(data);
-			          alert('File Attached as Lun');
-		              // alert(data);
-
-					  var tbdy = document.createElement('tbody');
-
-					  for (var lun in data) {
-						console.log(lun);
-						var tr = document.createElement('tr');
-						tr.appendChild(document.createElement('td').appendChild(document.createTextNode(lun)));
-
-						for (var info in data[lun]) {
-						  var td = document.createElement('td');
-						  td.appendChild(document.createTextNode(data[lun][info]))
-								tr.appendChild(td)
-						}
-						tbdy.appendChild(tr);
-					  }
-
-					  var table = document.getElementById('file-table')
-					  var old_tbdy = table.getElementsByTagName('tbody')[0];
-
-					  if (!old_tbdy) {
-						table.appendChild(tbdy);
-					  } else {
-					  table.replaceChild(tbdy, old_tbdy)
-					  }
-				  };
-                });
-              };
-
-              function detachFile() {
-                alert('Detaching File');
-
-				var file = document.getElementById('fileDropdown').value;
-                var socketTx = io();
-
-                var message = {Command: "Detach", Argument: file};
-                socketTx.emit('fileChannel', message);
-              };
-
-            </script>
             <script type="text/javascript" src="/js/file-capture.js"></script>
 
       	  <a>Samba Server (future)</a>
@@ -439,13 +318,17 @@
       <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn" title="Remote Capability"><i class="fas fa-network-wired fa-5x"></i></a>
         <div class="dropdown-content">
+          <a>DDNS/Port-Forwarding Config (future)</a>
+          <a>VPN Config (future)</a>
         </div>
       </li>
 
       <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn" title="Miscellaneous"><i class="fas fa-desktop fa-5x"></i></a>
         <div class="dropdown-content">
-          <a>VNC (future)</a>
+          <button class="button" id="vncToggle" title="Toggle VNC"><i class="fas fa-eye fa-3x"></i></button>
+          <label>VNC Status</label>
+          <div id="status">Loading</div>
         </div>
       </li>
 
@@ -465,156 +348,36 @@
         <a class="loading-prompt">No video loaded...</a>
     </div>
 
-	<div id="status">Loading</div>
-	<div id="screen">
-        <!-- This is where the remote screen will appear -->
-    </div>
-
+	  <div id="screen" class="regular-video"></div>
     <script src="/js/cursor-capture.js"></script>
     <!-- Video -->
 
     <div class="regular-video hide" id="terminal"></div>
+    <script src="/js/terminal-capture.js"></script>
     <script>
-      var socketTx = io();
-      var socketRx = io.connect();
-
-      var options = {'cols': 250};
-      var term = new Terminal(options);
-      term.welcome = function() {
-        term.write('Hello from \x1B[1;3;31mR(p)ipMI\x1B[0m\r\n');
-      };
-      term.open(document.getElementById('terminal'));
-      term.welcome();
-
-      //Initialize Terminal
-      //socketTx.emit('data', 'su pi\r');
-
-      term.onKey(function(e) {
-        console.log(e);
-        socketTx.emit('data', e.key);
-      });
-
-      // Capture Pasting
-      term.onData(function (e) {
-          if (e.length > 1) {
-            socketTx.emit('data', e);
-          }
-      })
-
-      socketRx.on('data', function(data){
-      	term.write(data);
-      });
-    </script>
-    <script>
-      var toggle = document.getElementById('terminalToggle');
       var terminal = document.getElementById('terminal');
+      var vncScreen = document.getElementById('screen');
+      var video = document.getElementById('video');
       var signalScreen = document.getElementById('signal-screen');
-      toggle.onclick = function toggleTerminal() {
+      var vncToggle = document.getElementById('vncToggle');
+      var termToggle = document.getElementById('terminalToggle');
+      termToggle.onclick = function toggleTerminal() {
         terminal.classList.toggle('hide');
         signalScreen.classList.toggle('hide');
+        video.classList.toggle('hide');
+      }
+      vncToggle.onclick = function toggleVNC() {
+        vncScreen.classList.toggle('hide');
+        signalScreen.classList.toggle('hide');
+        video.classList.toggle('hide');
       }
     </script>
 
-<!-- Promise polyfill for IE11 -->
+    <!-- Promise polyfill for IE11 -->
     <script src="vendor/promise.js"></script>
-
     <!-- ES2015/ES6 modules polyfill -->
     <script nomodule src="vendor/browser-es-module-loader/dist/browser-es-module-loader.js"></script>
-
-    <!-- actual script modules -->
-    <script type="module" crossorigin="anonymous">
-        // RFB holds the API to connect and communicate with a VNC server
-        import RFB from './core/rfb.js';
-
-        let rfb;
-        let desktopName;
-
-        // When this function is called we have
-        // successfully connected to a server
-        function connectedToServer(e) {
-            status("Connected to " + desktopName);
-        }
-
-        // This function is called when we are disconnected
-        function disconnectedFromServer(e) {
-            if (e.detail.clean) {
-                status("Disconnected");
-            } else {
-                status("Something went wrong, connection is closed");
-            }
-        }
-
-        // When this function is called, the server requires
-        // credentials to authenticate
-        function credentialsAreRequired(e) {
-            const password = prompt("Password Required:");
-            rfb.sendCredentials({ password: 'Butt3rb4lls!' });
-        }
-
-        // When this function is called we have received
-        // a desktop name from the server
-        function updateDesktopName(e) {
-            desktopName = e.detail.name;
-        }
-
-        // Since most operating systems will catch Ctrl+Alt+Del
-        // before they get a chance to be intercepted by the browser,
-        // we provide a way to emulate this key sequence.
-        function sendCtrlAltDel() {
-            rfb.sendCtrlAltDel();
-            return false;
-        }
-
-        // Show a status text in the top bar
-        function status(text) {
-            document.getElementById('status').textContent = text;
-        }
-
-        // This function extracts the value of one variable from the
-        // query string. If the variable isn't defined in the URL
-        // it returns the default value instead.
-        function readQueryVariable(name, defaultValue) {
-            // A URL with a query parameter can look like this:
-            // https://www.example.com?myqueryparam=myvalue
-            //
-            // Note that we use location.href instead of location.search
-            // because Firefox < 53 has a bug w.r.t location.search
-            const re = new RegExp('.*[?&]' + name + '=([^&#]*)'),
-                  match = document.location.href.match(re);
-
-            if (match) {
-                // We have to decode the URL since want the cleartext value
-                return decodeURIComponent(match[1]);
-            }
-
-            return defaultValue;
-        }
-
-		const host = readQueryVariable('host', window.location.hostname);
-        let port = readQueryVariable('port', window.location.port);
-        const password = readQueryVariable('password');
-        const path = readQueryVariable('path', 'websockify');
-
-        status("Connecting");
-
-        // Build the websocket URL used to connect
-        let url = 'ws://localhost:3000';
-
-        // Creating a new RFB object will start a new connection
-        rfb = new RFB(document.getElementById('screen'), url,
-                      { credentials: { password: password } });
-
-        // Add listeners to important events from the RFB module
-        rfb.addEventListener("connect",  connectedToServer);
-        rfb.addEventListener("disconnect", disconnectedFromServer);
-        rfb.addEventListener("credentialsrequired", credentialsAreRequired);
-        rfb.addEventListener("desktopname", updateDesktopName);
-
-        // Set parameters that can be changed on an active connection
-        rfb.viewOnly = readQueryVariable('view_only', false);
-        rfb.scaleViewport = readQueryVariable('scale', false);
-
-    </script>
+    <script src="/js/vnc-capture.js" type="module" crossorigin="anonymous"></script>
 
   </body>
 

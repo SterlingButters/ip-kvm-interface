@@ -261,8 +261,8 @@ socket.on('connect', function(client) {
   ptyterm = pty.spawn(shell, [], {
     name: 'xterm-color',
     // sync rows and cols from index.html
-    cols: 250,
-    rows: 250,
+    cols: 175,
+    rows: 55,
     cwd: process.env.PWD,
     env: process.env,
     //handleFlowControl: true
@@ -377,7 +377,7 @@ socket.on('connection', function(client) {
   // Receive keyboard data from browser and log in node console
   client.on('keyboardChannel', function(data){
     console.log(data);
-		ttyPort.write(String(data));
+		ttyPort.write(String(data)+'\n');
     //writeReport(keyboard, Buffer.from(data));
   });
 

@@ -13,11 +13,11 @@ development with minimal orientation overhead.
 
 The project's working features (with caveats):
 #### 1) Keyboard
-  - Future Work: Send shortcuts via HTML button interface
+  - Future Work: Send pasted ASCII text
 #### 2) Mouse
   - Future Work: Scroll wheel support
 #### 3) Video Source (selection/refresh) (e.g. `/dev/video0`, etc)
-  - Future Work: Try HLS stream
+  - Future Work: Try `Video,js` stream
 #### 4) Mass Storage Emulation
   - Future Work: Verify detachability
   - Future Work: Perform `.img` test
@@ -31,17 +31,16 @@ The project's working features (with caveats):
         - LIRC Transmitter/Receiver [ENER314-IR](https://www.amazon.co.uk/dp/B00T9JPA4O/ref=pe_3187911_185740111_TE_item)
 #### 6) WOL
   - Future Work: Configure `/network/interfaces` for user
-  - Future Work: Detect MAC addresses with button
+  - Future Work: Switch from `local-devices` (npm vulnerability)
 #### 7) Terminal
-  - Future Work: Add "Copy Command" button to fork process output
+  - Future Work: Log all `app.js` process output to file
 #### 8) Authentication (PAM)
   - Future Work: Twilio-based multi-factor authentication
 #### 9) Remote Access
   - Future Work: Link/iFrame to gateway address (for port forwarding configuration)
   - Future Work: no-ip2 API DDNS support in interface
   - Future Work: VPN configuration information
-  - Future Work: Embedded VNC Client using noVNC
-  - ~~Future Work: Dataplicity "Wormhole" Instruction~~ video stream is "insecure" content
+  - Future Work: Tidy VNC Client in interface
 #### 10) ~~Installation Script~~ (`/configuration/install.sh`
   - Future Work: Configure as `systemd` service
   - Future Work: Add `dtoverlay=dwc2` to `/boot/config.txt`
