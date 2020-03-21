@@ -329,6 +329,11 @@
           <button class="button" id="vncToggle" title="Toggle VNC"><i class="fas fa-eye fa-3x"></i></button>
           <label>VNC Status</label>
           <div id="status">Loading</div>
+		  <label>Target PC IP Address</label>
+          <input id="targetIP">
+ 		  <label>Target Port</label>
+          <input id="targetPort">
+          <button class="button" onclick="refreshVNC()" id="vncRefresh" title="Refresh VNC"><i class="fas fa-sync fa-3x"></i></button>
         </div>
       </li>
 
@@ -348,11 +353,11 @@
         <a class="loading-prompt">No video loaded...</a>
     </div>
 
-	  <div id="screen" class="regular-video hide"></div>
+	  <div id="screen" class="regular-video"></div>
     <script src="/js/cursor-capture.js"></script>
     <!-- Video -->
 
-    <div class="regular-video hide" id="terminal"></div>
+    <div class="regular-video" id="terminal hide"></div>
     <script src="/js/terminal-capture.js"></script>
     <script>
 

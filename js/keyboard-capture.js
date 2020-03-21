@@ -317,6 +317,193 @@ function jsToDecimal(keyCode) {
   return decimal;
 }
 
+// Function to change array of js keycodes to ascii value
+function jsToASCII(keyCode) {
+
+  let asciiList = {
+    '8': 'KEY_BACKSPACE', // backspace
+    '9': 'KEY_TAB', // tab
+    '13': 'KEY_RETURN', // enter
+    '16': 'KEY_LEFT_SHIFT', // shiftleft
+    '16': 'KEY_RIGHT_SHIFT', // shiftright
+    '17': 'KEY_LEFT_CTRL', // controlleft
+    '17': 'KEY_RIGHT_CTRL', // controlright
+    '18': 'KEY_LEFT_ALT', // altleft
+    '18': 'KEY_RIGHT_ALT', // altright
+    '91': 'KEY_LEFT_GUI', // metaleft
+    '92': 'KEY_RIGHT_GUI', // metaright
+    '19': 0, // pause - ascii null
+    '20': 'KEY_CAPS_LOCK', // capslock
+    '27': 'KEY_ESC', // escape
+    '32': ' ', // space
+    '33': 'KEY_PAGE_UP', // pageup
+    '34': 'KEY_PAGE_DOWN', // pagedown
+    '35': 'KEY_END', // end
+    '36': 'KEY_HOME', // home
+    '37': 'KEY_LEFT_ARROW', // arrowleft
+    '38': 'KEY_UP_ARROW', // arrowup
+    '39': 'KEY_RIGHT_ARROW', // arrowright
+    '40': 'KEY_DOWN_ARROW', // arrowdown
+    '45': 'KEY_INSERT', // insert
+    '46': 'KEY_DELETE', // delete
+    '48': '0', // 0
+    '49': '1', // 1
+    '50': '2', // 2
+    '51': '3', // 3
+    '52': '4', // 4
+    '53': '5', // 5
+    '54': '6', // 6
+    '55': '7', // 7
+    '56': '8', // 8
+    '57': '9', // 9
+    '65': 'a', // a
+    '66': 'b', // b
+    '67': 'c', // c
+    '68': 'd', // d
+    '69': 'e', // e
+    '70': 'f', // f
+    '71': 'g', // g
+    '72': 'h', // h
+    '73': 'i', // i
+    '74': 'j', // j
+    '75': 'k', // k
+    '76': 'l', // l
+    '77': 'm', // m
+    '78': 'n', // n
+    '79': 'o', // o
+    '80': 'p', // p
+    '81': 'q', // q
+    '82': 'r', // r
+    '83': 's', // s
+    '84': 't', // t
+    '85': 'u', // u
+    '86': 'v', // v
+    '87': 'w', // w
+    '88': 'x', // x
+    '89': 'y', // y
+    '90': 'z', // z
+    '93': 0, // select
+    '112': 'KEY_F1', // f1
+    '113': 'KEY_F2', // f2
+    '114': 'KEY_F3', // f3
+    '115': 'KEY_F4', // f4
+    '116': 'KEY_F5', // f5
+    '117': 'KEY_F6', // f6
+    '118': 'KEY_F7', // f7
+    '119': 'KEY_F8', // f8
+    '120': 'KEY_F9', // f9
+    '121': 'KEY_F10', // f10
+    '122': 'KEY_F11', // f11
+    '123': 'KEY_F12', // f12
+    '144': 0, //numlock
+    '145': 0, //scrolllock
+    '186': ';', // ;
+    '187': '=', // =
+    '188': ',', // ,
+    '189': '-', // -
+    '190': '.', // .
+    '191': '/', // /
+    '192': '`', // `
+    '219': '[', // [
+    '220': '\\', // \
+    '221': ']', // ]
+    '222': '\'', // '
+  };
+
+  // let asciiList = {
+  //   '8': 8, // backspace
+  //   '9': 9, // tab
+  //   '13': 176, // enter
+  //   '16': 129, // shiftleft
+  //   '16': 133, // shiftright
+  //   '17': 128, // controlleft
+  //   '17': 132, // controlright
+  //   '18': 130, // altleft
+  //   '18': 134, // altright
+  //   '91': 131, // metaleft
+  //   '92': 135, // metaright
+  //   '19': 0, // pause - ascii null
+  //   '20': 193, // capslock
+  //   '27': 177, // escape
+  //   '32': 32, // space
+  //   '33': 211, // pageup
+  //   '34': 214, // pagedown
+  //   '35': 213, // end
+  //   '36': 210, // home
+  //   '37': 216, // arrowleft
+  //   '38': 218, // arrowup
+  //   '39': 215, // arrowright
+  //   '40': 217, // arrowdown
+  //   '45': 209, // insert
+  //   '46': 212, // delete
+  //   '48': 48, // 0
+  //   '49': 49, // 1
+  //   '50': 50, // 2
+  //   '51': 51, // 3
+  //   '52': 52, // 4
+  //   '53': 53, // 5
+  //   '54': 54, // 6
+  //   '55': 55, // 7
+  //   '56': 56, // 8
+  //   '57': 57, // 9
+  //   '65': 97, // a
+  //   '66': 98, // b
+  //   '67': 99, // c
+  //   '68': 100, // d
+  //   '69': 101, // e
+  //   '70': 102, // f
+  //   '71': 103, // g
+  //   '72': 104, // h
+  //   '73': 105, // i
+  //   '74': 106, // j
+  //   '75': 107, // k
+  //   '76': 108, // l
+  //   '77': 109, // m
+  //   '78': 110, // n
+  //   '79': 111, // o
+  //   '80': 112, // p
+  //   '81': 113, // q
+  //   '82': 114, // r
+  //   '83': 115, // s
+  //   '84': 116, // t
+  //   '85': 117, // u
+  //   '86': 118, // v
+  //   '87': 119, // w
+  //   '88': 120, // x
+  //   '89': 121, // y
+  //   '90': 122, // z
+  //   '93': 123, // select
+  //   '112': 194, // f1
+  //   '113': 195, // f2
+  //   '114': 196, // f3
+  //   '115': 197, // f4
+  //   '116': 198, // f5
+  //   '117': 199, // f6
+  //   '118': 200, // f7
+  //   '119': 201, // f8
+  //   '120': 202, // f9
+  //   '121': 203, // f10
+  //   '122': 204, // f11
+  //   '123': 205, // f12
+  //   '144': 0, //numlock
+  //   '145': 0, //scrolllock
+  //   '186': 59, // ;
+  //   '187': 61, // =
+  //   '188': 44, // ,
+  //   '189': 45, // -
+  //   '190': 46, // .
+  //   '191': 47, // /
+  //   '192': 96, // `
+  //   '219': 91, // [
+  //   '220': 92, // \
+  //   '221': 93, // ]
+  //   '222': 39, // '
+  // };
+
+  let ascii = asciiList[keyCode];
+  return ascii;
+}
+
 function onChange(input) {
   document.querySelector(".input").value = input;
   keyboard.setInput(input);
@@ -448,7 +635,7 @@ document.addEventListener("keydown", event => {
 
   // socketTx.emit('keyboardChannel', inputReport);
   // Arduino Test
-  socketTx.emit('keyboardChannel', event.keyCode);
+  socketTx.emit('keyboardChannel', jsToASCII(event.keyCode));
 
   // Disabling keyboard input, as some keys (like F5) make the browser lose focus.
   if (event.key === "Alt") event.preventDefault();

@@ -48,8 +48,8 @@ const PORT = 80;
 server.listen(PORT, function(){
   console.log(`Listening on http://localhost:${PORT}`);
   // vncClient = new WebSocket.Server({server: server});
-  vncClient = new WebSocket.Server({port: 3000});
-  vncClient.on('connection', new_client);
+  // vncClient = new WebSocket.Server({port: 3000});
+  // vncClient.on('connection', new_client);
 });
 
 // ------------------ Websockify Start ------------------ //
@@ -58,7 +58,7 @@ var onConnectedCallback = null;
 var onDisconnectedCallback = null;
 
 
-var new_client = function(client, req) {
+var new_client = function(client, req, targetip, targetport) {
 	var clientAddr = client._socket.remoteAddress;
 	console.log(req ? req.url : client.upgradeReq.url);
 	var log = function (msg) {
@@ -67,7 +67,7 @@ var new_client = function(client, req) {
 	log('WebSocket connection from : ' + clientAddr);
 	log('Version ' + client.protocolVersion + ', subprotocol: ' + client.protocol);
 
-	var target = net.createConnection(5900,'localhost', function() {
+	var target = net.createConnection(targetport, targetip, function() { // 5900, 'localhost'
 		log('connected to target');
 		if (onConnectedCallback)
 		{
@@ -540,6 +540,14 @@ socket.on('connection', function(client) {
 		}
      };
   });
+
+  client.on('vncChannel', function(data) {
+		vncClient = new WebSocket.Server({port: 3000});
+	  vncClient.on('connection', function(client, req) {
+			new_client(client, req, data.IP, data.Port);
+		});
+	})
+
 });
 
 // ------------------ HID End ------------------ //

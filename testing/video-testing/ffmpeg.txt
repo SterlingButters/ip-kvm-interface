@@ -1,0 +1,6 @@
+ffmpeg -f v4l2 -framerate 30 -video_size 1280x720 -i /dev/video0 -pix_fmt yuv420p -profile:v high -movflags +faststart testing.m3u8
+
+# ffmpeg -f v4l2 -framerate 30 -video_size 1280x720 -i /dev/video1 -f alsa -i pulse -acodec aac -strict experimental -pix_fmt yuv420p -profile:v high -level 4.2 -movflags +faststart playlist.m3u8
+# https://dabase.com/e/13044/
+
+# https://github.com/videojs/http-streaming

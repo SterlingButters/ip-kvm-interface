@@ -23,7 +23,7 @@ function disconnectedFromServer(e) {
 // credentials to authenticate
 function credentialsAreRequired(e) {
     const password = prompt("Password Required:");
-    rfb.sendCredentials({ password: '' });
+    rfb.sendCredentials({ password: password });
 }
 
 // When this function is called we have received
@@ -67,7 +67,7 @@ function readQueryVariable(name, defaultValue) {
 
 const host = readQueryVariable('host', window.location.hostname);
 let port = readQueryVariable('port', window.location.port);
-// const password = readQueryVariable('password');
+const password = readQueryVariable('password');
 const path = readQueryVariable('path', 'websockify');
 
 status("Connecting");
@@ -75,9 +75,16 @@ status("Connecting");
 // Build the websocket URL used to connect
 let url = 'ws://localhost:3000';
 
+function refreshVNC() {
+  var targetIP = document.getElementById('targetIP');
+  var targetPort = document.getElementById('targetPort');
+  var socketTx = io();
+  socketTx.emit('vncChannel', {IP: targetIP, Port: targetPort})
+}
+
 // Creating a new RFB object will start a new connection
 rfb = new RFB(document.getElementById('screen'), url,
-              { credentials: { password: '' } });
+              { credentials: { password: password } });
 
 // Add listeners to important events from the RFB module
 rfb.addEventListener("connect",  connectedToServer);

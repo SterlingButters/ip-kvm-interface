@@ -1,0 +1,35 @@
+<!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> -->
+<!-- Or if you want a more recent canary version -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@canary"></script> -->
+
+
+<link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+<script src="https://unpkg.com/video.js/dist/video.js"></script>
+<script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+
+<video id="video" class="video-js vjs-default-skin" controls></video>
+<script>
+
+  const player = videojs('video');
+  player.src({
+      src: 'testing.m3u8',
+      type: 'application/x-mpegURL'
+  });
+
+  // var video = document.getElementById('video');
+  // if(Hls.isSupported()) {
+	// var hls = new Hls();
+  //   hls.loadSource('testing.m3u8');
+  //   hls.attachMedia(video);
+	// hls.on(Hls.Events.MANIFEST_PARSED,function() {
+  //     	video.play();
+  // 	});
+  //  }
+  //
+  // else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+	// video.src = 'testing.m3u8';
+	// video.addEventListener('loadedmetadata', function() {
+	//   video.play();
+	// });
+  // }
+</script>

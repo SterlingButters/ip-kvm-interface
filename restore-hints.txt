@@ -1,0 +1,4 @@
+line 449 & 504: keyboard-capture
+line 362-367: app.js
+line 18: index.html
+change vnc pass
