@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "child_process": "1.0.2",
-    "express": "4.16.4",
+    "express": "4.19.2",
     "express-ws": "^4.0.0",
     "fs": "0.0.1-security",
     "glob": "^7.1.6",
