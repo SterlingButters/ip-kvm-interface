@@ -23,7 +23,7 @@
     "node-pty": "^0.9.0",
     "onoff": "5.0.1",
     "opn": "5.4.0",
-    "socket.io": "2.1.1",
+    "socket.io": "2.5.0",
     "socket.io-client": "2.1.1",
     "socketio-file-upload": "^0.7.0",
     "xterm": "^4.4.0",
